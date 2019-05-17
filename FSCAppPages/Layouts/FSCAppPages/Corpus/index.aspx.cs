@@ -6,10 +6,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
     public partial class index : LayoutsPageBase
     {
-        #region 事件
+        //语料库主页
         protected void Page_Load(object sender, EventArgs e)
         {
         }
-        #endregion
     }
 }
