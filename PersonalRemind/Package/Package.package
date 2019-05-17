@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4151f795-3705-4e3c-a873-dc02f461d916" solutionId="4151f795-3705-4e3c-a873-dc02f461d916" resetWebServer="false" sharePointProductVersion="15.0" name="PersonalRemind" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="1eee5bd0-b92a-47d1-8954-1bfdcbbf5f1f" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="0d50a7d5-ba62-4326-89c3-fcd5300ce807" />
+  </projectItems>
+</package>

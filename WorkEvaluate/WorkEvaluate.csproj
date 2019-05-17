@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FFE65426-76A3-4577-873E-2AFD08CA08E0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WorkEvaluate</RootNamespace>
+    <AssemblyName>WorkEvaluate</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SandboxedSolution>False</SandboxedSolution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.SharePoint.Client, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.SharePoint" />
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Layouts\WorkEvaluate\adminPage.aspx.cs">
+      <DependentUpon>adminPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\adminPage.aspx.designer.cs">
+      <DependentUpon>adminPage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\BLL\Course.cs" />
+    <Compile Include="Layouts\WorkEvaluate\BLL\Period.cs" />
+    <Compile Include="Layouts\WorkEvaluate\BLL\User.cs" />
+    <Compile Include="Layouts\WorkEvaluate\BLL\Works.cs" />
+    <Compile Include="Layouts\WorkEvaluate\BLL\WorksScoring.cs" />
+    <Compile Include="Layouts\WorkEvaluate\BLL\WorksType.cs" />
+    <Compile Include="Layouts\WorkEvaluate\Comments.aspx.cs">
+      <DependentUpon>Comments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\DAL\Common.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\Course.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\DataProvider.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\DESEncrypt.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\Periods.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\SQLHelper.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\Standard.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\User.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\Works.cs" />
+    <Compile Include="Layouts\WorkEvaluate\DAL\WorksType.cs" />
+    <Compile Include="Layouts\WorkEvaluate\MyPeriods.aspx.cs">
+      <DependentUpon>MyPeriods.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\MyPeriods.aspx.designer.cs">
+      <DependentUpon>MyPeriods.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\MyWorks.aspx.cs">
+      <DependentUpon>MyWorks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\MyWorks.aspx.designer.cs">
+      <DependentUpon>MyWorks.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\OnlineEnroll.aspx.cs">
+      <DependentUpon>OnlineEnroll.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\OnlineEnroll.aspx.designer.cs">
+      <DependentUpon>OnlineEnroll.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\StudentScores.aspx.cs">
+      <DependentUpon>StudentScores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\StudentScores.aspx.designer.cs">
+      <DependentUpon>StudentScores.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\ScoreStandard.aspx.cs">
+      <DependentUpon>ScoreStandard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\WorkSetting.aspx.cs">
+      <DependentUpon>WorkSetting.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\WorkSetting.aspx.designer.cs">
+      <DependentUpon>WorkSetting.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\WorksList.aspx.cs">
+      <DependentUpon>WorksList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\WorkEvaluate\WorksList.aspx.designer.cs">
+      <DependentUpon>WorksList.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="key.snk" />
+    <None Include="Layouts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{44a93a80-c748-4e89-a2fb-1877b8c76229}</SharePointProjectItemId>
+    </None>
+    <None Include="Package\Package.package">
+      <PackageId>{08e23059-6dc1-4b9e-8b15-dd28c9f2cd40}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Layouts\WorkEvaluate\adminPage.aspx" />
+    <Content Include="Layouts\WorkEvaluate\Comments.aspx" />
+    <Content Include="Layouts\WorkEvaluate\css\base.css" />
+    <Content Include="Layouts\WorkEvaluate\css\Combox.css" />
+    <Content Include="Layouts\WorkEvaluate\css\page.css" />
+    <Content Include="Layouts\WorkEvaluate\images\ButtonGg.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\dback.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\dlist.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\ml-open-demo.png" />
+    <Content Include="Layouts\WorkEvaluate\images\nav-close.png" />
+    <Content Include="Layouts\WorkEvaluate\images\shipin.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\yinpin.jpg" />
+    <Content Include="Layouts\WorkEvaluate\JS\Combox.js" />
+    <Content Include="Layouts\WorkEvaluate\JS\jquery-1.9.1.min.js" />
+    <Content Include="Layouts\WorkEvaluate\JS\FaceJScript.js" />
+    <Content Include="Layouts\WorkEvaluate\JS\jquery.js" />
+    <Content Include="Layouts\WorkEvaluate\JS\kefu.js" />
+    <Content Include="Layouts\WorkEvaluate\JS\s.js" />
+    <Content Include="Layouts\WorkEvaluate\MediaPlayer.js" />
+    <Content Include="Layouts\WorkEvaluate\MyPeriods.aspx" />
+    <Content Include="Layouts\WorkEvaluate\MyWorks.aspx" />
+    <Content Include="Layouts\WorkEvaluate\ScoreStandard.aspx" />
+    <Content Include="Layouts\WorkEvaluate\Validate.js" />
+    <Content Include="Layouts\WorkEvaluate\css\keyboard.css" />
+    <Content Include="Layouts\WorkEvaluate\css\keyboard.js" />
+    <Content Include="Layouts\WorkEvaluate\images\bar1.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\bar2.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\bar3.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\bg_login_wrong.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\bjddd.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\bjj.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\bjj1.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\bjj1.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\bjtu.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\bjtu1.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\ButtonBg.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\bxxx.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\Calendar_scheduleHS.png" />
+    <Content Include="Layouts\WorkEvaluate\images\cuo.png" />
+    <Content Include="Layouts\WorkEvaluate\images\dui.png" />
+    <Content Include="Layouts\WorkEvaluate\images\fen30.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\fen40.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\floatbg.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\floatng.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\headgif.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\htpf.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\keyboard.png" />
+    <Content Include="Layouts\WorkEvaluate\images\score30.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\score40.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\select.jpg" />
+    <Content Include="Layouts\WorkEvaluate\images\star_gray.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\star_red.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\star_red2.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\titlebg.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\titlebga.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\Triangle.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\type.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\warn.gif" />
+    <Content Include="Layouts\WorkEvaluate\images\zhengque.gif" />
+    <Content Include="Layouts\WorkEvaluate\OnlineEnroll.aspx" />
+    <Content Include="Layouts\WorkEvaluate\StudentScores.aspx" />
+    <Content Include="Layouts\WorkEvaluate\WorkSetting.aspx" />
+    <Content Include="Layouts\WorkEvaluate\WorksList.aspx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

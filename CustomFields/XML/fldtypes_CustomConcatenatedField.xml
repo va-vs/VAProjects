@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<FieldTypes>
+  <FieldType>
+    <Field Name="TypeName">CustomConcatenatedField</Field>
+    <Field Name="ParentType">Lookup</Field>
+    <Field Name="TypeDisplayName">级联选项</Field>
+    <Field Name="UserCreatable">TRUE</Field>
+    <Field Name="ShowOnListCreate">TRUE</Field>
+    <Field Name="ShowOnDocumentLibraryCreate">TRUE</Field>
+    <Field Name="ShowOnSurveyCreate">TRUE</Field>
+    <Field Name="ShowOnColumnTemplateCreate">TRUE</Field>
+    <Field Name="Sortable">TRUE</Field>
+    <Field Name="Filterable">TRUE</Field>
+    <Field Name="FieldTypeClass">CustomFields.CustomConcatenatedField, $SharePoint.Project.AssemblyFullName$</Field>
+  //字段属性，如下
+    <PropertySchema>
+      <Fields>
+        <Field Name="custFieldLookuplist"  Type="Text"  Hidden="TRUE" />
+        <Field Name="custFieldLookupfield"  Type="Text"  Hidden="TRUE" />
+        <Field Name="custWidth" DisplayName="控件宽度" MaxLength="255" Type="Text" Hidden="TRUE" />
+      </Fields>
+    </PropertySchema>
+    <Field Name="FieldEditorUserControl">/_controltemplates/15/CustomConcatenatedFieldEditor.ascx</Field>
+  </FieldType>
+</FieldTypes>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="NewsPhotoShowWithText.NewsPhotoShowWithText.NewsPhotoShowWithText, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">网站要闻</property>
+        <property name="Description" type="string">利用图片轮播显示网站要闻</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

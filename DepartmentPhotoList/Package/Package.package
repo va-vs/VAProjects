@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="ea66c760-bfea-4944-876a-049111e886f4" solutionId="ea66c760-bfea-4944-876a-049111e886f4" resetWebServer="false" sharePointProductVersion="15.0" name="DepartmentPhotoList" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="c09cfa6f-5628-487c-9fec-1facd718143a" />
+  </features>
+</package>

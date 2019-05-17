@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="FSCWebParts.Corpus.Corpus, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">FSCWebParts - Corpus</property>
+        <property name="Description" type="string">语料库管理与检索系统</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

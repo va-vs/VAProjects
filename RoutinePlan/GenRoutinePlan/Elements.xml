@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
+  <Module Name="GenRoutinePlan" List="113" Url="_catalogs/wp">
+    <File Path="GenRoutinePlan\GenRoutinePlan.webpart" Url="RoutinePlan_GenRoutinePlan.webpart" Type="GhostableInLibrary" >
+      <Property Name="Group" Value="VA项目研发" />
+    </File>
+  </Module>
+</Elements>

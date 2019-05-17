@@ -1,0 +1,26 @@
+/* 作用：最基础的CSS 
+   作者：任萌
+   时间：2014/11/11
+    */
+ul,li{ margin:0;padding:0}
+/*width style*/
+.wd350{ width: 350px;}
+.wd400{width: 400px;}
+.wd600{width: 600px;}
+/*height style*/
+.hg150{height: 150px;}
+.hg100{height: 100px;}
+.hidden{display: none;}
+/*border style*/
+.b0{border:0}
+/*margin style*/
+.mt5{margin-top:5px}
+.mt10{margin-top:10px}
+.mt15{margin-top:15px}
+.mt20{margin-top:20px}
+.mt25{margin-top:25px}
+.ml5{margin-left:5px}
+.ml10{margin-left:10px}
+.ml15{margin-left:15px}
+.ml20{margin-left:20px}
+.ml25{margin-left:25px}

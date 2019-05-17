@@ -1,0 +1,61 @@
+﻿@charset "utf-8";
+.t1 {
+    clear: both;
+    border: 1px solid #c9dae4;
+    width: 100%;
+}
+
+.t1 tr th {
+    color: #0d487b;
+    background: #f2f4f8;
+    line-height: 28px;
+    border-bottom: 1px solid #9cb6cf;
+    border-top: 1px solid #e9edf3;
+    font-weight: bold;
+    text-shadow: #e6ecf3 1px 1px 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.t1 tr td {
+    border-bottom: 1px solid #e9e9e9;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    color: #444;
+    border-top: 1px solid #FFFFFF;
+    padding-left: 5px;
+    padding-right: 5px;
+    /*word-break: break-all;*/
+    white-space: nowrap;
+}
+
+
+/* white-space:nowrap; text-overflow:ellipsis; */
+
+tr.alt td {
+    background: #ecf6fc;
+    /*这行将给所有的tr加上背景色*/
+}
+
+tr.over td {
+    background: #bcd4ec;
+    /*这个将是鼠标高亮行的背景色*/
+}
+
+.span6 {
+    /*width:500px;*/
+    float: inherit;
+    margin: 10px;
+}
+
+#pagiDiv span {
+    /* background: #1e90ff; */
+    border-radius: .2em;
+    padding: 5px;
+}
+
+#pagiDiv span:hover {
+    background: #bcd4ec;
+    border-radius: .2em;
+    padding: 5px;
+}

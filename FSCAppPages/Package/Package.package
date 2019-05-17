@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4638bf65-cdd0-4826-a4bb-4804d3854ff5" solutionId="4638bf65-cdd0-4826-a4bb-4804d3854ff5" resetWebServer="false" sharePointProductVersion="15.0" name="FSCAppPages" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <projectItems>
+    <projectItemReference itemId="77b701c5-58f4-4679-b183-8895301cc6bf" />
+  </projectItems>
+</package>

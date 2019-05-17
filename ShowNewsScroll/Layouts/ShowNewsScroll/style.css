@@ -1,0 +1,73 @@
+﻿/* ScrollNote */
+
+.ScrollNote {
+    box-shadow: 0 1px 3px #ccc;
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 0 20px;
+    min-width:400px;
+}
+
+.ScrollNote .title {
+    height: 50px;
+    line-height: 50px;
+    font-family: "微软雅黑", "PingFang SC", sans;
+    font-weight: 700;
+    color: #000;
+    font-size: 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.ScrollNote .title a {
+    color: black;
+}
+
+.ScrollNote .title a:hover {
+    text-decoration: none;
+}
+
+.ScrollNote .title a.more {
+    font-weight: 400;
+    font-size: 16px;
+    color: #888;
+    vertical-align: baseline;
+    float: right;
+}
+
+.ScrollNote-list {
+    padding: 0;
+    margin: 7px 0;
+    list-style: none;
+    font-size: 14px;
+}
+
+.ScrollNote-list li {
+    position: relative;
+    line-height: 30px;
+}
+
+.ScrollNote-list li a {
+    display: inline-block;
+    word-wrap: normal;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 80%;
+    vertical-align: middle;
+}
+
+.ScrollNote-list li a:hover {
+    color: #c00;
+    text-decoration: none;
+}
+
+.ScrollNote-list li a span {
+    position: absolute;
+    right: 2px;
+}
+
+#box {
+    margin: 5px auto 0 auto;
+    overflow: hidden;
+    /*  这个一定要加，超出的内容部分要隐藏，免得撑高中间部分 */
+}

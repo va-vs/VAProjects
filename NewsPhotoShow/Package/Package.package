@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="d74cda70-23a7-459e-a53b-8eeffd5fdd73" solutionId="d74cda70-23a7-459e-a53b-8eeffd5fdd73" resetWebServer="false" sharePointProductVersion="15.0" name="NewsPhotoShow" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="49822adf-3af3-4cf1-9ab1-f7861d4b9ffd" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="9bf34792-eb9c-4932-9420-19e00306e418" />
+  </projectItems>
+</package>

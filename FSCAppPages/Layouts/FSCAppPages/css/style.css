@@ -1,0 +1,250 @@
+﻿
+.mytable {
+    width: 100%;
+    min-height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-collapse: collapse;
+    border-color: rgba(34, 25, 25, 0.5);
+}
+
+    .mytable,
+    .mytable tr th,
+    .mytable tr td {
+        border: 1px solid #808080;
+        padding: 5px;
+        min-width: 100px;
+    }
+
+        .mytable tr td img {
+            text-align: center;
+            max-height: 200px;
+            max-width: 120px;
+        }
+
+.areatitle {
+    font-size: 17px;
+    font-weight: bold;
+    padding: 0 10px 10px 10px;
+    color: #0072c6;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.mylist {
+    padding: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.rightlist {
+    line-height: 28px;
+}
+
+.listtitle {
+    font-size: 16px;
+    color: #000;
+    font-weight: bold;
+    padding: 5px 5px 0 5px;
+    background: #A2BFDB;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid #A2BFDB;
+    box-shadow: 0px 1px 3px rgba(162,191,219, 0.6);
+}
+
+    .listtitle span {
+        font-size: 13px;
+        margin-left: 5px;
+        color: #555;
+    }
+
+.pp {
+    box-shadow: 0px 1px 3px rgba(162,191,219, 0.6);
+    border: 1px solid #A2BFDB;
+    padding: 5px;
+    font-size: 14px;
+    line-height: 25px;
+    margin-bottom: 12px;
+    border-radius: 0 0 5px 5px;
+}
+
+    .pp a:link {
+        padding: 0 10px 0 10px;
+        color: #0072C6;
+        text-decoration: none;
+        font-size: 15px;
+        min-width: 100px;
+        white-space:nowrap;
+    }
+
+    .pp a:visited {
+        color: #0072C6;
+        text-decoration: none;
+    }
+
+    .pp a:hover {
+        color: #FF0000;
+        text-decoration: none;
+    }
+
+    .pp a:active {
+        color: #FFFFFF;
+        background-color: #002663;
+        text-decoration: none;
+    }
+
+    .pp ul {
+        margin-left: 5px;
+        text-align: left;
+    }
+
+        .pp ul li {
+            list-style: circle;
+            line-height: 25px;
+        }
+
+            .pp ul li a:link {
+                color: #0072c6;
+                text-decoration: none;
+            }
+
+            .pp ul li a:visited {
+                color: #0072c6;
+                text-decoration: none;
+            }
+
+            .pp ul li a:hover {
+                color: #FF0000;
+                text-decoration: none;
+            }
+
+            .pp ul li a:active {
+                color: #FFFFFF;
+                background-color: #002663;
+                text-decoration: none;
+            }
+
+.demo {
+    width: 100%;
+    margin: 10px;
+}
+
+.nav:after,
+.nav:before {
+    content: "";
+    display: table;
+}
+
+.nav:after {
+    clear: both;
+    overflow: hidden;
+}
+
+.nav {
+    zoom: 1;
+    margin-left: 0px;
+}
+
+    .nav li {
+        list-style: none outside none;
+        float: left;
+        position: relative;
+        font-size: 14px;
+    }
+
+    .nav .active {
+        z-index: 3;
+        font-weight: bold;
+    }
+
+    .nav li:before,
+    .nav li:after,
+    .nav a:before,
+    .nav a:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+    }
+
+
+    .nav a {
+        float: left;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: rgb(220, 225, 233);
+        background: rgb(35, 140, 229);
+        border-radius: 10px 10px 0 0;
+    }
+
+    .nav .active a {
+        background: rgba(220, 225, 233,0.6);
+        color: rgb(10, 41, 30);
+    }
+
+
+    .nav .active:before,
+    .nav .active:after {
+        z-index: 1;
+        background: rgba(220, 225, 233,0.6);
+    }
+
+
+    .nav li:first-child a:before,
+    .nav li:last-child a:after {
+        background-color: #fff;
+    }
+
+.tab-content {
+    background: rgba(220, 225, 233,0.6);
+    color: rgb(10, 41, 30);
+    padding: 10px;
+    margin: 0px 10px 10px 0px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+    .tab-pane.active {
+        display: block;
+    }
+
+.myul {
+    line-height: 25px;
+}
+
+    .myul li {
+        list-style: none;
+        color: #111;
+        background-color: #ebebeb;
+        border-radius: 5px 5px 5px 5px;
+        box-shadow: 0px 1px 3px rgba(34, 25, 25, 0.2);
+        margin: 0 5px 5px 5px;
+    }
+
+
+        .myul li:hover {
+            background-color: #5896CA;
+            color: #fff;
+            border-radius: 5px 5px 5px 5px;
+            box-shadow: 0px 1px 3px rgba(34, 25, 25, 0.2);
+        }
+
+        .myul li table th {
+            font-size: 16px;
+            font-weight: bolder;
+            padding: 10px;
+        }
+
+        .myul li table td {
+            font-size: 13px;
+            font-weight: normal;
+            padding: 10px;
+            vertical-align: top;
+        }
+
+            .myul li table td img {
+                text-align: center;
+                padding: 5px;
+                max-width: 140px;
+                min-width: 120px;
+            }

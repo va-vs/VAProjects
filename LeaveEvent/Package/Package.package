@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="afd7e0fa-1a70-478f-bf20-2e25ff4ea2e4" solutionId="afd7e0fa-1a70-478f-bf20-2e25ff4ea2e4" resetWebServer="false" sharePointProductVersion="15.0" name="LeaveEvent" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="ecd36fad-1972-41b2-8b08-935c7b0cd71e" />
+  </features>
+</package>

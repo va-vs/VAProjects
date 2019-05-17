@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.VisualWebPart" DefaultFile="PerformanceSummaryUserControl.ascx" SupportedTrustLevels="FullTrust" SupportedDeploymentScopes="Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="PerformanceSummary\" Type="ElementManifest" />
+    <ProjectItemFile Source="PerformanceSummary.webpart" Target="PerformanceSummary\" Type="ElementFile" />
+    <ProjectItemFile Source="PerformanceSummaryUserControl.ascx" Target="CONTROLTEMPLATES\FSCWebParts\PerformanceSummary\" Type="TemplateFile" />
+  </Files>
+  <SafeControls>
+    <SafeControl Name="SafeControlEntry1" Assembly="$SharePoint.Project.AssemblyFullName$" Namespace="FSCWebParts.PerformanceSummary" TypeName="*" IsSafe="true" IsSafeAgainstScript="false" />
+  </SafeControls>
+</ProjectItem>

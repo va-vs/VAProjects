@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Receivers ListTemplateId="104">
+      <Receiver>
+        <Name>WriteDeptItemAdded</Name>
+        <Type>ItemAdded</Type>
+        <Assembly>$SharePoint.Project.AssemblyFullName$</Assembly>
+        <Class>WriteNewsDept.WriteDept.WriteDept</Class>
+        <SequenceNumber>10000</SequenceNumber>
+      </Receiver>
+    <Receiver>
+      <Name>WriteDeptItemUpdating</Name>
+      <Type>ItemUpdating</Type>
+      <Assembly>$SharePoint.Project.AssemblyFullName$</Assembly>
+      <Class>WriteNewsDept.WriteDept.WriteDept</Class>
+      <SequenceNumber>10000</SequenceNumber>
+    </Receiver>
+    <Receiver>
+      <Name>WriteDeptItemDeleting</Name>
+      <Type>ItemDeleting</Type>
+      <Assembly>$SharePoint.Project.AssemblyFullName$</Assembly>
+      <Class>WriteNewsDept.WriteDept.WriteDept</Class>
+      <SequenceNumber>10000</SequenceNumber>
+    </Receiver>
+  </Receivers>
+</Elements>

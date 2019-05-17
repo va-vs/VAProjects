@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="RoutinePlan.TimeLine.TimeLine, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">TimeLine</property>
+        <property name="Description" type="string">查询活动记录生成时间轴</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

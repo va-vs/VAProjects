@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F81DD654-A0B6-4FE3-8CFB-EA1CE45C87D9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VATaskWebPart</RootNamespace>
+    <AssemblyName>VATaskWebPart</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SandboxedSolution>False</SandboxedSolution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NPOI">
+      <HintPath>..\dll\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>..\dll\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>..\dll\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>..\dll\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.SharePoint" />
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CreateScheduleByTask\CreateScheduleByTask.cs" />
+    <Compile Include="CreateScheduleByTask\CreateScheduleByTaskUserControl.ascx.cs">
+      <DependentUpon>CreateScheduleByTaskUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CreateScheduleByTask\CreateScheduleByTaskUserControl.ascx.designer.cs">
+      <DependentUpon>CreateScheduleByTaskUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImportFromExcel\ImportFromExcel.cs" />
+    <Compile Include="ImportFromExcel\ImportFromExcelUserControl.ascx.cs">
+      <DependentUpon>ImportFromExcelUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImportFromExcel\ImportFromExcelUserControl.ascx.designer.cs">
+      <DependentUpon>ImportFromExcelUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ImportFromSchedule\ImportFromSchedule.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ImportFromSchedule\ImportFromScheduleUserControl.ascx.cs">
+      <DependentUpon>ImportFromScheduleUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImportFromSchedule\ImportFromScheduleUserControl.ascx.designer.cs">
+      <DependentUpon>ImportFromScheduleUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CreateScheduleByTask\CreateScheduleByTask.webpart" />
+    <None Include="CreateScheduleByTask\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{a8bb3b9d-e1c4-4ea6-9091-a101210249d9}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{b7883633-03ac-4912-bd57-684ccb69c602}</FeatureId>
+    </None>
+    <None Include="Features\Feature2\Feature2.feature">
+      <FeatureId>{ca287d26-8cdb-40f4-aa3e-ba8d932865d9}</FeatureId>
+    </None>
+    <None Include="ImportFromExcel\ImportFromExcel.webpart" />
+    <None Include="ImportFromExcel\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{54474c0a-a1ad-4050-8142-23aa96fe3542}</SharePointProjectItemId>
+    </None>
+    <None Include="ImportFromSchedule\ImportFromSchedule.webpart">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ImportFromSchedule\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7fd510d8-6e1f-42f8-aa74-568b1939a7fe}</SharePointProjectItemId>
+    </None>
+    <None Include="key.snk" />
+    <None Include="Package\Package.package">
+      <PackageId>{c3542a7e-b12f-4465-a359-ddf8f609d780}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{ca0782d5-40c0-4fb6-9a0e-611f37185933}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="CreateScheduleByTask\CreateScheduleByTaskUserControl.ascx" />
+    <Content Include="CreateScheduleByTask\Elements.xml" />
+    <Content Include="Elements.xml" />
+    <Content Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
+    </Content>
+    <Content Include="Features\Feature2\Feature2.Template.xml">
+      <DependentUpon>Feature2.feature</DependentUpon>
+    </Content>
+    <Content Include="ImportFromExcel\Elements.xml" />
+    <Content Include="ImportFromExcel\ImportFromExcelUserControl.ascx" />
+    <Content Include="ImportFromSchedule\Elements.xml" />
+    <Content Include="ImportFromSchedule\ImportFromScheduleUserControl.ascx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

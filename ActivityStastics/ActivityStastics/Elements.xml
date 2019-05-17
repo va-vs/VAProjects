@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
+  <Module Name="ActivityStastics" List="113" Url="_catalogs/wp">
+    <File Path="ActivityStastics\ActivityStastics.webpart" Url="ActivityStastics_ActivityStastics.webpart" Type="GhostableInLibrary" >
+      <Property Name="Group" Value="VA项目研发" />
+    </File>
+  </Module>
+</Elements>

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="318f61d5-5a10-42c6-862f-9381ab386b43" solutionId="318f61d5-5a10-42c6-862f-9381ab386b43" resetWebServer="false" sharePointProductVersion="15.0" name="SmartNEUEntrollEvent" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="95f5c8b9-b52d-4c5f-bc59-c05fce29f5e0" />
+    <featureReference itemId="73adbd9f-90a6-47c2-b405-c86b5bac148e" />
+  </features>
+</package>

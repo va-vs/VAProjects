@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="9a3dc6d9-34c9-464b-ab8d-ca81cad29d6c" solutionId="9a3dc6d9-34c9-464b-ab8d-ca81cad29d6c" resetWebServer="false" sharePointProductVersion="15.0" name="NewsApproval" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="60445108-0833-49bb-b48f-facffd47301e" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="6d9b87bd-6f94-4013-bf77-663d3a219567" />
+  </projectItems>
+</package>

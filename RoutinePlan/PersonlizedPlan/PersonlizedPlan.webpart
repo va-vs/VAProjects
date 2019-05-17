@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="RoutinePlan.PersonlizedPlan.PersonlizedPlan, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">RoutinePlan - PersonlizedPlan</property>
+        <property name="Description" type="string">根据用户例行活动的历史习惯，智能分析用户活动特点，个性化生成例行计划</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

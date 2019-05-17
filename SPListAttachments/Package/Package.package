@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="7c0b8d81-d2fe-43ac-89d1-88a74338bc9f" 
+        solutionId="7c0b8d81-d2fe-43ac-89d1-88a74338bc9f" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="SPListAttachments"
+        sharePointProductVersion="15.0">
+</package>

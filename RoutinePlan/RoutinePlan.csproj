@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{01E7FF92-89AC-46A5-B2D3-3601D40EB0CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RoutinePlan</RootNamespace>
+    <AssemblyName>RoutinePlan</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SandboxedSolution>False</SandboxedSolution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.SharePoint" />
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataVisualization\DataVisualization.cs" />
+    <Compile Include="DataVisualization\DataVisualizationUserControl.ascx.cs">
+      <DependentUpon>DataVisualizationUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DataVisualization\DataVisualizationUserControl.ascx.designer.cs">
+      <DependentUpon>DataVisualizationUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\RoutinePlan\HeadPage.aspx.cs">
+      <DependentUpon>HeadPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\RoutinePlan\HeadPage.aspx.designer.cs">
+      <DependentUpon>HeadPage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\RoutinePlan\ErrorPage.aspx.cs">
+      <DependentUpon>ErrorPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\RoutinePlan\ErrorPage.aspx.designer.cs">
+      <DependentUpon>ErrorPage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PersonlizedPlan\PersonlizedPlan.cs" />
+    <Compile Include="PersonlizedPlan\PersonlizedPlanUserControl.ascx.cs">
+      <DependentUpon>PersonlizedPlanUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PersonlizedPlan\PersonlizedPlanUserControl.ascx.designer.cs">
+      <DependentUpon>PersonlizedPlanUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeLine\TimeLine.cs" />
+    <Compile Include="TimeLine\TimeLineUserControl.ascx.cs">
+      <DependentUpon>TimeLineUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TimeLine\TimeLineUserControl.ascx.designer.cs">
+      <DependentUpon>TimeLineUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GenRoutinePlan\GenRoutinePlan.cs" />
+    <Compile Include="GenRoutinePlan\GenRoutinePlanUserControl.ascx.cs">
+      <DependentUpon>GenRoutinePlanUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GenRoutinePlan\GenRoutinePlanUserControl.ascx.designer.cs">
+      <DependentUpon>GenRoutinePlanUserControl.ascx.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DataVisualization\DataVisualization.webpart" />
+    <None Include="DataVisualization\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{8b258a31-768c-4052-be96-4283f2cc9b91}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{2a2788a0-d219-4357-aba8-839fa2f4388b}</FeatureId>
+    </None>
+    <None Include="key.snk" />
+    <None Include="Layouts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{1bbc7fb0-c8d3-4b56-a352-2341e0490d95}</SharePointProjectItemId>
+    </None>
+    <None Include="Package\Package.package">
+      <PackageId>{909554bd-9bdd-492c-bec4-d39f4d9e5ef6}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="PersonlizedPlan\PersonlizedPlan.webpart" />
+    <None Include="PersonlizedPlan\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{a05e1e91-6b0f-4acf-aabf-ad47dc28d084}</SharePointProjectItemId>
+    </None>
+    <None Include="TimeLine\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3fc66b2c-bd78-449d-8e9b-719c44bdfe2c}</SharePointProjectItemId>
+    </None>
+    <None Include="TimeLine\TimeLine.webpart" />
+    <None Include="GenRoutinePlan\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{579dd9e8-763a-4716-acc4-be37266117b0}</SharePointProjectItemId>
+    </None>
+    <None Include="GenRoutinePlan\GenRoutinePlan.webpart" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataVisualization\DataVisualizationUserControl.ascx" />
+    <Content Include="DataVisualization\Elements.xml" />
+    <Content Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
+    </Content>
+    <Content Include="Layouts\RoutinePlan\HeadPage.aspx" />
+    <Content Include="Layouts\RoutinePlan\ErrorPage.aspx" />
+    <Content Include="Layouts\RoutinePlan\images\arrow.png" />
+    <Content Include="Layouts\RoutinePlan\images\icon06.gif" />
+    <Content Include="Layouts\RoutinePlan\images\icon07.gif" />
+    <Content Include="Layouts\RoutinePlan\images\icon08.gif" />
+    <Content Include="Layouts\RoutinePlan\images\icon09.gif" />
+    <Content Include="Layouts\RoutinePlan\images\line04.gif" />
+    <Content Include="PersonlizedPlan\Elements.xml" />
+    <Content Include="PersonlizedPlan\PersonlizedPlanUserControl.ascx" />
+    <Content Include="TimeLine\Elements.xml" />
+    <Content Include="Layouts\RoutinePlan\css\history.css" />
+    <Content Include="Layouts\RoutinePlan\js\jquery.js" />
+    <Content Include="Layouts\RoutinePlan\js\main.js" />
+    <Content Include="TimeLine\TimeLineUserControl.ascx" />
+    <Content Include="GenRoutinePlan\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="GenRoutinePlan\GenRoutinePlanUserControl.ascx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

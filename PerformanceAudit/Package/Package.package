@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="dc582778-0f05-4dc5-b77b-5232e71bffb9" solutionId="dc582778-0f05-4dc5-b77b-5232e71bffb9" resetWebServer="false" sharePointProductVersion="15.0" name="PerformanceAudit" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="8870e019-d3e6-4c68-8779-3e413d950548" />
+  </features>
+</package>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4b3b9f33-3903-4b63-b58e-2eb2cf2b49d6" solutionId="4b3b9f33-3903-4b63-b58e-2eb2cf2b49d6" resetWebServer="false" sharePointProductVersion="15.0" name="UploadAttachment" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="7efd9b2a-abc4-499b-a717-734532f46cff" />
+  </features>
+</package>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
+  <Module Name="DataVisualization" List="113" Url="_catalogs/wp">
+    <File Path="DataVisualization\DataVisualization.webpart" Url="RoutinePlan_DataVisualization.webpart" Type="GhostableInLibrary" >
+      <Property Name="Group" Value="VA项目研发" />
+    </File>
+  </Module>
+</Elements>

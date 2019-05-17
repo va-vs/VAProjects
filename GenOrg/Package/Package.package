@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="89a9d080-9843-40dc-a2f1-59513281b81f" solutionId="89a9d080-9843-40dc-a2f1-59513281b81f" resetWebServer="false" sharePointProductVersion="15.0" name="GenOrg" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="b0688b4a-445e-4bfa-af35-dd490c4f75a3" />
+  </features>
+</package>

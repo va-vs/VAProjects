@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="DeptNews.DeptNews.DeptNews, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">系部新闻</property>
+        <property name="Description" type="string">从学院新闻筛选由本系部成员发布的新闻</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

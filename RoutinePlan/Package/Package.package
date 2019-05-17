@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="909554bd-9bdd-492c-bec4-d39f4d9e5ef6" solutionId="909554bd-9bdd-492c-bec4-d39f4d9e5ef6" resetWebServer="false" sharePointProductVersion="15.0" name="RoutinePlan" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="2a2788a0-d219-4357-aba8-839fa2f4388b" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="1bbc7fb0-c8d3-4b56-a352-2341e0490d95" />
+  </projectItems>
+</package>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="ActivityStastics.ActivityStastics.ActivityStastics, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">个人学习助手数据可视化</property>
+        <property name="Description" type="string">个人学习助手汇总统计与分析</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

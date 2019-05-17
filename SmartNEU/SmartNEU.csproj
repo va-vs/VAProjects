@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{366D8319-1246-4221-8EEC-E07AEDC0B0D0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartNEU</RootNamespace>
+    <AssemblyName>SmartNEU</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SandboxedSolution>False</SandboxedSolution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WinForm|AnyCPU'">
+    <OutputPath>bin\WinForm\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.SharePoint" />
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DAL\ADHelper.cs" />
+    <Compile Include="DAL\Common.cs" />
+    <Compile Include="DAL\DataProvider.cs" />
+    <Compile Include="DAL\ResetPassword.cs" />
+    <Compile Include="DAL\SqlHelper.cs" />
+    <Compile Include="DAL\User.cs" />
+    <Compile Include="Layouts\SmartNEU\MailTest.aspx.cs">
+      <DependentUpon>MailTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\MailTest.aspx.designer.cs">
+      <DependentUpon>MailTest.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\test.aspx.designer.cs">
+      <DependentUpon>test.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\EditUserInfo.aspx.cs">
+      <DependentUpon>EditUserInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\EditUserInfo.aspx.designer.cs">
+      <DependentUpon>EditUserInfo.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\EnrollInfo.aspx.cs">
+      <DependentUpon>EnrollInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\EnrollInfo.aspx.designer.cs">
+      <DependentUpon>EnrollInfo.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\GenerateCheckCode.aspx.cs">
+      <DependentUpon>GenerateCheckCode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\GenerateCheckCode.aspx.designer.cs">
+      <DependentUpon>GenerateCheckCode.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\PortalPage.aspx.cs">
+      <DependentUpon>PortalPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\PortalPage.aspx.designer.cs">
+      <DependentUpon>PortalPage.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\Registration.aspx.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\Registration.aspx.designer.cs">
+      <DependentUpon>Registration.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\ResetPwd.aspx.cs">
+      <DependentUpon>ResetPwd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\ResetPwd.aspx.designer.cs">
+      <DependentUpon>ResetPwd.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\RetrievePwd.aspx.cs">
+      <DependentUpon>RetrievePwd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\SmartNEU\RetrievePwd.aspx.designer.cs">
+      <DependentUpon>RetrievePwd.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\User\ManReg.aspx.cs">
+      <DependentUpon>ManReg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\User\ManReg.aspx.designer.cs">
+      <DependentUpon>ManReg.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="key.snk" />
+    <None Include="Layouts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{679f2118-6c51-437c-b191-1c4256ba46dc}</SharePointProjectItemId>
+    </None>
+    <None Include="Package\Package.package">
+      <PackageId>{23b74f14-aa04-4ece-95ad-adabf8b8bca6}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Layouts\SmartNEU\MailTest.aspx" />
+    <Content Include="Layouts\SmartNEU\test.aspx" />
+    <Content Include="Layouts\SmartNEU\EditUserInfo.aspx" />
+    <Content Include="Layouts\SmartNEU\EnrollInfo.aspx" />
+    <Content Include="Layouts\SmartNEU\GenerateCheckCode.aspx" />
+    <Content Include="Layouts\SmartNEU\PortalPage.aspx" />
+    <Content Include="Layouts\SmartNEU\Registration.aspx" />
+    <Content Include="Layouts\SmartNEU\ResetPwd.aspx" />
+    <Content Include="Layouts\SmartNEU\RetrievePwd.aspx" />
+    <Content Include="Layouts\SmartNEU\Validate.js" />
+    <Content Include="Layouts\User\ManReg.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ActiveDs">
+      <Guid>{97D25DB0-0363-11CF-ABC4-02608C9E7553}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

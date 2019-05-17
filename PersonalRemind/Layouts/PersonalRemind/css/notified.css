@@ -1,0 +1,171 @@
+#cs_online {
+	width: 450px;
+	height: 250px;
+	border: 1px solid #ccc;
+	position: fixed;
+	right: -452px;
+	bottom: 20px;
+	border-radius: 5px 0 0 5px;
+	-webkit-box-shadow: 0 0 3px #ccc;
+	box-shadow: 0 0 3px #ccc;
+	z-index: 10000;
+	background: url('../images/q_bg.png');
+}
+
+.cs_title {
+	width: 30px;
+	height: 200px;
+	position: absolute;
+	left: -32px;
+	top:30px;
+	border: 1px solid #ccc;
+	border-right: none;
+	border-radius: 5px 0 0 5px;
+	font-size: 18px;
+	font-family: 'Arial';
+	text-align: center;
+	line-height: 25px;
+	cursor: pointer;
+	-webkit-box-shadow: 0 0 3px #ccc;
+	box-shadow: 0 0 3px #ccc;
+	background: #fff;
+}
+
+.cs_options {
+	width: 430px;
+	height: 25px;
+	background: #00b3ff;
+	margin: 10px;
+	padding: 0px;
+	border-radius: 3px;
+	list-style: none;
+}
+
+.cs_options li {
+	width: 100px;
+	height: 20px;
+	float: left;
+	font-size: 13px;
+	font-family: 'Arial';
+	line-height: 20px;
+	text-align: center;
+	color: #fff;
+	cursor: pointer;
+	padding-top: 3px;
+}
+
+
+.cs_context {
+	width: 430px;
+	height: 200px;
+	background: #e3e3e3;
+	border-radius: 3px;
+	display: none;
+	margin: 10px;
+	margin-top: 5px;
+	position: relative;
+	overflow: hidden;
+}
+
+#cs_qlist {
+	/*list-style: none;
+	padding: 0px;
+	margin: 0px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 430px;
+	height: 200px;*/
+	background-size: contain;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+#cs_qlist li {
+	height: 22px;
+	/*float: left;*/
+	margin-left: 5px;
+    line-height:25px;
+	cursor: default;
+}
+
+/*#cs_qlist span {
+	font-size: 12px;
+	color: #fff;
+	font-family: 'Arial';
+	height: 22px;
+	line-height: 22px;
+	display: block;
+	float: left;
+}*/
+
+#cs_product {
+	width: 430px;
+	height: 200px;
+	list-style: none;
+}
+
+#cs_product ul {
+	list-style: none;
+	padding: 0px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	margin: 0px;
+}
+
+#cs_product li {
+	width: 430px;
+	height: 200px;
+	padding: 0px;
+	margin: 0px;
+	float: left;
+}
+
+#cs_product_num ul {
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+#cs_product_num li {
+	width:60px;
+	height: 14px;
+	float: left;
+	font-size: 12px;
+	color: #44C7F4;
+	border: 1px solid #44C7F4;
+	text-align: center;
+	line-height: 14px;
+	cursor: pointer;
+	margin: 2px;
+}
+
+#cs_product img {
+	width: 430px;
+}
+
+#cs_cooperation {
+	width: 430px;
+	height: 200px;
+	background-size: contain;
+}
+
+#cs_contact {
+	width: 430px;
+	height: 200px;
+	margin: 10px;
+}
+
+.cs_contact_span {
+	color: #F2593A;
+	font-size: 12px;
+	font-family: 'Arial';
+	cursor: default;
+	text-shadow: 0 0 2px #ccc;
+	line-height: 25px;
+}
+
+

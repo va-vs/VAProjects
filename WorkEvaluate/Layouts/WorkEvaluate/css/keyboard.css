@@ -1,0 +1,123 @@
+#keyboardInputMaster {
+  position:absolute;
+  border:1px solid #ccc;
+  color:#000000;
+   background-color:#ebe4f3;
+  text-align:left;
+  z-index:1000000;
+  width:auto;
+}
+
+#keyboardInputMaster thead tr th {
+  text-align:left;
+  padding:5px;
+  background-color:inherit;
+  border:0px none; 
+
+}
+#keyboardInputMaster thead tr th select,
+#keyboardInputMaster thead tr th label 
+{
+	
+  color:#000000;
+  font:normal 16px Arial,sans-serif;
+}
+#keyboardInputMaster thead tr td 
+{ height:35px;
+  text-align:right;
+  padding:0;
+  background-color:inherit;
+  border:0px none;
+}
+#keyboardInputMaster thead tr td span {
+  padding:2px 6px;
+  font:bold 24px Arial,sans-serif;
+  border:1px solid #fff;
+  background-color:#9f9f9f;
+  cursor:pointer;   
+  color:White;
+  
+}
+#keyboardInputMaster thead tr td span.pressed {
+  border:1px inset #999999;
+  background-color:#bbbbbb;
+
+}
+
+#keyboardInputMaster tbody tr td 
+{
+
+  text-align:left;
+  margin:0px;
+  padding:0px 4px 3px 4px;
+  
+}
+#keyboardInputMaster tbody tr td div {
+  text-align:center;
+  position:relative;
+  height:0px;
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout {
+  height:auto;
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table 
+{
+	
+  height:60px;
+  white-space:nowrap;
+  width:100%;
+  border-collapse:separate;
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table.keyboardInputCenter {
+  width:auto;
+  margin:0px auto;
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table tbody tr td {
+  vertical-align:middle;
+  padding:0px 20px 0px 20px;
+  white-space:pre;
+  font:normal 32px 'Lucida Console',monospace;
+  border:1px solid #fff;
+ background-color:#666666;
+  /*background-color:#2e8ecb;*/
+  color:White;
+  cursor:default;
+ 
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table tbody tr td.last {
+  width:99%;
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table tbody tr td.alive {
+  background-color:#2e8ecb;
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table tbody tr td.target {
+  background-color:#ddddcc;
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table tbody tr td.hover {
+ border:1px solid #fff;
+ background-color:#666666;
+  color:White;
+}
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table tbody tr td.pressed,
+#keyboardInputMaster tbody tr td div#keyboardInputLayout table tbody tr td.dead {
+  border:1px solid #555;
+  color:#000;
+  background-color:#cccccc;
+}
+
+#keyboardInputMaster tbody tr td div var {
+  position:absolute;
+  bottom:0px;
+  right:0px;
+  font:bold italic 11px Arial,sans-serif;
+  color:#444444;
+}
+
+.keyboardInputInitiator 
+{
+	width:70px;
+	height:36px;
+  margin-left:3px;
+  vertical-align:middle;
+  cursor:pointer;
+}

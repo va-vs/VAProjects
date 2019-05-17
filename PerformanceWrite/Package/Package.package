@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="79f6955e-36d0-4b83-b6fc-f277130abaa4" solutionId="79f6955e-36d0-4b83-b6fc-f277130abaa4" resetWebServer="false" sharePointProductVersion="15.0" name="PerformanceWrite" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="09fa261c-633b-4657-a872-a432fdae699a" />
+  </features>
+</package>

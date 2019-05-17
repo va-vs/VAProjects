@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="ScrollNewsPT.ScrollPhotoWithText.ScrollPhotoWithText, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">图文要闻</property>
+        <property name="Description" type="string">滚动图片和文本显示新闻公告列表</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

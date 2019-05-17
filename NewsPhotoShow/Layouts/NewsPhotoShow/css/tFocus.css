@@ -1,0 +1,23 @@
+*{padding:0; margin:0}
+body{background: #fff; }
+ul{padding: 0; margin: 0; }
+li{list-style: none; }
+img{border: 0; }
+#tFocus{width:662px;height:340px;margin:0 auto;overflow:hidden;position:relative;}
+#tFocus-pic{width:662px;height:340px;position:relative;}
+#tFocus-pic li{width:662px;height:340px;position:absolute;left:0;top:0;filter:alpha(opacity:0);opacity:0;}
+#tFocus-bg{width:662px;height:35px;position:absolute;left:0;bottom:0;background:#000;filter:alpha(opacity:70);opacity:0.7;z-index:10;}
+#tFocusBtn{width:489px;height:50px;position:absolute;left:90px;bottom:8px;z-index:20;overflow:hidden; display:none}
+#tFocus-btn{width:409px;height:50px;position:relative;left:0;bottom:0;overflow:hidden;float:left;}
+#tFocus-btn ul{width:100000px;position:absolute;left:0;top:0;}
+#tFocus-btn li{width:90px;height:48px;border:1px solid #323232;float:left;margin:0 7px;cursor:pointer;overflow:hidden;display:inline;}
+#tFocus-btn li.active{border:1px solid #fff;}
+#tFocus-btn li img{width:90px;height:48px;}
+#tFocus-leftbtn,#tFocus-rightbtn{width:35px;height:60px;background:url(../images/nl_btn.png) no-repeat center -3px;float:left;display:block;cursor:pointer;}
+#tFocus-rightbtn{float:right;background:url(../images/nr_btn.png) no-repeat right -3px;}
+#tFocus-leftbtn:hover{background:url(../images/nhl_btn.png) no-repeat center -3px;}
+#tFocus-rightbtn:hover{background:url(../images/nhr_btn.png) no-repeat center -3px;}
+.mark_left { width: 230px; height: 320px; position: absolute; left: 0; top: 0; filter: alpha(opacity:0); opacity: 0; z-index:3000; }
+.mark_right { width: 230px; height: 320px; position: absolute; right: 0; top: 0; filter: alpha(opacity:0); opacity: 0; z-index:3000; }
+.prev { width: 60px; height: 60px; background: url(../images/nhl_btn.png) no-repeat; position: absolute; top: 130px; left: 10px; z-index: 3001; cursor: pointer; filter:alpha(opacity: 0); opacity:0; }
+.next { width: 60px; height: 60px; background: url(../images/nhr_btn.png) no-repeat 25px center; position: absolute; top: 130px; right: 10px; z-index: 3001;cursor: pointer; filter:alpha(opacity: 0); opacity:0; }

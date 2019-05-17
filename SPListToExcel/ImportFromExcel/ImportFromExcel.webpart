@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="SPListToExcel.ImportFromExcel.ImportFromExcel, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">将业绩模板导入到列表</property>
+        <property name="Description" type="string">Excel模板计算好的数据导入到列表</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="f2a8e890-9659-4d2c-8e30-3f25592b30e1" solutionId="f2a8e890-9659-4d2c-8e30-3f25592b30e1" resetWebServer="false" sharePointProductVersion="15.0" name="VATaskDocment" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="d32ca0bf-60f6-4cbd-bd5f-3020a0279794" />
+  </features>
+</package>

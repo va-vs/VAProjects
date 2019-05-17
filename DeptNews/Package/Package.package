@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="eaec7d7e-2727-4810-a361-ed1865d3a1c8" solutionId="eaec7d7e-2727-4810-a361-ed1865d3a1c8" resetWebServer="false" sharePointProductVersion="15.0" name="DeptNews" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="1dfe1b39-72c4-4f6e-9765-4587c8be1570" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="07e66b39-07a1-4366-9df6-b320f6cd6f97" />
+  </projectItems>
+</package>

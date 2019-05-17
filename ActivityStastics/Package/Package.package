@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="6e68d479-a8da-48a2-841e-b725edda88da" solutionId="6e68d479-a8da-48a2-841e-b725edda88da" resetWebServer="false" sharePointProductVersion="15.0" name="ActivityStastics" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="752b3305-f630-4aeb-9bb6-7a8a8bc41772" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="00b62d7e-552b-46c4-8fe5-de041b0401ea" />
+  </projectItems>
+</package>

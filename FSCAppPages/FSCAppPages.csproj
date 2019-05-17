@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{44072966-D34C-44F9-8167-E188916CDED7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FSCAppPages</RootNamespace>
+    <AssemblyName>FSCAppPages</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+       <SandboxedSolution>False</SandboxedSolution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FSCDLL">
+      <HintPath>C:\inetpub\wwwroot\wss\VirtualDirectories\80\bin\FSCDLL.dll</HintPath>
+    </Reference>
+    <Reference Include="lemmatizerDLL">
+      <HintPath>..\dll\lemmatizerDLL.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.SharePoint" />
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Layouts\FSCAppPages\AllMentors.aspx.cs">
+      <DependentUpon>AllMentors.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\AllMentors.aspx.designer.cs">
+      <DependentUpon>AllMentors.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\admin.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\admin.aspx.designer.cs">
+      <DependentUpon>admin.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\Common.cs" />
+    <Compile Include="Layouts\FSCAppPages\Corpus\CorpusInfo.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\CorpusInfo.aspx.designer.cs">
+      <DependentUpon>CorpusInfo.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\index.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\index.aspx.designer.cs">
+      <DependentUpon>index.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\neuac.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\neuac.aspx.designer.cs">
+      <DependentUpon>neuac.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\neulc.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Corpus\neulc.aspx.designer.cs">
+      <DependentUpon>neulc.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\GetConfig.cs" />
+    <Compile Include="Layouts\FSCAppPages\Mentors.aspx.cs">
+      <DependentUpon>Mentors.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Mentors.aspx.designer.cs">
+      <DependentUpon>Mentors.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Performances.aspx.cs">
+      <DependentUpon>Performances.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\Performances.aspx.designer.cs">
+      <DependentUpon>Performances.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\MyPerf.aspx.cs">
+      <DependentUpon>MyPerf.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\FSCAppPages\MyPerf.aspx.designer.cs">
+      <DependentUpon>MyPerf.aspx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="key.snk" />
+    <None Include="Layouts\FSCAppPages\App1.config" />
+    <None Include="Layouts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{77b701c5-58f4-4679-b183-8895301cc6bf}</SharePointProjectItemId>
+    </None>
+    <None Include="Package\Package.package">
+      <PackageId>{4638bf65-cdd0-4826-a4bb-4804d3854ff5}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Features\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Layouts\FSCAppPages\AllMentors.aspx" />
+    <Content Include="Layouts\FSCAppPages\Corpus\admin.aspx" />
+    <Content Include="Layouts\FSCAppPages\Corpus\CorpusInfo.aspx" />
+    <Content Include="Layouts\FSCAppPages\Corpus\index.aspx" />
+    <Content Include="Layouts\FSCAppPages\Corpus\neuac.aspx" />
+    <Content Include="Layouts\FSCAppPages\Corpus\neulc.aspx" />
+    <Content Include="Layouts\FSCAppPages\css\style.css" />
+    <Content Include="Layouts\FSCAppPages\css\stylelc.css" />
+    <Content Include="Layouts\FSCAppPages\css\tiles.css" />
+    <Content Include="Layouts\FSCAppPages\images\demobg.png" />
+    <Content Include="Layouts\FSCAppPages\images\Download.png" />
+    <Content Include="Layouts\FSCAppPages\images\Guide.png" />
+    <Content Include="Layouts\FSCAppPages\images\head.jpg" />
+    <Content Include="Layouts\FSCAppPages\images\head.png" />
+    <Content Include="Layouts\FSCAppPages\images\Info.png" />
+    <Content Include="Layouts\FSCAppPages\images\Share.png" />
+    <Content Include="Layouts\FSCAppPages\images\Upload.png" />
+    <Content Include="Layouts\FSCAppPages\js\address.js" />
+    <Content Include="Layouts\FSCAppPages\js\bootstrap-tab.js" />
+    <Content Include="Layouts\FSCAppPages\js\fixdiv.js" />
+    <Content Include="Layouts\FSCAppPages\js\jquery-1.8.3.min.js" />
+    <Content Include="Layouts\FSCAppPages\js\jquery.js" />
+    <Content Include="Layouts\FSCAppPages\js\tiles.js" />
+    <Content Include="Layouts\FSCAppPages\Mentors.aspx" />
+    <Content Include="Layouts\FSCAppPages\Performances.aspx" />
+    <Content Include="Layouts\FSCAppPages\MyPerf.aspx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

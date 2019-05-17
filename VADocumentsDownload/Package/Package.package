@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4ef3f0f8-4a21-448e-b1e3-1f7f968de188" solutionId="4ef3f0f8-4a21-448e-b1e3-1f7f968de188" resetWebServer="false" sharePointProductVersion="15.0" name="VADocumentsDownload" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="d9d464bd-ae1d-4357-baa7-db15f82faa2c" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="2cf6d6a5-a10c-46b1-b4ae-0baf760714f6" />
+  </projectItems>
+</package>

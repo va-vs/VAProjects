@@ -1,0 +1,8 @@
+﻿<Feature xmlns="http://schemas.microsoft.com/sharepoint/" Id="530392b5-a870-4de4-a521-9f45697a87b2" Scope="Site" Title="FSCWebParts Feature1" AlwaysForceInstall="True">
+  <ElementManifests>
+    <ElementManifest Location="ListItemNav\Elements.xml" />
+    <ElementFile Location="ListItemNav\ListItemNav.webpart" />
+    <ElementManifest Location="PerformanceSummary\Elements.xml" />
+    <ElementFile Location="PerformanceSummary\PerformanceSummary.webpart" />
+  </ElementManifests>
+</Feature>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.VisualWebPart" DefaultFile="ImportFromExcelUserControl.ascx" SupportedTrustLevels="FullTrust" SupportedDeploymentScopes="Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="ImportFromExcel\" Type="ElementManifest" />
+    <ProjectItemFile Source="ImportFromExcel.webpart" Target="ImportFromExcel\" Type="ElementFile" />
+    <ProjectItemFile Source="ImportFromExcelUserControl.ascx" Target="CONTROLTEMPLATES\SPListToExcel\ImportFromExcel\" Type="TemplateFile" />
+  </Files>
+  <SafeControls>
+    <SafeControl Name="SafeControlEntry1" Assembly="$SharePoint.Project.AssemblyFullName$" Namespace="SPListToExcel.ImportFromExcel" TypeName="*" IsSafe="true" IsSafeAgainstScript="false" />
+  </SafeControls>
+</ProjectItem>

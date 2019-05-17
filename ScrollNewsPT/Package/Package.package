@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="301aa8cc-d835-4ba6-8c0f-500604bd0979" solutionId="301aa8cc-d835-4ba6-8c0f-500604bd0979" resetWebServer="false" sharePointProductVersion="15.0" name="ScrollNewsPT" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="192268fe-d293-4f2a-a2b0-2f962553cce0" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="e0594fc7-d669-45e6-bd39-29997a62762a" />
+  </projectItems>
+</package>

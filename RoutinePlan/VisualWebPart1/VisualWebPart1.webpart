@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="RoutinePlan.VisualWebPart1.VisualWebPart1, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">例行计划生成</property>
+        <property name="Description" type="string">点击生成从今天起指定天数的例行计划</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

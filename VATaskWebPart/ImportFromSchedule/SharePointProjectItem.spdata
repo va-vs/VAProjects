@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.VisualWebPart" DefaultFile="ImportFromScheduleUserControl.ascx" SupportedTrustLevels="FullTrust" SupportedDeploymentScopes="Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="ImportFromSchedule\" Type="ElementManifest" />
+    <ProjectItemFile Source="ImportFromSchedule.webpart" Target="ImportFromSchedule\" Type="ElementFile" />
+    <ProjectItemFile Source="ImportFromScheduleUserControl.ascx" Target="CONTROLTEMPLATES\VATaskWebPart\ImportFromSchedule\" Type="TemplateFile" />
+  </Files>
+  <SafeControls>
+    <SafeControl Name="SafeControlEntry1" Assembly="$SharePoint.Project.AssemblyFullName$" Namespace="VATaskWebPart.ImportFromSchedule" TypeName="*" IsSafe="true" IsSafeAgainstScript="false" />
+  </SafeControls>
+</ProjectItem>

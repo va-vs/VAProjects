@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="8ca3773e-29c2-440d-8026-5f2725a2b55c" solutionId="8ca3773e-29c2-440d-8026-5f2725a2b55c" resetWebServer="false" sharePointProductVersion="15.0" name="LeaveApproval" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="d0458d68-38de-4c9a-a8b4-b7a979a9dcc8" />
+  </features>
+  <projectItems>
+    <projectItemReference itemId="a173219a-0a53-42e4-88ca-d23b8ef269b4" />
+  </projectItems>
+</package>

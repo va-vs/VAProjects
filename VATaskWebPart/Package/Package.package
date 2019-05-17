@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="c3542a7e-b12f-4465-a359-ddf8f609d780" solutionId="c3542a7e-b12f-4465-a359-ddf8f609d780" resetWebServer="false" sharePointProductVersion="15.0" name="VATaskWebPart" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="b7883633-03ac-4912-bd57-684ccb69c602" />
+    <featureReference itemId="ca287d26-8cdb-40f4-aa3e-ba8d932865d9" />
+  </features>
+</package>

@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2B62BDC2-A614-434E-B416-C5FBCA082A33}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FSCWebParts</RootNamespace>
+    <AssemblyName>FSCWebParts</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <SandboxedSolution>False</SandboxedSolution>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.SharePoint" />
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttachmentPreview\AttachmentPreview.cs" />
+    <Compile Include="AttachmentPreview\AttachmentPreviewUserControl.ascx.cs">
+      <DependentUpon>AttachmentPreviewUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AttachmentPreview\AttachmentPreviewUserControl.ascx.designer.cs">
+      <DependentUpon>AttachmentPreviewUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Corpus\Corpus.cs" />
+    <Compile Include="Corpus\CorpusProcessing.cs" />
+    <Compile Include="Corpus\CorpusUserControl.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Corpus\CorpusUserControl.ascx.designer.cs">
+      <DependentUpon>CorpusUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListItemNav\ListItemNav.cs" />
+    <Compile Include="ListItemNav\ListItemNavUserControl.ascx.cs">
+      <DependentUpon>ListItemNavUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ListItemNav\ListItemNavUserControl.ascx.designer.cs">
+      <DependentUpon>ListItemNavUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PerformanceSummary\PerformanceSummary.cs" />
+    <Compile Include="PerformanceSummary\PerformanceSummaryUserControl.ascx.cs">
+      <DependentUpon>PerformanceSummaryUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PerformanceSummary\PerformanceSummaryUserControl.ascx.designer.cs">
+      <DependentUpon>PerformanceSummaryUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VirtualObjectDataSource.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AttachmentPreview\AttachmentPreview.webpart" />
+    <None Include="AttachmentPreview\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{69ecd20d-fb79-4a91-ba39-b26ec2dcb03e}</SharePointProjectItemId>
+    </None>
+    <None Include="Corpus\Corpus.webpart" />
+    <None Include="Corpus\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f2d52982-12f3-41f7-bda8-b766ea0b24a1}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{e611b3c9-c113-487b-84ee-f3e692840d0c}</FeatureId>
+    </None>
+    <None Include="Features\Feature2\Feature2.feature">
+      <FeatureId>{e0a85544-7291-4d6f-ab2c-206c19aff996}</FeatureId>
+    </None>
+    <None Include="key.snk" />
+    <None Include="ListItemNav\ListItemNav.webpart" />
+    <None Include="ListItemNav\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b52492a7-9327-418d-9db8-4fd408ceb3e1}</SharePointProjectItemId>
+    </None>
+    <None Include="Package\Package.package">
+      <PackageId>{9639c998-747f-44e5-b82e-fe2e86f7433c}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="PerformanceSummary\PerformanceSummary.webpart" />
+    <None Include="PerformanceSummary\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{c6fefbd5-b8c1-461f-b918-061c2d089921}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AttachmentPreview\AttachmentPreviewUserControl.ascx" />
+    <Content Include="AttachmentPreview\Elements.xml" />
+    <Content Include="Corpus\CorpusUserControl.ascx" />
+    <Content Include="Corpus\Elements.xml" />
+    <Content Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
+    </Content>
+    <Content Include="Features\Feature2\Feature2.Template.xml">
+      <DependentUpon>Feature2.feature</DependentUpon>
+    </Content>
+    <Content Include="ListItemNav\Elements.xml" />
+    <Content Include="ListItemNav\ListItemNavUserControl.ascx" />
+    <Content Include="PerformanceSummary\Elements.xml" />
+    <Content Include="PerformanceSummary\PerformanceSummaryUserControl.ascx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

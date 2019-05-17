@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="8d088402-588d-4631-8379-0144130bc150" solutionId="8d088402-588d-4631-8379-0144130bc150" resetWebServer="false" sharePointProductVersion="15.0" name="VAStateIndicator" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="87f27038-173a-4c37-b30b-5e089a7cc39a" />
+  </features>
+</package>

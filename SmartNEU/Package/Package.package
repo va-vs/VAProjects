@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="23b74f14-aa04-4ece-95ad-adabf8b8bca6" solutionId="23b74f14-aa04-4ece-95ad-adabf8b8bca6" resetWebServer="false" sharePointProductVersion="15.0" name="SmartNEU" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <projectItems>
+    <projectItemReference itemId="679f2118-6c51-437c-b191-1c4256ba46dc" />
+  </projectItems>
+</package>
