@@ -6,6 +6,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
     public partial class index : LayoutsPageBase
     {
+        //语料库主页
         protected void Page_Load(object sender, EventArgs e)
         {
         }
