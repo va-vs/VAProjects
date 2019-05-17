@@ -89,32 +89,34 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         protected void cblist_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CheckBoxList cblist = new CheckBoxList();
-            string clickedItem = Request.Form["__EVENTTARGET"];//得到用户点击的是哪个
-            if (clickedItem.Length > clickedItem.LastIndexOf("$", StringComparison.Ordinal) + 1)
+            using (CheckBoxList cblist = new CheckBoxList())
             {
-                clickedItem = clickedItem.Substring(clickedItem.LastIndexOf("$") + 1);//进行拆分处理
-                int thisIndex = int.Parse(clickedItem);
-                if (cblist.Items[thisIndex].Selected)
+                string clickedItem = Request.Form["__EVENTTARGET"];//得到用户点击的是哪个
+                if (clickedItem.Length > clickedItem.LastIndexOf("$", StringComparison.Ordinal) + 1)
                 {
-                    for (int i = 0; i <= thisIndex; i++)
+                    clickedItem = clickedItem.Substring(clickedItem.LastIndexOf("$") + 1);//进行拆分处理
+                    int thisIndex = int.Parse(clickedItem);
+                    if (cblist.Items[thisIndex].Selected)
                     {
-                        cblist.Items[i].Selected = true;
+                        for (int i = 0; i <= thisIndex; i++)
+                        {
+                            cblist.Items[i].Selected = true;
+                        }
+                        for (int i = thisIndex + 1; i < cblist.Items.Count; i++)
+                        {
+                            cblist.Items[i].Selected = false;
+                        }
                     }
-                    for (int i = thisIndex + 1; i < cblist.Items.Count; i++)
+                    else
                     {
-                        cblist.Items[i].Selected = false;
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < thisIndex; i++)
-                    {
-                        cblist.Items[i].Selected = true;
-                    }
-                    for (int i = thisIndex; i < cblist.Items.Count; i++)
-                    {
-                        cblist.Items[i].Selected = false;
+                        for (int i = 0; i < thisIndex; i++)
+                        {
+                            cblist.Items[i].Selected = true;
+                        }
+                        for (int i = thisIndex; i < cblist.Items.Count; i++)
+                        {
+                            cblist.Items[i].Selected = false;
+                        }
                     }
                 }
             }
