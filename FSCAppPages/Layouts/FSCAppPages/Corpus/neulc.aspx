@@ -8,7 +8,7 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="neulc.aspx.cs" Inherits="FSCAppPages.Layouts.FSCAppPages.Corpus.neulc" DynamicMasterPageFile="~masterurl/default.master" EnableEventValidation="false" %>
 
 <asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
-	<link rel="stylesheet" href="../css/stylelc.css" type="text/css" />
+	<link rel="stylesheet" href="../css/stylelc.css" type="text/css" charset="utf-8"  />
 	<script type="text/javascript">
 		function Check_Uncheck_All() {
 			var cbl0 = document.getElementById("<%=cblGenre.ClientID%>");
@@ -159,6 +159,7 @@
 	</script>
 	<style type="text/css">
 		.divneulc {
+            margin:0 auto;
 			width: 100%;
 			min-width: 800px;
 		}
@@ -536,6 +537,51 @@
 				width: 100%;
 				height: 100%;
 			}
+
+            		/* 底部快速链接与版权 */
+
+.foot {
+	width: 100%;
+	margin-top: -20px;
+	/* margin-bottom: -40px; */
+	background: #ecf7fb;
+	border-top: #efefef 1px solid;
+}
+
+.ext_link {
+	width: auto;
+	height: 12px;
+	margin: 0 auto;
+	text-align: center;
+	max-width: 1000px;
+}
+
+.ext_link li {
+	list-style: none;
+	width: auto;
+	display: inline-block;
+	line-height: 20px;
+	text-align: center;
+	border-left: #000 1px solid;
+	border-color: #525252;
+	font-size: 13px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.ext_link li:first-child {
+	border-left: 0px;
+}
+
+.ext_link a {
+	color: #525252;
+	text-decoration: none;
+}
+
+.ext_link a:hover {
+	color: red;
+	text-decoration: none;
+}
 	</style>
 </asp:Content>
 
@@ -674,41 +720,41 @@
 								<div id="inputDiv" runat="server">
 									<div id="divtxtFrom">
 										<asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList">
-											<asp:ListItem Value="0">Get Text From Corpus </asp:ListItem>
-											<asp:ListItem Value="1">Fill Text by Yourself </asp:ListItem>
+											<asp:ListItem Value="0" Enabled="false">Get Text From Corpus </asp:ListItem>
+											<asp:ListItem Value="1" Selected="true">Fill Text by Yourself </asp:ListItem>
 										</asp:RadioButtonList>
 									</div>
 									<div id="divFromCorpus" runat="server" class="wbdiv">
 										<input type="text" class="input-text" value="" id="txtKeyWordsforWordlist" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
-										<asp:Button ID="btnQueryforWordlist" runat="server" Text=" 检 索 " CssClass="outbtndiv-button" />
+										<asp:Button ID="btnQueryforWordlist" runat="server" Text=" Query " CssClass="outbtndiv-button" Enabled="false" />
 									</div>
 									<div class="wbdiv" id="divfromshuru" runat="server" visible="false">
 										<table class="wbtable">
 											<tr>
-												<th>Title：</th>
+												<th>Text Title：</th>
 												<td>
 													<input type="text" value="" class="input-text" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" id="homecity_name" placeholder="Type the title" runat="server" />
 												</td>
-												<th>YourName：</th>
+												<th>Your Name：</th>
 												<td>
 													<input id="username" type="text" class="input-text" title="Type Your Name" placeholder="Type Your Name" runat="server" style="height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" />
 												</td>
 											</tr>
 
 											<tr>
-												<th>导入文本：
+												<th>Select Text File：
 												</th>
 												<td>
 													<input type="file" onchange="upload(this)" />
 												</td>
-												<th>选择词表：
+												<th>Select WordList：
 												</th>
 												<td>
 													<asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList">
-														<asp:ListItem Value="0">教学大纲</asp:ListItem>
-														<asp:ListItem Value="1">GSL</asp:ListItem>
-														<asp:ListItem Value="2">AWL</asp:ListItem>
-														<asp:ListItem Value="3">EVP</asp:ListItem>
+														<asp:ListItem Value="0" Selected="true">教学大纲</asp:ListItem>
+														<asp:ListItem Value="1" Enabled="false">GSL</asp:ListItem>
+														<asp:ListItem Value="2" Enabled="false">AWL</asp:ListItem>
+														<asp:ListItem Value="3" Enabled="false">EVP</asp:ListItem>
 													</asp:RadioButtonList>
 												</td>
 											</tr>
@@ -823,5 +869,5 @@ NEULC
 </asp:Content>
 
 <asp:Content ID="PageTitleInTitleArea" ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server" >
-NEULC-<asp:Label runat="server" ID="Titlelb">Input</asp:Label>
+NEU English Corpus > NEULC <asp:Label runat="server" ID="Titlelb"></asp:Label>
 </asp:Content>

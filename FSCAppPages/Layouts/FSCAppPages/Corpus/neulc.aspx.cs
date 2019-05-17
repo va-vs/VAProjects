@@ -40,6 +40,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 mvNeulc.ActiveViewIndex = 0;
                 rbltxtFrom.SelectedValue = "0";
                 muNeulc.Items[0].Selected = true;
+                Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
             }
             string WordsFile = GetDbPath() + "words/AllWords.txt";
             CiLib = WordBLL.cibiaoku(WordsFile);
@@ -279,8 +280,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 dlChart.InnerHtml = sb.ToString();
                 divContext.InnerHtml = GetCopusContext(showWordsList, maxIndex).ToString();
                 outputDiv.Visible = true;
-
-                Titlelb.Text = "WordList";
             }
             lemmanew.Enabled = true;
             #endregion
@@ -376,7 +375,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     rbVBS.Items[i].Selected = false;
                 }
             }
-            Titlelb.Text = "Input";
             homecity_name.Value = "";//清空正文标题
             lemmanew.Enabled = true;
             outputDiv.Visible = false;
@@ -392,7 +390,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             outputDiv.Visible = false;
             inputDiv.Visible = true;
-            Titlelb.Text = "Input";
         }
 
 
@@ -442,6 +439,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     mvNeulc.ActiveViewIndex = 0;
                     break;
             }
+            Titlelb.Text ="> "+ muNeulc.SelectedItem.Text;
         }
 
         #region WordList

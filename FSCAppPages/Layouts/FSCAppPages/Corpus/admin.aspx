@@ -110,7 +110,7 @@
 
 <asp:Content ID="Main" ContentPlaceHolderID="PlaceHolderMain" runat="server">
 <div id="divBody" runat="server">
-    <asp:Label ID="lbPTitle" runat="server" Font-Size="16" Text="Corpus"></asp:Label><hr />
+    <asp:Label ID="lbPTitle" runat="server" Font-Size="16" Text="Manage Corpus In NEULC"></asp:Label><hr />
     <table>
         <tr>
             <td>
@@ -121,36 +121,42 @@
                     <div id="divQuery">
                         <table class="myform">
                             <tr>
-                                <th style="text-align: right;">KeyWord：
+                                <th style="text-align: right;">
+                                    KeyWord：
                                 </th>
                                 <td>
                                     <asp:TextBox ID="txtKeyWord" runat="server"  Width="300" ></asp:TextBox>
-
-                                    <asp:Button ID="btnQuery" runat="server" Text="Find matching strings" />
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right;">Grade：
+                                <th style="text-align: right;">
+                                    Grade：
                                 </th>
                                 <td>
                                     <asp:CheckBoxList ID="cblQueryGrade" runat="server" RepeatDirection="Horizontal" ></asp:CheckBoxList>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right;">Genre：
+                                <th style="text-align: right;">
+                                    Genre：
                                 </th>
                                 <td>
                                     <asp:CheckBoxList ID="cblQueryGenre" runat="server" RepeatDirection="Horizontal" ></asp:CheckBoxList>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right;">Topic：
+                                <th style="text-align: right;">
+                                    Topic：
                                 </th>
                                 <td>
                                     <asp:CheckBoxList ID="cblQueryTopics" runat="server" RepeatDirection="Horizontal"  ></asp:CheckBoxList>
                                 </td>
                             </tr>
-
+                            <tr>
+                                <td colspan="2" style="text-align:right;margin-right:20px;">
+                                    <asp:Button ID="btnQuery" runat="server" Text="Find matching strings" />
+                                </td>
+                            </tr>
                         </table>
                     </div>
                     <asp:GridView ID="gvCorpus" AllowPaging="true"  runat="server" AutoGenerateColumns="False" CellPadding="2" CellSpacing="2" BorderColor="#CCCCCC" BorderStyle="None" GridLines="Horizontal" DataKeyNames="CorpusID" CssClass="myGrid" PageSize="50" PagerSettings-Mode="NumericFirstLast">
@@ -224,7 +230,6 @@
         <tr>
             <td>
                 <div id="divEditCorpora" runat="server">
-
                     <table class="myform" style="width: 100%">
                         <tr>
                             <th>Topic:
@@ -303,16 +308,18 @@
         </tr>
     </table>
 </div>
-
+    <div>
+        <input type="button" value=" Close " class="addbtn" onclick="javascript: window.location.href='neulc.aspx'" />
+    </div>
 
 <asp:Label ID="lbErr" runat="server" Text="" ForeColor="red"></asp:Label>
 
 </asp:Content>
 
 <asp:Content ID="PageTitle" ContentPlaceHolderID="PlaceHolderPageTitle" runat="server">
-语料信息
+语料录入
 </asp:Content>
 
 <asp:Content ID="PageTitleInTitleArea" ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server" >
-语料信息
+语料录入
 </asp:Content>
