@@ -133,21 +133,21 @@
                                 <th style="text-align: right;">Grade：
                                 </th>
                                 <td>
-                                    <asp:CheckBoxList ID="cblQueryGrade" runat="server" RepeatDirection="Horizontal" ></asp:CheckBoxList>
+                                    <asp:CheckBoxList ID="cblQueryGrade" runat="server" RepeatDirection="Horizontal" RepeatColumns="5" ></asp:CheckBoxList>
                                 </td>
                             </tr>
                             <tr>
                                 <th style="text-align: right;">Genre：
                                 </th>
                                 <td>
-                                    <asp:CheckBoxList ID="cblQueryGenre" runat="server" RepeatDirection="Horizontal" ></asp:CheckBoxList>
+                                    <asp:CheckBoxList ID="cblQueryGenre" runat="server" RepeatDirection="Horizontal" RepeatColumns="5" ></asp:CheckBoxList>
                                 </td>
                             </tr>
                             <tr>
                                 <th style="text-align: right;">Topic：
                                 </th>
                                 <td>
-                                    <asp:CheckBoxList ID="cblQueryTopics" runat="server" RepeatDirection="Horizontal"  ></asp:CheckBoxList>
+                                    <asp:CheckBoxList ID="cblQueryTopics" runat="server" RepeatDirection="Horizontal" RepeatColumns="5"  ></asp:CheckBoxList>
                                 </td>
                             </tr>
 
@@ -234,7 +234,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>Literary Style:
+                            <th>Genre:
                             </th>
                             <td>
                                 <asp:CheckBoxList ID="cblGenre" runat="server" RepeatColumns="5" RepeatDirection="Horizontal" ToolTip="Choose any of the Genre Styles that the Corpora belongs to"></asp:CheckBoxList>
