@@ -1,4 +1,24 @@
-﻿.divneulc {
+﻿/*调整SharePoint布局*/
+
+#sideNavBox {
+	display: none;
+}
+
+#siteIcon {
+	display: none;
+}
+
+#contentBox {
+	margin-left: 20px !important;
+}
+
+#s4-workspace {
+	padding-bottom: 5px;
+}
+
+/*页面布局*/
+.divneulc {
+	margin:0 auto;
 	width: 100%;
 	min-width: 800px;
 }
@@ -372,7 +392,7 @@ span.MW {
 
 
 	.div{
-        margin:0 auto;
+		margin:0 auto;
 			width:90%;
 			max-width:750px;
 			text-align:center;
@@ -439,3 +459,53 @@ span.MW {
 	color: red;
 	text-decoration: none;
 }
+
+
+/*admin*/
+.addBtn {
+			font-weight: bold;
+			border: none;
+			background-color: #6699FF;
+			padding: 5px;
+			font-size: 2em;
+			color: #fff;
+			border-radius: 100%;
+			width: 60px;
+			height: 60px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			cursor: pointer;
+			cursor: hand;
+			margin-top: 5px;
+			outline: none;
+			user-select: none;
+		}
+
+		.myform {
+			padding: 5px;
+		}
+
+			.myform tr {
+				line-height: 30px;
+				padding-bottom: 5px;
+			}
+
+				.myform tr th {
+					text-align: right;
+					width: 100px;
+					max-width: 300px;
+					vertical-align: top;
+				}
+
+				.myform tr td {
+					text-align: left;
+				}
+
+					.myform tr td text {
+						width: 280px;
+					}
+
+		.myGrid {
+			min-width: 600px;
+		}
