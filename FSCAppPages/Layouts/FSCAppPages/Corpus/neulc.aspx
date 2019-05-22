@@ -8,7 +8,7 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="neulc.aspx.cs" Inherits="FSCAppPages.Layouts.FSCAppPages.Corpus.neulc" DynamicMasterPageFile="~masterurl/default.master" EnableEventValidation="false" %>
 
 <asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
-	<link rel="stylesheet" href="../css/stylelc.css" type="text/css" />
+	<link rel="stylesheet" href="../css/stylelc.css" type="text/css" charset="utf-8"  />
 	<script type="text/javascript">
 		function Check_Uncheck_All() {
 			var cbl0 = document.getElementById("<%=cblGenre.ClientID%>");
@@ -157,386 +157,7 @@
 			}
 		}
 	</script>
-	<style type="text/css">
-		.divneulc {
-			width: 100%;
-			min-width: 800px;
-		}
 
-		.neulctable {
-			width: 100%;
-			border: 1px #808080 solid;
-			line-height: 30px;
-		}
-
-		.wbdiv {
-			width: 98%;
-			line-height: 30px;
-			padding-left: 20px;
-			margin: 5px;
-		}
-
-		.wbtable {
-			width: 98%;
-			line-height: 30px;
-		}
-
-			.wbtable tr th {
-				text-align: right;
-				padding: 5px;
-			}
-
-			.wbtable tr td {
-				text-align: left;
-				padding: 5px;
-			}
-
-		.info {
-			float: left;
-			width: 900px;
-			margin: 2px 0;
-			height: auto;
-		}
-
-			.info p {
-				font: bold 24px Verdana, Geneva, sans-serif;
-				color: #999;
-				display: block;
-				line-height: 34px;
-				text-align: center;
-			}
-
-		.clear {
-			clear: both;
-		}
-
-		.textarea-inherit {
-			width: 100%;
-			overflow: auto;
-			word-break: break-all;
-		}
-
-		.textul {
-			list-style: none; /* 去掉ul前面的符号 */
-			margin: 0px; /* 与外界元素的距离为0 */
-			padding: 0px; /* 与内部元素的距离为0 */
-			width: auto; /* 宽度根据元素内容调整 */
-		}
-
-			.textul li {
-				float: left; /* 向左漂移，将竖排变为横排 */
-				border-right: 1px #808080 solid;
-			}
-				/* 所有class为menu的div中的ul中的a样式(包括尚未点击的和点击过的样式) */
-				.textul li a, .textul li a:visited {
-					/*background-color: #bfcbd6;
-							border: 1px #4e667d solid;
-							color: #465c71;*/
-					display: block; /* 此元素将显示为块级元素，此元素前后会带有换行符 */
-					line-height: 1.35em;
-					padding: 4px 20px;
-					text-decoration: none;
-					white-space: nowrap;
-				}
-					/* 所有class为menu的div中的ul中的a样式(鼠标移动到元素中的样式) */
-					.textul li a:hover {
-						background-color: #eeeeee;
-						color: #ff6a00;
-						text-decoration: none;
-					}
-					/* 所有class为menu的div中的ul中的a样式(鼠标点击元素时的样式) */
-					.textul li a:active {
-						background-color: #4694DE; /* 背景色 */
-						color: #cfdbe6; /* 文字颜色 */
-						text-decoration: none; /* 不显示超链接下划线 */
-					}
-
-		.imgul {
-			list-style: none; /* 去掉ul前面的符号 */
-			margin: 0px; /* 与外界元素的距离为0 */
-			padding: 0px; /* 与内部元素的距离为0 */
-			width: auto; /* 宽度根据元素内容调整 */
-		}
-
-			.imgul li {
-				float: left; /* 向左漂移，将竖排变为横排 */
-			}
-
-				.imgul li a, .imgul li a:visited {
-					display: block; /* 此元素将显示为块级元素，此元素前后会带有换行符 */
-					line-height: 1.35em;
-					padding: 4px 20px;
-					text-decoration: none;
-					white-space: nowrap;
-				}
-
-					.imgul li a:hover {
-						background-color: #eeeeee;
-						text-decoration: none;
-					}
-
-		.mnuTopMenu {
-			font-size: 15px;
-			padding: 5px;
-		}
-
-		.mnuStaticItem {
-			border-right: 1px solid #808080;
-		}
-
-		.resultDiv {
-			width: 800px;
-			height: 200px;
-			overflow-x: hidden;
-			padding: 10px;
-			-moz-border-radius: 15px;
-			-webkit-border-radius: 15px;
-			border-radius: 15px;
-		}
-
-		.input-text {
-			border: 1px solid #808080;
-			border-radius: 5px 5px 5px 5px;
-			font-size: 13px;
-			height: 25px;
-			line-height: 25px;
-			margin-right: 10px;
-			padding-left: 5px;
-		}
-
-		.ta {
-			border-left: 1px solid #CCCCCC;
-			border-right: 1px solid #999999;
-			border-top: 1px solid #CCCCCC;
-			border-bottom: 1px solid #999999;
-			-moz-box-shadow: 1px 1px 0 #E7E7E7;
-			-moz-box-sizing: border-box;
-			font-family: arial,sans-serif;
-			font-size: 13px;
-			height: 280px;
-			outline-color: -moz-use-text-color;
-			outline-style: none;
-			outline-width: medium;
-			padding: 2px;
-			border-radius: 5px 5px 5px 5px;
-			width: 100% !important;
-			overflow: auto;
-			word-break: break-all;
-		}
-
-		.fileUpload {
-			border: solid 1px #999999;
-			background-color: #ffffff;
-			background-image: none;
-			width: 250px;
-			margin-right: 10px;
-			line-height: 25px;
-		}
-
-		.dropdownlist {
-			height: 25px;
-		}
-
-		.cblList {
-			padding-left: 10px;
-			padding-right: 10px;
-		}
-
-			.cblList input {
-				margin-left: 20px;
-				margin-right: 10px;
-			}
-
-			.cblList label {
-				display: inline-block;
-			}
-
-		.fakeContainer {
-			float: left;
-			margin: 20px;
-			border: none;
-			width: 640px;
-			height: 320px;
-			background-color: #ffffff;
-			overflow: hidden;
-		}
-
-		.divbr {
-			clear: both;
-			width: 100%;
-			height: 5px;
-		}
-
-		.divhr {
-			clear: both;
-			width: 100%;
-			margin-top: 5px;
-			margin-bottom: 5px;
-			height: 2px;
-			background-color: #808080;
-		}
-
-		/*语料彩色可视化*/
-		.divmain {
-			width: 100%;
-			margin-bottom: 10px;
-		}
-
-		.it-ec-textdiv {
-			width: 70%;
-			float: left;
-			background-color: #dcdcdc;
-			border: 1px solid #808080;
-			line-height: 25px;
-			font-size: 12px;
-			padding: 5px;
-			height: 400px;
-			overflow-y: auto;
-		}
-
-		.it-ec-statsdiv {
-			width: 30%;
-			float: left;
-		}
-
-		.it-ec-paragraph {
-			text-align: justify;
-			border: 1px solid;
-			margin: 0px;
-			padding: 5px;
-			border-color: #663;
-			background-color: #dcdcdc;
-		}
-
-		.outbtndiv {
-			width: 100%;
-			margin: 5px;
-			border-bottom: 1px solid #808080;
-			padding: 5px;
-			text-align: right;
-		}
-
-		.outbtndiv-button {
-			color: #e8f0de;
-			border: solid 1px #e8f0de;
-			width: 80px;
-			height: 33px;
-			border-radius: 5px 5px 5px 5px;
-			background-color: #999999;
-		}
-
-			.outbtndiv-button:hover {
-				cursor: pointer;
-				background: red;
-				font-weight: bold;
-			}
-
-		.it-chart-dl {
-			margin-left: 10px;
-			width: 400px;
-		}
-
-		.it-chart-dt {
-			cursor: pointer;
-			float: left;
-			width: 60px;
-			text-align: right;
-			padding: 5px 0px 5px 0px;
-			clear: left;
-		}
-
-		.it-chart-dd {
-			cursor: pointer;
-			float: left;
-			width: 320px;
-			margin-left: 5px;
-			padding: 5px 0px 5px 0px;
-		}
-
-		.it-chart-bar {
-			height: 20px;
-			float: left;
-			-moz-border-radius: 2px;
-			-webkit-border-radius: 2px;
-			border-radius: 2px;
-		}
-
-		.it-chart-label {
-			width: 20px;
-			height: 100%;
-			float: left;
-			text-align: right;
-		}
-		/*文本高亮*/
-
-		.KW.highlight {
-			background-color: pink;
-		}
-
-		.C2.highlight {
-			background-color: red;
-			color: white;
-		}
-
-		.C1.highlight {
-			background-color: orange;
-			color: white;
-		}
-
-		.B2.highlight {
-			background-color: yellow;
-			color: black;
-		}
-
-		.B1.highlight {
-			background-color: green;
-			color: white;
-		}
-
-		.A2.highlight {
-			background-color: blue;
-			color: white;
-		}
-
-		.A1.highlight {
-			background-color: indigo;
-			color: white;
-		}
-
-		.UN.highlight {
-			background-color: grey;
-			color: white;
-		}
-
-		span.MW {
-			font-weight: bold;
-		}
-
-		.div-inline {
-			display: inline;
-		}
-
-
-		.box {
-			width: 140px;
-			height: 25px;
-			border: 1px solid #000;
-			margin: 100px auto;
-			box-shadow: 0 0 10px 5px rgba(0, 0, 0, .8);
-			border-radius: 5px;
-			line-height: 25px;
-			text-align: center;
-			font-size: 14px;
-			font-weight: 700;
-			text-shadow: 0 0 3px;
-			transition: all 1s;
-		}
-
-			.box #entity {
-				width: 100%;
-				height: 100%;
-			}
-	</style>
 </asp:Content>
 
 <asp:Content ID="Main" ContentPlaceHolderID="PlaceHolderMain" runat="server">
@@ -557,7 +178,7 @@
 								<img alt="Download" src="../images/Download.png" height="20" /></a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="admin.aspx">
 								<img alt="Upload" src="../images/Upload.png" height="20" /></a>
 						</li>
 						<li>
@@ -574,7 +195,6 @@
 					<ul class="imgul">
 						<li><a>Login</a></li>
 						<li><a>Contact</a></li>
-                        <li><a href="admin.aspx">Admin</a></li>
 					</ul>
 				</td>
 			</tr>
@@ -608,24 +228,21 @@
 							<asp:View ID="vwQuery" runat="server">
 								<table style="border: none; line-height: 25px;" border="0">
 									<tr>
-										<td colspan="2">Select files you need according to:
-										</td>
+										<td colspan="2">Select files you need according to:</td>
 									</tr>
 									<tr>
-										<td style="text-align: right">Grade:
-										</td>
+										<td style="text-align: right">Grade:</td>
 										<td>
-											<asp:CheckBoxList ID="cblGrade" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList">
-												<asp:ListItem Value="1">F1</asp:ListItem>
-												<asp:ListItem Value="2">S2</asp:ListItem>
-												<asp:ListItem Value="3">J3</asp:ListItem>
-												<asp:ListItem Value="4">S4</asp:ListItem>
+											<asp:CheckBoxList ID="cblGrade" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList" RepeatColumns="6">
+												<asp:ListItem Value="1">F1(freshmen)</asp:ListItem>
+												<asp:ListItem Value="2">S2(sophomores)</asp:ListItem>
+												<asp:ListItem Value="3">J3(juniors)</asp:ListItem>
+												<asp:ListItem Value="4">S4(seniors)</asp:ListItem>
 											</asp:CheckBoxList>
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right">Genre:
-										</td>
+										<td style="text-align: right">Genre:</td>
 										<td>
 											<asp:CheckBoxList ID="cblGenre" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList">
 												<asp:ListItem Value="1">Argumentation</asp:ListItem>
@@ -636,8 +253,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right">Topic:
-										</td>
+										<td style="text-align: right">Topic:</td>
 										<td>
 											<asp:CheckBoxList ID="cblTopic" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList">
 												<asp:ListItem Value="1">Culture</asp:ListItem>
@@ -649,12 +265,96 @@
 									</tr>
 									<tr>
 										<td colspan="2" style="text-align: center; padding-top: 10px;">
-											<asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="outbtndiv-button" />&nbsp;&nbsp;
-								<asp:Button ID="btnReset" runat="server" Text="Reset" OnClientClick="Check_Uncheck_All()" CssClass="outbtndiv-button" />
+											<asp:Button ID="btnSubmitforCorpus" runat="server" Text="Submit" CssClass="outbtndiv-button" />&nbsp;&nbsp;
+								<asp:Button ID="btnResetforCorpus" runat="server" Text="Reset" OnClientClick="Check_Uncheck_All()" CssClass="outbtndiv-button" />
 										</td>
 									</tr>
 								</table>
-
+								<div id="divforCorpusResult" runat="server" visible="false">
+									<asp:Table ID="tbforGrade" runat="server"></asp:Table>
+									<asp:Table ID="tbforTopic" runat="server"></asp:Table>
+									<asp:Table ID="tbforGenre" runat="server"></asp:Table>
+									<table class="mytable">
+										<tr>
+											<th></th>
+											<th>F1</th>
+											<th>S2</th>
+											<th>J3</th>
+											<th>S4</th>
+										</tr>
+										<tr>
+											<th>texts</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>types</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>tokens</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>TTR</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>mean woed length(in characters)
+											</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>mean woed length standard deviation</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>mean in woeds</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>standard deviation</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>topics</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>genres</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+									</table>
+								</div>
 							</asp:View>
 
 							<%-- Concordance --%>
@@ -674,41 +374,42 @@
 								<div id="inputDiv" runat="server">
 									<div id="divtxtFrom">
 										<asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList">
-											<asp:ListItem Value="0">Get Text From Corpus </asp:ListItem>
-											<asp:ListItem Value="1">Fill Text by Yourself </asp:ListItem>
+											<asp:ListItem Value="0" Enabled="false">Get Text From Corpus </asp:ListItem>
+											<asp:ListItem Value="1" Selected="true">Fill Text by Yourself </asp:ListItem>
 										</asp:RadioButtonList>
 									</div>
 									<div id="divFromCorpus" runat="server" class="wbdiv">
+										<asp:GridView ID="gvCorpusforWordList" runat="server"></asp:GridView>
 										<input type="text" class="input-text" value="" id="txtKeyWordsforWordlist" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
-										<asp:Button ID="btnQueryforWordlist" runat="server" Text=" 检 索 " CssClass="outbtndiv-button" />
+										<asp:Button ID="btnQueryforWordlist" runat="server" Text=" Query " CssClass="outbtndiv-button" Enabled="false" />
 									</div>
 									<div class="wbdiv" id="divfromshuru" runat="server" visible="false">
 										<table class="wbtable">
 											<tr>
-												<th>Title：</th>
+												<th>Text Title：</th>
 												<td>
-													<input type="text" value="" class="input-text" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" id="homecity_name" placeholder="Type the title" runat="server" />
+													<input type="text" value="" class="input-text" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" id="txt_Title" placeholder="Type the title" runat="server" />
 												</td>
-												<th>YourName：</th>
+												<th>Your Name：</th>
 												<td>
 													<input id="username" type="text" class="input-text" title="Type Your Name" placeholder="Type Your Name" runat="server" style="height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" />
 												</td>
 											</tr>
 
 											<tr>
-												<th>导入文本：
+												<th>Select Text File：
 												</th>
 												<td>
 													<input type="file" onchange="upload(this)" />
 												</td>
-												<th>选择词表：
+												<th>Select WordList：
 												</th>
 												<td>
 													<asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList">
-														<asp:ListItem Value="0">教学大纲</asp:ListItem>
-														<asp:ListItem Value="1">GSL</asp:ListItem>
-														<asp:ListItem Value="2">AWL</asp:ListItem>
-														<asp:ListItem Value="3">EVP</asp:ListItem>
+														<asp:ListItem Value="0" Selected="true">教学大纲</asp:ListItem>
+														<asp:ListItem Value="1" Enabled="false">GSL</asp:ListItem>
+														<asp:ListItem Value="2" Enabled="false">AWL</asp:ListItem>
+														<asp:ListItem Value="3" Enabled="false">EVP</asp:ListItem>
 													</asp:RadioButtonList>
 												</td>
 											</tr>
@@ -808,14 +509,14 @@
 	</div>
 
 	<asp:Label ID="lbErr" runat="server" Text="" ForeColor="red"></asp:Label>
-     <hr style="margin-top:100px;"/>
-          <ul class="ext_link">
-            <li><a href="https://www.english-corpora.org/bnc/" target="_blank">BNC</a></li>
-            <li><a href="https://www.english-corpora.org/coca/" target="_blank">COCA</a></li>
-            <li><a href="http://corpus.leeds.ac.uk/itweb/htdocs/Query.html#" target="_blank">IntelliText</a></li>
-            <li><a href="https://www.lextutor.ca/vp/eng/" target="_blank">Lextutor</a></li>
-            <li><a href="http://www.natcorp.ox.ac.uk/corpus/creating.xml" target="_blank">Natcorp</a></li>
-          </ul>
+	 <hr style="margin-top:100px;"/>
+		  <ul class="ext_link">
+			<li><a href="https://www.english-corpora.org/bnc/" target="_blank">BNC</a></li>
+			<li><a href="https://www.english-corpora.org/coca/" target="_blank">COCA</a></li>
+			<li><a href="http://corpus.leeds.ac.uk/itweb/htdocs/Query.html#" target="_blank">IntelliText</a></li>
+			<li><a href="https://www.lextutor.ca/vp/eng/" target="_blank">Lextutor</a></li>
+			<li><a href="http://www.natcorp.ox.ac.uk/corpus/creating.xml" target="_blank">Natcorp</a></li>
+		  </ul>
 </asp:Content>
 
 <asp:Content ID="PageTitle" ContentPlaceHolderID="PlaceHolderPageTitle" runat="server">
@@ -823,5 +524,5 @@ NEULC
 </asp:Content>
 
 <asp:Content ID="PageTitleInTitleArea" ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server" >
-NEULC-<asp:Label runat="server" ID="Titlelb">Input</asp:Label>
+NEU English Corpus > NEULC <asp:Label runat="server" ID="Titlelb"></asp:Label>
 </asp:Content>

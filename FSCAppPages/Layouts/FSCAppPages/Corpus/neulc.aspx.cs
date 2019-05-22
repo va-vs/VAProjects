@@ -18,8 +18,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
     public partial class neulc : LayoutsPageBase
     {
+
+        #region 0 公用
         public ArrayList CiLib;
-        #region 页面事件
+        //数据分隔符，用来分隔外键的ID值
+        private const string split = ";";
+        #region 公用事件
         /// <summary>
         /// 页面加载
         /// </summary>
@@ -33,17 +37,25 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             btnCloseLemma.Click += BtnCloseLemma_Click;
             rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
             btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
+
+            btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
+
             if (!IsPostBack)
             {
                 inputDiv.Visible = true;
                 outputDiv.Visible = false;
                 mvNeulc.ActiveViewIndex = 0;
                 rbltxtFrom.SelectedValue = "0";
+                InitQueryControls();
+                ClearQueryControls();
                 muNeulc.Items[0].Selected = true;
+                Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
             }
             string WordsFile = GetDbPath() + "words/AllWords.txt";
             CiLib = WordBLL.cibiaoku(WordsFile);
         }
+
+
         /// <summary>
         /// 页面提醒
         /// </summary>
@@ -54,8 +66,19 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string script = string.Format("<script>alert('{0}')</script>", info);
             p.ClientScript.RegisterStartupScript(p.GetType(), "", script);
         }
-        /// <summary>
-        /// 单词统计
+        #endregion
+        #region 公用方法        /// <summary>
+        /// 去掉文件名中的特殊符号
+        /// </summary>
+        /// <param name="fileName">原有文件名称</param>
+        /// <returns></returns>
+        private string GetSimpleFileName(string fileName)
+        {
+            string retDate = Regex.Replace(fileName, @"[.#：]", "").TrimEnd('-');
+            return retDate;
+
+        }        /// <summary>
+        /// 文本中单词个数统计
         /// </summary>
         /// <param name="text">要计算的文本</param>
         private int getWordSum(string text)
@@ -82,7 +105,404 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             return stemp.Length;
         }
+        /// <summary>
+        /// 计算两个时间变量的时间差
+        /// </summary>
+        /// <param name="startTime">开始时间</param>
+        /// <param name="endTime">结束时间</param>
+        /// <returns>时间差，格式：{0}天{1}时{2}分{3}秒{4}毫秒</returns>
+        private static string TimeSpend(DateTime startTime, DateTime endTime)
+        {
+            TimeSpan ts = endTime - startTime;
+            string rtime = string.Format("{0}天{1}时{2}分{3}秒{4}毫秒", ts.Days, ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
+            return rtime;
+        }
+
+        #endregion 公用方法
+
+
+        #region 这部分代码需要在Lemme的DLL重写后合并到Dll的方法类中
         /// <summary>
+        /// 输出单词等级颜色示例
+        /// </summary>
+        /// <param name="cngrade">级别标记</param>
+        /// <param name="tags">级别号</param>
+        /// <param name="wordCount">词频：该级别词汇量</param>
+        /// <param name="frequency">todo: describe frequency parameter on GetLegend</param>
+        /// <returns>图例Html字符串</returns>
+        public string GetLegend(string cngrade, int frequency, int wordCount)
+        {
+            //****************单词分级cngrade颜色定义*********************/
+            //-2:忽略处理的词汇
+            //-1:无法在基础词汇表中找到其原型,即单词属于无法处理词汇
+            //0:不确定词汇级别,即单词属于超纲词汇
+            //1:单词属于高中大纲词汇
+            //2:单词属于基本要求词汇
+            //3:单词属于较高要求词汇
+            //4:单词属于更高要求词汇
+            string[] strColors = new string[7] { "grey", "orange", "red", "indigo", "blue", "green", "yellow" };
+            string[] strENGrades = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
+            string[] strCNGrades = new string[7] { "忽略处理", "未处理", "超纲词汇", "高中大纲", "基本要求", "较高要求", "更高要求" };//级别，主要用于显示文字
+            int gradeindex = Array.IndexOf(strCNGrades, cngrade);
+            decimal percent = Math.Round(((decimal)frequency / wordCount) * 100, 4);
+            string colorstr = string.Format("<dt class='it-chart-dt' data-grade='{0}' onclick='HighLightthis(this)'>{1}</dt>", strENGrades[gradeindex], cngrade);
+            colorstr += string.Format("<dd class='it-chart-dd' data-grade='{0}' onclick='HighLightthis(this)'>", strENGrades[gradeindex]);
+            colorstr += string.Format("<div class='it-chart-bar' style='background-color: {0}; width:{1}%;'></div>", strColors[gradeindex], percent);
+            colorstr += string.Format("<div class='it-chart-label'>{0}({1}%)</div>", frequency, percent.ToString("0.00"));
+            colorstr += "</dd>";
+            return colorstr;
+        }
+
+
+        public StringBuilder GetCopusContext(IEnumerable<List<string>> showWordsList)
+        {
+            StringBuilder sb = new StringBuilder();
+            string[] strENGrades = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
+            //string divString = string.Empty;
+            //int i = 0;//计数器
+            try
+            {
+                foreach (List<string> sList in showWordsList)
+                {
+
+                    string sword = sList[0]; //文章中出现的单词
+                    int stags = int.Parse(sList[1]); //文章中单词对应的级别序号-1,1,2,3...
+                    string className = "";
+                    if (stags < 2)
+                    {
+                        className = string.Format("RB {0} {1}", strENGrades[stags + 2], sword);
+                    }
+                    else
+                    {
+                        className = string.Format("RB {0} {1}", strENGrades[stags - 2], sword);
+                    }
+                    //if (stags > maxIndex + 4 || stags == 0) //没有选择的级别或者没有确定级别的基础词汇,即超纲词汇
+                    //{
+                    //    className = string.Format("RB {0} {1}", strENGrades[stags], sword);
+                    //}
+                    //else //不在基础词汇表中或者是已经指定级别的词汇
+                    //{
+                    //    if (stags >= 5)
+                    //        className = string.Format("RB {0} {1}", strENGrades[stags - 4], sword);
+                    //    else
+                    //        className = string.Format("RB {0} {1}", strENGrades[stags], sword);
+                    //}
+                    sb.AppendFormat("<span class='{0}'> {1}</span>", className, sword);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                lbErr.Text = ex.ToString();
+            }
+            return sb;
+        }
+        #endregion 这部分代码需要在Lemme的DLL重写后合并到Dll的方法类中
+
+        #endregion 0 公用
+
+        #region 1 顶部工具栏
+
+        #region 顶部工具栏事件
+
+        /// <summary>
+        /// 模块菜单点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void muNeulc_MenuItemClick(object sender, MenuEventArgs e)
+        {
+            switch (muNeulc.SelectedValue)
+            {
+                case "1"://Concordance
+                    {
+                        mvNeulc.ActiveViewIndex = 1;
+                        break;
+                    }
+                case "2"://Collocate
+                    {
+                        mvNeulc.ActiveViewIndex = 2;
+                        break;
+                    }
+                case "3"://WordList
+                    {
+                        mvNeulc.ActiveViewIndex = 3;
+
+                        break;
+                    }
+                case "4"://Cluster
+                    {
+                        mvNeulc.ActiveViewIndex = 4;
+                        break;
+                    }
+                default://Corpus
+                    mvNeulc.ActiveViewIndex = 0;
+                    InitQueryControls();
+                    ClearQueryControls();
+                    break;
+            }
+            Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
+        }
+
+        #endregion
+
+        #region 顶部工具栏方法
+
+        #endregion
+
+        #endregion
+
+        #region 2 Corpus
+
+        #region Corpus事件        /// <summary>
+        /// 检索大库，生成关键小库
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSubmitforCorpus_Click(object sender, EventArgs e)
+        {
+            string newQueryStr = GetSelectQuery();
+            if (ViewState["filterExp"] != null)//已有检索历史
+            {
+                string oldQueryStr = ViewState["filterExp"].ToString();
+                if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
+                {
+                    ViewState["filterExp"] = newQueryStr;
+                    ViewState["dsCorpus"] = null;//清空检索
+                    QueryCorpus();//检索语料库
+                }
+            }
+            else//尚未检索过
+            {
+                ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
+                ViewState["dsCorpus"] = null;//清空检索
+                QueryCorpus();
+            }
+        }
+
+
+        #endregion
+
+        #region Corpus方法        /// <summary>
+        /// 根据条件筛选大库，生成关键小库的数据集
+        /// </summary>
+        private void QueryCorpus()
+        {
+            DataTable dtAll;
+            if (ViewState["dtAll"] == null)
+            {
+                dtAll = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
+                ViewState["dtAll"] = dtAll;
+            }
+            else
+            {
+                dtAll = (DataTable)ViewState["dtAll"];
+            }
+
+            string filterExpression = ViewState["filterExp"].ToString();
+            DataRow[] drs = dtAll.Select(filterExpression);
+            DataTable dtResult = dtAll.Clone();
+            DataSet dsResult = new DataSet();
+            dsResult.Tables.Add(dtResult);
+            dsResult.Merge(drs);
+            ViewState["dsCorpus"] = dsResult;
+            divforCorpusResult.Visible = true;
+        }        /// <summary>
+        /// 构造检索字符串，用于检索大库
+        /// </summary>
+        /// <returns></returns>
+        private string GetSelectQuery()
+        {
+            //三个筛选条件：grade、topic、genre
+            string strQuery = "";
+            if (cblGrade.SelectedIndex >= 0)
+            {
+                strQuery = Common.GetQueryString(cblGrade, "GradeID", split);
+            }
+
+            string strSql = "";
+            if (cblGenre.SelectedIndex >= 0)
+            {
+                strSql = Common.GetQueryString(cblGenre, "GenreID", split);
+            }
+
+            if (strQuery == "")
+            {
+                strQuery = strSql;
+            }
+            else
+            {
+                if (strQuery.IndexOf("and") > 0)
+                {
+                    strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                }
+                else
+                {
+                    strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                }
+            }
+            strSql = "";
+            if (cblTopic.SelectedIndex >= 0)
+            {
+                strSql = Common.GetQueryString(cblTopic, "TopicID", split);
+            }
+
+            if (strQuery == "")
+            {
+                strQuery = strSql;
+            }
+            else
+            {
+                if (strQuery.IndexOf("and") > 0)
+                {
+                    strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                }
+                else
+                {
+                    strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                }
+            }
+            return strQuery;
+        }        /// <summary>
+        /// 初始化检索控件控件
+        /// </summary>
+        private void InitQueryControls()
+        {
+            //话题
+            string types = "Topic";
+            DataSet ds = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+            cblTopic.Items.Clear();
+            cblTopic.DataSource = ds.Tables[0].Copy();
+            cblTopic.DataTextField = "Title";
+            cblTopic.DataValueField = "ItemID";
+            cblTopic.DataBind();
+
+            //文体
+            types = "Genre";
+            DataSet dsGenre = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+            cblGenre.Items.Clear();
+            cblGenre.DataSource = dsGenre.Tables[0].Copy();
+            cblGenre.DataTextField = "Title";
+            cblGenre.DataValueField = "ItemID";
+            cblGenre.DataBind();
+
+            //年级
+            types = "Grade";
+            DataSet dsGrade = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+            cblGrade.Items.Clear();
+            cblGrade.DataSource = dsGrade.Tables[0].Copy();
+            cblGrade.DataTextField = "Title";
+            cblGrade.DataValueField = "ItemID";
+            cblGrade.DataBind();
+        }
+
+        /// <summary>
+        /// 未检索语料时先清空原有的控件
+        /// </summary>
+        private void ClearQueryControls()
+        {
+            foreach (ListItem itm in cblTopic.Items)
+            {
+                itm.Selected = false;
+            }
+
+            foreach (ListItem itm in cblGenre.Items)
+            {
+                itm.Selected = false;
+            }
+
+            foreach (ListItem itm in cblGrade.Items)
+            {
+                itm.Selected = false;
+            }
+            divforCorpusResult.Visible = false;
+        }
+
+        #endregion Corpus方法
+
+        #endregion
+
+        #region 3 Concordance
+
+        #region Concordance事件
+
+        #endregion
+
+        #region Concordance方法
+
+        #endregion
+
+        #endregion
+
+        #region 4 Collocate
+
+        #region Collocate事件
+
+        #endregion
+
+        #region Collocate方法
+
+        #endregion
+
+        #endregion
+
+        #region 5 Cluster
+
+        #region Cluster事件
+
+        #endregion
+
+        #region Cluster方法
+
+        #endregion
+
+        #endregion
+
+        #region 6 WordList
+
+        #region WordList事件
+        /// <summary>
+        /// 返回按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void backBtn_OnClickBtn_OnClick(object sender, EventArgs e)
+        {
+            outputDiv.Visible = false;
+            inputDiv.Visible = true;
+        }
+
+
+        /// <summary>
+        /// 清空按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void clearBtn_OnClick(object sender, EventArgs e)
+        {
+            txtcontent.Value = "";
+        }        /// <summary>
+        /// 关闭按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void closeBtn_OnClick(object sender, EventArgs e)
+        {
+            outputDiv.Visible = false;
+            inputDiv.Visible = true;
+            txtcontent.Value = "";//清空正文文本
+            for (int i = 0; i < rbVBS.Items.Count; i++)//清除词表选择
+            {
+                if (rbVBS.Items[i].Selected)
+                {
+                    rbVBS.Items[i].Selected = false;
+                }
+            }
+            txt_Title.Value = "";//清空正文标题
+            lemmanew.Enabled = true;
+            outputDiv.Visible = false;
+            inputDiv.Visible = true;
+        }        /// <summary>
         /// 筛选词汇等级选择
         /// </summary>
         /// <param name="sender"></param>
@@ -137,23 +557,51 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 divfromshuru.Visible = true;
                 divTexts.Visible = true;
                 username.Value = "";
-                homecity_name.Value = "";
+                txt_Title.Value = "";
                 divFromCorpus.Visible = false;
             }
             txtcontent.InnerText = "";
         }
 
-        private void BtnQueryforWordlist_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 按关键字检索生成WordList备选语料列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>        private void BtnQueryforWordlist_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(txtKeyWordsforWordlist.Value.Trim()))
+            {
+                PageAlert("请先输入检索关键词！", this);
+                txtKeyWordsforWordlist.Focus();
+                return;
+            }
+            string keyWords = txtKeyWordsforWordlist.Value.Trim();
+            DataSet dsCorpus = (DataSet)ViewState["dsCorpus"];
+            DataTable dtCorpus = dsCorpus.Tables[0];
+            string strSql = string.Format("Title like '%{0}%' or Source like '%{0}%' or OriginalText like '%{0}%' or CodedText like '%{0}%'", keyWords);
+            DataRow[] drs = dtCorpus.Select(strSql);
+            if (drs.Length > 0)
+            {
+                DataTable dtCorpusforWordList = dtCorpus.Clone();
+                foreach (var dr in drs)
+                {
+                    dtCorpusforWordList.Rows.Add(dr.ItemArray);
+                }
+                gvCorpusforWordList.DataSource = dtCorpusforWordList;
+                gvCorpusforWordList.DataBind();
+            }
+            else
+            {
+                lbErr.Text = string.Format("未检索到与关键词'{0}'相关的语料，请换个关键词重试！", keyWords);
+                txtKeyWordsforWordlist.Focus();
+            }
         }
 
-        private void GetTextFromCorpusByKeyWords()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void BtnCloseLemma_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 关闭文本彩色标记输出，返回到标记前界面
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>        private void BtnCloseLemma_Click(object sender, EventArgs e)
         {
             username.Value = "";
 
@@ -166,6 +614,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             outputDiv.Visible = false;
             inputDiv.Visible = true;
         }
+
 
         /// <summary>
         /// Lemma操作
@@ -181,16 +630,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string txtStr = txtcontent.Value.Trim();//正文文本
 
             //检验文档标题、用户名、正文是否输入完成
-            if (string.IsNullOrEmpty(homecity_name.Value) || homecity_name.Value == "Type the title or click to choose it")//标题为空或者为文本框提示值,即未输入标题
+            if (string.IsNullOrEmpty(txt_Title.Value) || txt_Title.Value == "Type the title or click to choose it")//标题为空或者为文本框提示值,即未输入标题
             {
                 PageAlert("你还未选择或输入文档标题!", this);
-                homecity_name.Focus();
+                txt_Title.Focus();
                 lemmanew.Enabled = true;
                 return;
             }
             else
             {
-                titleStr = homecity_name.Value;//标题
+                titleStr = txt_Title.Value;//标题
             }
             if (string.IsNullOrEmpty(username.Value))//用户名为空,即未输入有效用户名
             {
@@ -277,175 +726,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
 
                 dlChart.InnerHtml = sb.ToString();
-                divContext.InnerHtml = GetCopusContext(showWordsList, maxIndex).ToString();
+                divContext.InnerHtml = GetCopusContext(showWordsList).ToString();
                 outputDiv.Visible = true;
-
-                Titlelb.Text = "WordList";
             }
             lemmanew.Enabled = true;
             #endregion
         }
+        #endregion WordList事件
 
-        #region 这部分代码需要在Lemme的DLL重写后合并到Dll的方法类中
-        /// <summary>
-        /// 输出单词等级颜色示例
-        /// </summary>
-        /// <param name="cngrade">级别标记</param>
-        /// <param name="tags">级别号</param>
-        /// <param name="wordCount">词频：该级别词汇量</param>
-        /// <param name="frequency">todo: describe frequency parameter on GetLegend</param>
-        /// <returns>图例Html字符串</returns>
-        public string GetLegend(string cngrade, int frequency, int wordCount)
-        {
-            //****************单词分级颜色定义*********************/
-            //-2:忽略处理的词汇
-            //-1:无法在基础词汇表中找到其原型,即单词属于无法处理词汇
-            //0:不确定词汇级别,即单词属于超纲词汇
-            //1:单词属于高中大纲词汇
-            //2:单词属于基本要求词汇
-            //3:单词属于较高要求词汇
-            //4:单词属于更高要求词汇
-            string[] strColors = new string[7] { "grey", "orange", "red", "indigo", "blue", "green", "yellow" };
-            string[] strENGrades = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
-            string[] strCNGrades = new string[7] { "忽略处理", "未处理", "超纲词汇", "高中大纲", "基本要求", "较高要求", "更高要求" };//级别，主要用于显示文字
-            int gradeindex = Array.IndexOf(strCNGrades, cngrade);
-            decimal percent = Math.Round(((decimal)frequency / wordCount) * 100, 4);
-            string colorstr = string.Format("<dt class='it-chart-dt' data-grade='{0}' onclick='HighLightthis(this)'>{1}</dt>", strENGrades[gradeindex], cngrade);
-            colorstr += string.Format("<dd class='it-chart-dd' data-grade='{0}' onclick='HighLightthis(this)'>", strENGrades[gradeindex]);
-            colorstr += string.Format("<div class='it-chart-bar' style='background-color: {0}; width:{1}%;'></div>", strColors[gradeindex], percent);
-            colorstr += string.Format("<div class='it-chart-label'>{0}({1}%)</div>", frequency, percent.ToString("0.00"));
-            colorstr += "</dd>";
-            return colorstr;
-        }
-
-
-        public StringBuilder GetCopusContext(IEnumerable<List<string>> showWordsList, int maxIndex)
-        {
-            StringBuilder sb = new StringBuilder();
-            string[] strENGrades = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
-            //string divString = string.Empty;
-            //int i = 0;//计数器
-            try
-            {
-                foreach (List<string> sList in showWordsList)
-                {
-
-                    string sword = sList[0]; //文章中出现的单词
-                    int stags = int.Parse(sList[1]); //文章中单词对应的级别序号-1,1,2,3...
-                    string className = "";
-                    if (stags < 2)
-                        className = string.Format("RB {0} {1}", strENGrades[stags + 2], sword);
-                    else
-                        className = string.Format("RB {0} {1}", strENGrades[stags - 2], sword);
-                    //if (stags > maxIndex + 4 || stags == 0) //没有选择的级别或者没有确定级别的基础词汇,即超纲词汇
-                    //{
-                    //    className = string.Format("RB {0} {1}", strENGrades[stags], sword);
-                    //}
-                    //else //不在基础词汇表中或者是已经指定级别的词汇
-                    //{
-                    //    if (stags >= 5)
-                    //        className = string.Format("RB {0} {1}", strENGrades[stags - 4], sword);
-                    //    else
-                    //        className = string.Format("RB {0} {1}", strENGrades[stags], sword);
-                    //}
-                    sb.AppendFormat("<span class='{0}'> {1}</span>", className, sword);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                lbErr.Text = ex.ToString();
-            }
-            return sb;
-        }
-        #endregion
-
-        /// <summary>
-        /// 关闭按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void closeBtn_OnClick(object sender, EventArgs e)
-        {
-            ClientScript.RegisterStartupScript(ClientScript.GetType(), "", "<script>document.getElementById('outputDiv').style.display = '';document.getElementById('inputDiv').style.display = 'none';</script>", true);
-            txtcontent.Value = "";//清空正文文本
-            for (int i = 0; i < rbVBS.Items.Count; i++)//清除词表选择
-            {
-                if (rbVBS.Items[i].Selected)
-                {
-                    rbVBS.Items[i].Selected = false;
-                }
-            }
-            Titlelb.Text = "Input";
-            homecity_name.Value = "";//清空正文标题
-            lemmanew.Enabled = true;
-            outputDiv.Visible = false;
-            inputDiv.Visible = true;
-        }
-
-        /// <summary>
-        /// 返回按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void backBtn_OnClickBtn_OnClick(object sender, EventArgs e)
-        {
-            outputDiv.Visible = false;
-            inputDiv.Visible = true;
-            Titlelb.Text = "Input";
-        }
-
-
-        /// <summary>
-        /// 清空按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void clearBtn_OnClick(object sender, EventArgs e)
-        {
-            txtcontent.Value = "";
-        }
-
-        #endregion
-
-        private DataTable GetCorpus()
-        {
-            DataTable dtCorpus = new DataTable();
-            return dtCorpus;
-        }
-
-        private void muNeulc_MenuItemClick(object sender, MenuEventArgs e)
-        {
-            switch (muNeulc.SelectedValue)
-            {
-                case "1"://这个值是在Menu中加入Item时设定的
-                    {
-                        mvNeulc.ActiveViewIndex = 1;
-                        break;
-                    }
-                case "2":
-                    {
-                        mvNeulc.ActiveViewIndex = 2;
-                        break;
-                    }
-                case "3":
-                    {
-                        mvNeulc.ActiveViewIndex = 3;
-                        break;
-                    }
-                case "4":
-                    {
-                        mvNeulc.ActiveViewIndex = 4;
-                        break;
-                    }
-                default:
-                    mvNeulc.ActiveViewIndex = 0;
-                    break;
-            }
-        }
-
-        #region WordList
-        #region 方法
+        #region WordList方法
 
         private string GetDbPath()
         {
@@ -453,26 +742,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             txtPath = txtPath.Substring(0, txtPath.IndexOf("\\layouts", StringComparison.Ordinal)) + @"\layouts\db\";
             return txtPath;
         }
-        private static string TimeSpend(DateTime startTime, DateTime endTime)
-        {
-            TimeSpan ts = endTime - startTime;
-            string rtime = string.Format("{0}:{1}:{2}:{3} : {4}:", ts.Days, ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
-            return rtime;
-        }
 
+        #endregion WordList方法
 
-        /// <summary>
-        /// 去掉文件名中的特殊符号
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        private string GetFileName(string fileName)
-        {
-            string retDate = Regex.Replace(fileName, @"[.#：]", "").TrimEnd('-');
-            return retDate;
-
-        }
-        #endregion
         #endregion
     }
 }

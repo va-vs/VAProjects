@@ -67,22 +67,58 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.CheckBoxList cblTopic;
         
         /// <summary>
-        /// btnSubmit 控件。
+        /// btnSubmitforCorpus 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
+        protected global::System.Web.UI.WebControls.Button btnSubmitforCorpus;
         
         /// <summary>
-        /// btnReset 控件。
+        /// btnResetforCorpus 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnReset;
+        protected global::System.Web.UI.WebControls.Button btnResetforCorpus;
+        
+        /// <summary>
+        /// divforCorpusResult 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divforCorpusResult;
+        
+        /// <summary>
+        /// tbforGrade 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table tbforGrade;
+        
+        /// <summary>
+        /// tbforTopic 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table tbforTopic;
+        
+        /// <summary>
+        /// tbforGenre 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table tbforGenre;
         
         /// <summary>
         /// vwConcordance 控件。
@@ -139,6 +175,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divFromCorpus;
         
         /// <summary>
+        /// gvCorpusforWordList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvCorpusforWordList;
+        
+        /// <summary>
         /// txtKeyWordsforWordlist 控件。
         /// </summary>
         /// <remarks>
@@ -166,13 +211,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divfromshuru;
         
         /// <summary>
-        /// homecity_name 控件。
+        /// txt_Title 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText homecity_name;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txt_Title;
         
         /// <summary>
         /// username 控件。
