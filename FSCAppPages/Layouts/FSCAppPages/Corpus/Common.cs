@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,6 +13,47 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
     public class Common
     {
+        #region 处理句子与单词
+        /// <summary>
+        /// 获取文本中的句子
+        /// </summary>
+        /// <param name="strContent">英文文本</param>
+        /// <returns>键值集合，键为序列号，值为单词集合 </returns>
+        public static Dictionary<int, List<string>> ParseSentences (string strContent)
+        {
+            string ignore = "[\r\n\t\"]";//需要替换的符号
+            strContent = Regex.Replace(strContent, ignore, "");
+            Regex rx = new Regex(@"(\S.+?[.!?])(?=\s+|$)");
+            MatchCollection matchs =rx.Matches(strContent) ;
+            Dictionary<int, List<string>> sentences = new Dictionary<int, List<string>>(); 
+            string sentence;
+            List<string> words = new List<string>(); 
+            foreach (Match match in matchs )
+            {
+                sentence=match.Value ;
+                words = ParseWords(sentence);
+                sentences.Add(match.Index,   words);
+
+            }
+             return sentences;
+        }
+        /// <summary>
+        /// 解析句子中的单词
+        /// </summary>
+        /// <param name="sentence">包含符号的句子</param>
+        /// <returns></returns>
+        public static List<string>   ParseWords(string sentence)
+        {
+            Regex reg = new Regex(@"\b\w+\b");
+            MatchCollection mc = reg.Matches(sentence);
+            List<string> words = new List<string>();
+            foreach (Match m in mc)
+            {
+               words.Add (m.Value);
+            }
+            return words;
+        }
+        #endregion
         #region 处理外键
         /// <summary>
         /// 获取语料的外键的文本值，多选项
