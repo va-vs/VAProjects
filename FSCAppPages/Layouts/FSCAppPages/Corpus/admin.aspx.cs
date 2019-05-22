@@ -33,7 +33,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         private void GvCorpus_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             gvCorpus.PageIndex = e.NewPageIndex;
-            ReQuery ();
+            ReQuery();
         }
 
         private void GvCorpus_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -42,17 +42,23 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (ViewState["dtCorpusExtend"] == null)
             {
                 dtExtend = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(null).Tables[0];
-                ViewState["dtCorpusExtend"] =dtExtend.Copy ();
+                ViewState["dtCorpusExtend"] = dtExtend.Copy();
             }
             else
-                dtExtend = (ViewState["dtCorpusExtend"] as DataTable).Copy ();
+            {
+                dtExtend = (ViewState["dtCorpusExtend"] as DataTable).Copy();
+            }
+
             foreach (GridViewRow gRow in gvCorpus.Rows)
             {
                 if (gRow.RowType == DataControlRowType.DataRow)
                 {
                     Label lblContext = gRow.FindControl("lbContext") as Label;
                     if (lblContext.Text.Length > 150)
+                    {
                         lblContext.Text = lblContext.Text.Substring(0, 100) + "……";
+                    }
+
                     HiddenField hId = gRow.FindControl("hdfGradeId") as HiddenField;
                     Label lblGrade;
                     if (hId.Value.Length > 0)
@@ -77,21 +83,21 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
         private void GvCorpus_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            long corpusID = long.Parse(e.CommandArgument.ToString ());
+            long corpusID = long.Parse(e.CommandArgument.ToString());
             //此处为查询的结果
-            DataTable dt =(DataTable) ViewState["dtCorpus"];
+            DataTable dt = (DataTable)ViewState["dtCorpus"];
             DataRow dr = dt.Select("CorpusID=" + corpusID)[0];
-           if (e.CommandName=="EditPlan" )
+            if (e.CommandName == "EditPlan")
             {
                 FillControls(dr);
                 divList.Visible = false;
                 divEditCorpora.Visible = true;
-                ViewState["Edit"] = corpusID; 
+                ViewState["Edit"] = corpusID;
             }
-           else if(e.CommandName =="DelPlan")
+            else if (e.CommandName == "DelPlan")
             {
                 dr["Flag"] = 0;
-                FSCDLL.DAL.Corpus.UpdateCorpus(null,dr);
+                FSCDLL.DAL.Corpus.UpdateCorpus(null, dr);
                 dt.Rows.Remove(dr);//从中删除
             }
         }
@@ -107,10 +113,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             try
             {
-                
+
                 SaveCorpus();
                 ClearControls();
-                if (ViewState.ToString ()!="0")//如果是编辑，则返回到查询
+                if (ViewState.ToString() != "0")//如果是编辑，则返回到查询
                 {
                     divEditCorpora.Visible = false;
                     divList.Visible = true;
@@ -134,9 +140,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 ViewState["dtCorpus"] = dtAll;
             }
             else
+            {
                 dtAll = (DataTable)ViewState["dtCorpus"];
-            if (ViewState["filterExp"]==null)
-                ViewState["filterExp"]=GetSelectQuery();
+            }
+
+            if (ViewState["filterExp"] == null)
+                ViewState["filterExp"] = GetSelectQuery();
             string filterExpression = ViewState["filterExp"].ToString();
             DataRow[] drs = dtAll.Select(filterExpression);
             DataTable dtResult = dtAll.Clone();
@@ -166,11 +175,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         private void ClearControls()
         {
             foreach (ListItem itm in cblGrade.Items)
+            {
                 itm.Selected = false;
+            }
+
             foreach (ListItem itm in cblGenre.Items)
+            {
                 itm.Selected = false;
+            }
+
             foreach (ListItem itm in cblTopics.Items)
+            {
                 itm.Selected = false;
+            }
+
             txtTitle.Text = "";
             txtOriginalText.Text = "";
             txtSource.Text = "";
@@ -183,13 +201,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="drCorpus">语料数据行</param>
         private void FillControls(DataRow drCorpus)
         {
-            txtTitle.Text = drCorpus["Title"].ToString(); 
-            txtSource.Text = drCorpus["Source"].ToString ();
-            txtOriginalText.Text =drCorpus["OriginalText"].ToString ();
-           
-            Common. SetCBListChecked(cblTopics, drCorpus["TopicID"].ToString(), split);
+            txtTitle.Text = drCorpus["Title"].ToString();
+            txtSource.Text = drCorpus["Source"].ToString();
+            txtOriginalText.Text = drCorpus["OriginalText"].ToString();
+
+            Common.SetCBListChecked(cblTopics, drCorpus["TopicID"].ToString(), split);
             Common.SetCBListChecked(cblGrade, drCorpus["GradeID"].ToString(), split);
-            Common.SetCBListChecked(cblGenre , drCorpus["GenreID"].ToString(), split);
+            Common.SetCBListChecked(cblGenre, drCorpus["GenreID"].ToString(), split);
         }
         /// <summary>
         /// 初始化控件
@@ -198,7 +216,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string types = "Topic";//Genre Grade
             DataSet ds = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-           
+
             //以下为查询的条件部分
             cblQueryTopics.DataSource = ds.Tables[0];
             cblQueryTopics.DataTextField = "Title";
@@ -211,22 +229,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             cblTopics.DataBind();
             types = "Genre";
             DataSet dsGenre = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            cblQueryGenre.DataSource = dsGenre.Tables[0] ;
+            cblQueryGenre.DataSource = dsGenre.Tables[0];
             cblQueryGenre.DataTextField = "Title";
             cblQueryGenre.DataValueField = "ItemID";
             cblQueryGenre.DataBind();
-            cblGenre.DataSource = dsGenre.Tables[0].Copy ();
+            cblGenre.DataSource = dsGenre.Tables[0].Copy();
             cblGenre.DataTextField = "Title";
             cblGenre.DataValueField = "ItemID";
             cblGenre.DataBind();
             types = "Grade";
             DataSet dsGrade = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            cblQueryGrade.DataSource = dsGrade.Tables[0] ;
+            cblQueryGrade.DataSource = dsGrade.Tables[0];
             cblQueryGrade.DataTextField = "Title";
             cblQueryGrade.DataValueField = "ItemID";
             cblQueryGrade.DataBind();
             //等级
-            cblGrade.DataSource = dsGrade.Tables[0].Copy ();
+            cblGrade.DataSource = dsGrade.Tables[0].Copy();
             cblGrade.DataTextField = "Title";
             cblGrade.DataValueField = "ItemID";
             cblGrade.DataBind();
@@ -238,7 +256,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 lbErr.Text = "Title cannot be empty!";
                 return;
             }
-            if (txtOriginalText.Text.Length ==0)
+            if (txtOriginalText.Text.Length == 0)
             {
                 lbErr.Text = "Context cannot be empty!";
                 return;
@@ -267,20 +285,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     dr["Flag"] = 1;
                 }
             }
-            string ids = Common.GetCBListChecked(cblTopics, split );
-            dr["Title"] = txtTitle.Text ;
+            string ids = Common.GetCBListChecked(cblTopics, split);
+            dr["Title"] = txtTitle.Text;
             dr["TopicID"] = ids;
             ids = Common.GetCBListChecked(cblGenre, split);
-            dr["GenreID"] =ids ;
-            ids =Common. GetCBListChecked(cblGrade, split);
-            dr["GradeID"] = ids ;
+            dr["GenreID"] = ids;
+            ids = Common.GetCBListChecked(cblGrade, split);
+            dr["GradeID"] = ids;
             dr["OriginalText"] = txtOriginalText.Text;
             //赋码未添加
             //dr["CodedText"] ="";
             if (corpusID == 0)
                 FSCDLL.DAL.Corpus.InsertCorpus(null, dr);
             else
+            {
                 FSCDLL.DAL.Corpus.UpdateCorpus(null, dr);
+            }
         }
         #endregion
         #region 查询
@@ -288,7 +308,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// 构造查询字符串
         /// </summary>
         /// <returns></returns>
-        private  string GetSelectQuery ()
+        private string GetSelectQuery()
         {
             //此处进行查询，关键词、grade、topic、genre
             string strQuery = "";
@@ -304,7 +324,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 if (strQuery.IndexOf("and") > 0)
                     strQuery = strQuery + " and (" + strSql + ")";
                 else
+                {
                     strQuery = "(" + strQuery + ") and (" + strSql + ")";
+                }
             }
             strSql = "";
             if (cblTopics.SelectedIndex >= 0)
@@ -316,7 +338,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 if (strQuery.IndexOf("and") > 0)
                     strQuery = strQuery + " and (" + strSql + ")";
                 else
+                {
                     strQuery = "(" + strQuery + ") and (" + strSql + ")";
+                }
             }            //关键词
             if (txtKeyWord.Text.Length > 0)
             {
@@ -328,7 +352,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     if (strQuery.IndexOf("and") > 0)
                         strQuery = strQuery + " and (" + strSql + ")";
                     else
+                    {
                         strQuery = "(" + strQuery + ") and (" + strSql + ")";
+                    }
                 }
             }
             return strQuery;

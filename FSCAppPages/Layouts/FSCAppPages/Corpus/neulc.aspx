@@ -178,7 +178,7 @@
 								<img alt="Download" src="../images/Download.png" height="20" /></a>
 						</li>
 						<li>
-							<a href="#">
+							<a href="admin.aspx">
 								<img alt="Upload" src="../images/Upload.png" height="20" /></a>
 						</li>
 						<li>
@@ -195,7 +195,6 @@
 					<ul class="imgul">
 						<li><a>Login</a></li>
 						<li><a>Contact</a></li>
-						<li><a href="admin.aspx">Admin</a></li>
 					</ul>
 				</td>
 			</tr>
@@ -229,24 +228,21 @@
 							<asp:View ID="vwQuery" runat="server">
 								<table style="border: none; line-height: 25px;" border="0">
 									<tr>
-										<td colspan="2">Select files you need according to:
-										</td>
+										<td colspan="2">Select files you need according to:</td>
 									</tr>
 									<tr>
-										<td style="text-align: right">Grade:
-										</td>
+										<td style="text-align: right">Grade:</td>
 										<td>
 											<asp:CheckBoxList ID="cblGrade" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList" RepeatColumns="6">
-												<asp:ListItem Value="1">F1</asp:ListItem>
-												<asp:ListItem Value="2">S2</asp:ListItem>
-												<asp:ListItem Value="3">J3</asp:ListItem>
-												<asp:ListItem Value="4">S4</asp:ListItem>
+												<asp:ListItem Value="1">F1(freshmen)</asp:ListItem>
+												<asp:ListItem Value="2">S2(sophomores)</asp:ListItem>
+												<asp:ListItem Value="3">J3(juniors)</asp:ListItem>
+												<asp:ListItem Value="4">S4(seniors)</asp:ListItem>
 											</asp:CheckBoxList>
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right">Genre:
-										</td>
+										<td style="text-align: right">Genre:</td>
 										<td>
 											<asp:CheckBoxList ID="cblGenre" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList">
 												<asp:ListItem Value="1">Argumentation</asp:ListItem>
@@ -257,8 +253,7 @@
 										</td>
 									</tr>
 									<tr>
-										<td style="text-align: right">Topic:
-										</td>
+										<td style="text-align: right">Topic:</td>
 										<td>
 											<asp:CheckBoxList ID="cblTopic" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList">
 												<asp:ListItem Value="1">Culture</asp:ListItem>
@@ -270,12 +265,96 @@
 									</tr>
 									<tr>
 										<td colspan="2" style="text-align: center; padding-top: 10px;">
-											<asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="outbtndiv-button" />&nbsp;&nbsp;
-								<asp:Button ID="btnReset" runat="server" Text="Reset" OnClientClick="Check_Uncheck_All()" CssClass="outbtndiv-button" />
+											<asp:Button ID="btnSubmitforCorpus" runat="server" Text="Submit" CssClass="outbtndiv-button" />&nbsp;&nbsp;
+								<asp:Button ID="btnResetforCorpus" runat="server" Text="Reset" OnClientClick="Check_Uncheck_All()" CssClass="outbtndiv-button" />
 										</td>
 									</tr>
 								</table>
-
+								<div id="divforCorpusResult" runat="server" visible="false">
+									<asp:Table ID="tbforGrade" runat="server"></asp:Table>
+									<asp:Table ID="tbforTopic" runat="server"></asp:Table>
+									<asp:Table ID="tbforGenre" runat="server"></asp:Table>
+									<table class="mytable">
+										<tr>
+											<th></th>
+											<th>F1</th>
+											<th>S2</th>
+											<th>J3</th>
+											<th>S4</th>
+										</tr>
+										<tr>
+											<th>texts</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>types</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>tokens</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>TTR</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>mean woed length(in characters)
+											</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>mean woed length standard deviation</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>mean in woeds</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>standard deviation</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>topics</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+										<tr>
+											<th>genres</th>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+											<td>1,000</td>
+										</tr>
+									</table>
+								</div>
 							</asp:View>
 
 							<%-- Concordance --%>
@@ -300,6 +379,7 @@
 										</asp:RadioButtonList>
 									</div>
 									<div id="divFromCorpus" runat="server" class="wbdiv">
+										<asp:GridView ID="gvCorpusforWordList" runat="server"></asp:GridView>
 										<input type="text" class="input-text" value="" id="txtKeyWordsforWordlist" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
 										<asp:Button ID="btnQueryforWordlist" runat="server" Text=" Query " CssClass="outbtndiv-button" Enabled="false" />
 									</div>
@@ -308,7 +388,7 @@
 											<tr>
 												<th>Text Title：</th>
 												<td>
-													<input type="text" value="" class="input-text" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" id="homecity_name" placeholder="Type the title" runat="server" />
+													<input type="text" value="" class="input-text" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" id="txt_Title" placeholder="Type the title" runat="server" />
 												</td>
 												<th>Your Name：</th>
 												<td>
