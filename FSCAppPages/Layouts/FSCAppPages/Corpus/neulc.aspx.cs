@@ -390,6 +390,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                             foreach (int key in dictPara.Keys)
                             {
                                 listParaLength.Add(dictPara[key].Count);
+
                                 //listWords = listWords.Concat(dictPara[key]).ToList<string>(); //保留重复项，合并词汇数组
                             }
                             string strFks = dr[listFKs[0]].ToString();
