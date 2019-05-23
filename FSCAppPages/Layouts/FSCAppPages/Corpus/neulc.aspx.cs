@@ -6,13 +6,13 @@ using System.Data;
 using System.Web.UI;
 using System.Web;
 using System.Text.RegularExpressions;
-using System.Web.UI.DataVisualization.Charting;
-using System.IO;
+
 using System.Text;
 using lemmatizerDLL;
 using Microsoft.SharePoint;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
@@ -32,27 +32,19 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         protected void Page_Load(object sender, EventArgs e)
         {
             muNeulc.MenuItemClick += muNeulc_MenuItemClick;
-            lemmanew.Click += lemmanew_Click;
-            btnBackLemma.Click += BtnBackLemma_Click;
-            btnCloseLemma.Click += BtnCloseLemma_Click;
-            rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
-            btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
+
 
             btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
 
             if (!IsPostBack)
             {
-                inputDiv.Visible = true;
-                outputDiv.Visible = false;
-                mvNeulc.ActiveViewIndex = 0;
-                rbltxtFrom.SelectedValue = "0";
+
                 InitQueryControls();
                 ClearQueryControls();
                 muNeulc.Items[0].Selected = true;
                 Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
             }
-            string WordsFile = GetDbPath() + "words/AllWords.txt";
-            CiLib = WordBLL.cibiaoku(WordsFile);
+
         }
 
 
@@ -227,7 +219,17 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 case "3"://WordList
                     {
                         mvNeulc.ActiveViewIndex = 3;
-
+                        inputDiv.Visible = true;
+                        outputDiv.Visible = false;
+                        mvNeulc.ActiveViewIndex = 0;
+                        rbltxtFrom.SelectedValue = "0";
+                        lemmanew.Click += lemmanew_Click;
+                        btnBackLemma.Click += BtnBackLemma_Click;
+                        btnCloseLemma.Click += BtnCloseLemma_Click;
+                        rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
+                        btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
+                        string WordsFile = GetDbPath() + "words/AllWords.txt";
+                        CiLib = WordBLL.cibiaoku(WordsFile);
                         break;
                     }
                 case "4"://Cluster
@@ -261,37 +263,233 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnSubmitforCorpus_Click(object sender, EventArgs e)
         {
-            string newQueryStr = GetSelectQuery();
-            if (ViewState["filterExp"] != null)//已有检索历史
+            try
             {
-                string oldQueryStr = ViewState["filterExp"].ToString();
-                if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
+                string[] strResult = GetSelectQuery();
+                string result0 = strResult[0];
+                if (result0 != "1;1;1")//不是所有的筛选项都被筛选了
                 {
-                    ViewState["filterExp"] = newQueryStr;
-                    ViewState["dsCorpus"] = null;//清空检索
-                    QueryCorpus();//检索语料库
+                    //string[] strs = result0.Split(';');
+                    //if (strs[0] != "1")//Grade
+                    //{
+                    //    lbErr.Text = "你尚未选择筛选的Grade";
+                    //    return;
+                    //}
+
+                    //if (strs[1] != "1")//Genner
+                    //{
+                    //    lbErr.Text = "你尚未选择筛选的Genre";
+                    //    return;
+                    //}
+
+                    //if (strs[2] != "1")//Topic
+                    //{
+                    //    lbErr.Text = "你尚未选择筛选的Topic";
+                    //    return;
+                    //}
+                    lbErr.Text = "Grade、Genre、Topic中每项都至少要选择一个条目！";
+                    return;
+                }
+                else
+                {
+                    string newQueryStr = strResult[1];
+                    DataSet dsAll = FSCDLL.DAL.Corpus.GetCorpus();
+                    BuildTable(dsAll, cblGrade, "GradeID", tbforGrade);
+                    //if (ViewState["filterExp"] != null)//已有检索历史
+                    //{
+                    //    string oldQueryStr = ViewState["filterExp"].ToString();
+                    //    if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
+                    //    {
+                    //        ViewState["filterExp"] = newQueryStr;
+                    //        ViewState["dsCorpus"] = null;//清空检索
+                    //        QueryCorpus();//检索语料库
+                    //    }
+                    //}
+                    //else//尚未检索过
+                    //{
+                    //    ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
+                    //    ViewState["dsCorpus"] = null;//清空检索
+                    //    QueryCorpus();
+                    //}
                 }
             }
-            else//尚未检索过
+            catch (Exception ex)
             {
-                ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
-                ViewState["dsCorpus"] = null;//清空检索
-                QueryCorpus();
+
+                lbErr.Text = ex.ToString();
             }
         }
 
 
+
+
+
         #endregion
 
-        #region Corpus方法        /// <summary>
+        #region Corpus方法
+
+
+        private DataTable BuildDTSummary(DataSet dsCorpus, string fkid, CheckBoxList cbl)
+        {
+            DataTable dt = dsCorpus.Tables[0];
+            DataTable dtSummary = new DataTable();
+            dtSummary.Columns.Add("Summary");
+            dtSummary.Columns.Add("texts");
+            dtSummary.Columns.Add("types");
+            dtSummary.Columns.Add("tokens");
+            dtSummary.Columns.Add("TTR");
+            dtSummary.Columns.Add("wAvglength");
+            dtSummary.Columns.Add("wstandard");
+            dtSummary.Columns.Add("pAvglength");
+            dtSummary.Columns.Add("pstandard");
+            List<string> listFKs = new List<string> { "GradeID", "TopicID", "GenreID" };
+            listFKs.Remove(fkid);
+            foreach (string fk in listFKs)
+            {
+                dtSummary.Columns.Add(fk);
+            }
+            DataRow drSummary = dtSummary.NewRow();
+
+            drSummary[0] = " ";
+            drSummary[1] = "texts";
+            drSummary[2] = "types";
+            drSummary[3] = "tokens";
+            drSummary[4] = "TTR";
+            drSummary[5] = "mean word length (in characters)";
+            drSummary[6] = "mean word length standard deviation";
+            drSummary[7] = "mean in words";
+            drSummary[8] = "standard deviation";
+            drSummary[9] = listFKs[0].Replace("ID", "s");
+            drSummary[10] = listFKs[1].Replace("ID", "s");
+            dtSummary.Rows.Add(drSummary);
+            for (int i = 0; i < cbl.Items.Count; i++)
+            {
+                if (cbl.Items[i].Selected)
+                {
+                    string selectValue = string.Format(";{0};", cbl.Items[i].Value);
+                    drSummary = dtSummary.NewRow();
+                    drSummary["Summary"] = cbl.Items[i].Text;//统计项，比如年级中的F1，S2...
+                    //用dataview的方法实现筛选，dt为内存表
+                    DataView dv = dt.DefaultView;
+                    string filterStr = string.Format("{0} = '{1}'", fkid, selectValue);
+                    dv.RowFilter = filterStr;
+                    //将查得的数据转换为DataTable
+                    DataTable dtSelect = dv.ToTable();
+                    if (dtSelect.Rows.Count > 0)
+                    {
+                        List<string> fk1 = new List<string>();
+                        List<string> fk2 = new List<string>();
+                        List<string> listWords = new List<string>();
+                        List<int> listParaLength = new List<int>();
+                        drSummary["texts"] = dtSelect.Rows.Count;//筛选后的语料条数
+                        foreach (DataRow dr in dtSelect.Rows)
+                        {
+                            string para = dr["OriginalText"].ToString();//本条语料的内容
+                            Dictionary<int, List<string>> dictPara = Common.ParseSentences(para);//对本类别下的语篇进行句子拆分，生成句子序列和句子对应的单词词组
+                            foreach (int key in dictPara.Keys)
+                            {
+                                listParaLength.Add(dictPara[key].Count);
+                                listWords = listWords.Concat(dictPara[key]).ToList<string>(); //保留重复项，合并词汇数组
+                            }
+                            fk1.Add(dr[listFKs[0]].ToString());
+                            fk2.Add(dr[listFKs[1]].ToString());
+                        }
+
+                        double avg = listParaLength.Average();
+                        drSummary["pAvglength"] = avg.ToString("0.00");//平均句长
+                        //  计算各数值与平均数的差值的平方，然后求和
+                        double sum = listParaLength.Sum(d => Math.Pow(d - avg, 2));
+                        //  除以数量，然后开方
+                        double standard = Math.Sqrt(sum / listParaLength.Count);
+                        drSummary["pstandard"] = standard.ToString("0.00");//句长标准差
+
+
+                        int totalWords = listWords.Count;
+                        List<int> listWordLength = new List<int>();
+                        foreach (string wd in listWords)
+                        {
+                            listWordLength.Add(wd.Length);
+                        }
+                        avg = listWordLength.Average();
+                        drSummary["wAvglength"] = avg.ToString("0.00");//平均词长
+                        sum = listWordLength.Sum(d => Math.Pow(d - avg, 2));
+                        standard = Math.Sqrt(sum / totalWords);
+                        drSummary["wstandard"] = standard.ToString("0.00");//词长标准差
+
+
+                        drSummary["tokens"] = totalWords;//单词总数
+
+                        listWords = listWords.Distinct().ToList();
+                        int distinctWords = listWords.Count;
+                        drSummary["types"] = distinctWords;//去重复后单词数
+                        double percent = Convert.ToDouble(distinctWords) / Convert.ToDouble(totalWords);
+                        drSummary["TTR"] = percent.ToString("0.00%");
+
+                        drSummary[9] = fk1.Distinct().ToList().Count;
+                        drSummary[10] = fk2.Distinct().ToList().Count;
+
+                    }
+                    else//该类别下没有语篇
+                    {
+                        drSummary["texts"] = 0;
+                        for (int k = 2; k < dtSummary.Columns.Count; k++)
+                        {
+                            drSummary[k] = " - ";
+                        }
+                    }
+                    dtSummary.Rows.Add(drSummary);
+                }
+            }
+            return dtSummary;
+        }
+
+        private void BuildTable(DataSet dsCorpus, CheckBoxList cbl, string fkid, Table tbSummary)
+        {
+            DataTable dt = dsCorpus.Tables[0];
+            DataTable dtSummary = BuildDTSummary(dsCorpus, fkid, cbl);
+            DataTable dtResult = Common.TranspositionDT(dtSummary);
+            List<string> listValues = new List<string>();
+            List<string> listTexts = new List<string>();
+            List<Dictionary<int, List<string>>> listDict = new List<Dictionary<int, List<string>>>();
+            //表头行
+            DataRow drHead = dtResult.Rows[0];
+            TableHeaderRow thr = new TableHeaderRow();
+            TableHeaderCell thc = new TableHeaderCell() { Text = drHead[0].ToString() };
+            thr.Cells.Add(thc);
+            for (int i = 1; i < dtResult.Columns.Count; i++)
+            {
+                thc = new TableHeaderCell() { Text = drHead[i].ToString() };
+                thr.Cells.Add(thc);
+            }
+
+            tbSummary.Rows.Add(thr);
+
+
+            for (int i = 1; i < dtResult.Rows.Count; i++)
+            {
+                DataRow dr = dtResult.Rows[i];
+                TableRow tr = new TableRow();
+                thc = new TableHeaderCell() { Text = dr[0].ToString() };
+                tr.Cells.Add(thc);
+                for (int j = 1; j < dtResult.Columns.Count; j++)
+                {
+                    TableCell tc = new TableCell();
+                    tc = new TableHeaderCell() { Text = dr[j].ToString() };
+                    tr.Cells.Add(tc);
+                }
+                tbSummary.Rows.Add(tr);
+            }
+
+        }        /// <summary>
         /// 根据条件筛选大库，生成关键小库的数据集
         /// </summary>
         private void QueryCorpus()
         {
             DataTable dtAll;
+            DataSet dsAll = FSCDLL.DAL.Corpus.GetCorpus();
             if (ViewState["dtAll"] == null)
             {
-                dtAll = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
+                dtAll = dsAll.Tables[0];
                 ViewState["dtAll"] = dtAll;
             }
             else
@@ -306,24 +504,38 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dsResult.Tables.Add(dtResult);
             dsResult.Merge(drs);
             ViewState["dsCorpus"] = dsResult;
+
+            BuildTable(dsAll, cblGrade, "GradeID", tbforGrade);
+            //BuildTable(dsAll, cblTopic, "TopicID", tbforTopic);
+            //BuildTable(dsAll, cblGenre, "GenreID", tbforGenre);
             divforCorpusResult.Visible = true;
         }        /// <summary>
         /// 构造检索字符串，用于检索大库
         /// </summary>
         /// <returns></returns>
-        private string GetSelectQuery()
+        private string[] GetSelectQuery()
         {
             //三个筛选条件：grade、topic、genre
             string strQuery = "";
+            string strResult = "";
             if (cblGrade.SelectedIndex >= 0)
             {
                 strQuery = Common.GetQueryString(cblGrade, "GradeID", split);
+                strResult = "1;";
             }
-
+            else
+            {
+                strResult = "0;";
+            }
             string strSql = "";
             if (cblGenre.SelectedIndex >= 0)
             {
                 strSql = Common.GetQueryString(cblGenre, "GenreID", split);
+                strResult += "1;";
+            }
+            else
+            {
+                strResult += "0;";
             }
 
             if (strQuery == "")
@@ -345,6 +557,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (cblTopic.SelectedIndex >= 0)
             {
                 strSql = Common.GetQueryString(cblTopic, "TopicID", split);
+                strResult += "1";
+            }
+            else
+            {
+                strResult += "0";
             }
 
             if (strQuery == "")
@@ -362,7 +579,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
                 }
             }
-            return strQuery;
+            string[] strResults = new string[] { strResult, strQuery };
+            return strResults;
         }        /// <summary>
         /// 初始化检索控件控件
         /// </summary>

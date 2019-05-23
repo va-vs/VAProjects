@@ -1,0 +1,187 @@
+﻿/* CSS Document */
+/*语料筛选结果切换标签*/
+#tab {
+	width:95%;
+	height: 216px;
+	position: relative;
+	margin: 40px auto 0 auto;
+}
+
+
+/*设置容器高宽等*/
+
+html>body #tab {
+	width: 95%;
+}
+
+
+/*兼容IE6:IE6下宽度不够*/
+
+#tab div {
+	position: absolute;
+	top: 30px;
+	left: 0;
+	width:100%;
+	/*height: 186px;*/
+}
+
+
+/*设置容器高宽等*/
+
+#tab div {
+	display: none;
+}
+
+
+/*设置容器默认隐藏:不用ID是因为下面将利用class来控制容器显示,而class优先级低于id选择器*/
+
+#tab .block {
+	display: block;
+	border: 1px solid #808080;
+}
+
+
+/*选中的容器*/
+
+#tab h3 {
+	float: left;
+	width: 30%;
+	height: 30px;
+	line-height: 30px;
+	margin: 0 0 0 0;
+	font-size: 12px;
+	cursor: pointer;
+	background-color: #c5c5c5;
+	text-align: center;
+	color: #5a5a5a;
+	font-family: Microsoft YaHei;
+	font-weight: normal;
+}
+
+
+/*默认标题样式*/
+
+#tab .up {
+	background: #0292cf;
+	color: #fff;
+}
+
+
+/*选中的标题样式*/
+
+
+/*修饰列表内容*/
+
+#tab ul {
+	list-style: none;
+	padding: 0;
+	height: 186px;
+	margin-top: 0px;
+}
+
+#tab li {
+	margin-left: 10px;
+	margin-right: 10px;
+	border-bottom: 1px dotted #c6c6c6;
+	height: 22px;
+	padding-top: 23px;
+	overflow: hidden;
+	font-size: 12px;
+}
+
+#tab li a {
+	display: inline;
+	font-size: 12px;
+	text-decoration: none;
+	text-indent: 10px;
+	margin-right: 10px;
+}
+
+#tab li span {
+	display: block;
+	float: right;
+	margin-right: 5px;
+	color: #bdacb3;
+}
+
+a.tab_title:link {
+	color: #5a5a5a;
+	text-decoration: none;
+}
+
+a.tab_title:visited {
+	color: #5a5a5a;
+	text-decoration: none;
+}
+
+a.tab_title:hover {
+	color: #5a5a5a;
+	text-decoration: none;
+}
+
+a.tab_title:active {
+	color: #5a5a5a;
+	text-decoration: none;
+}
+
+a.tab_menu:link {
+	color: #6464d5;
+	text-decoration: none;
+}
+
+a.tab_menu:hover {
+	color: #8888e0;
+	text-decoration: underline;
+}
+
+/*语料筛选结果表*/
+
+.mytable {
+	border: 1pt solid #d1e0fb;
+	margin: 0 auto;
+	width: 100%;
+}
+	.mytable tr:first-child {
+		background: #0066CC;
+		color: #fff;
+		font-weight: bold;
+		padding: 10px;
+	}
+	.mytable th {
+		color: #0066CC;
+		font-weight: bold;
+		padding: 10px;
+		border: 1pt solid #d1e0fb;
+		text-align: center;
+	}
+	.mytable td {
+		padding: 10px;
+		border: 1pt solid #d1e0fb;
+		text-align: center;
+	}
+
+	.mytable a:link {
+		color: #0066CC;
+	}
+	/* 未被访问的链接 */
+	.mytable a:visited {
+		color: #0066CC;
+	}
+	/* 已被访问的链接 */
+	.mytable a:hover {
+		color: #FF00FF;
+	}
+	/* 鼠标指针移动到链接上 */
+	.mytable a:active {
+		color: #FF0000;
+	}
+	/* 正在被点击的链接 */
+	.mytable tr:nth-of-type(odd) {
+		border: 1pt solid #d1e0fb;
+		background: #F5FAFA;
+	}
+	/* odd 标识奇数行，even标识偶数行 */
+	.mytable tr:hover {
+		background: #b6dede;
+		border: 1pt solid #d1e0fb;
+	}

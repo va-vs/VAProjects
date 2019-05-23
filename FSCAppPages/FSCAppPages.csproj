@@ -150,6 +150,7 @@
     <Content Include="Layouts\FSCAppPages\Corpus\neulc.aspx" />
     <Content Include="Layouts\FSCAppPages\css\style.css" />
     <Content Include="Layouts\FSCAppPages\css\stylelc.css" />
+    <Content Include="Layouts\FSCAppPages\css\tab.css" />
     <Content Include="Layouts\FSCAppPages\css\tiles.css" />
     <Content Include="Layouts\FSCAppPages\images\demobg.png" />
     <Content Include="Layouts\FSCAppPages\images\Download.png" />

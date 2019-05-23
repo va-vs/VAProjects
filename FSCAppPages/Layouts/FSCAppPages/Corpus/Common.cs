@@ -19,40 +19,61 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// </summary>
         /// <param name="strContent">英文文本</param>
         /// <returns>键值集合，键为序列号，值为单词集合 </returns>
-        public static Dictionary<int, List<string>> ParseSentences (string strContent)
+        public static Dictionary<int, List<string>> ParseSentences(string strContent)
         {
             string ignore = "[\r\n\t\"]";//需要替换的符号
             strContent = Regex.Replace(strContent, ignore, "");
             Regex rx = new Regex(@"(\S.+?[.!?])(?=\s+|$)");
-            MatchCollection matchs =rx.Matches(strContent) ;
-            Dictionary<int, List<string>> sentences = new Dictionary<int, List<string>>(); 
+            MatchCollection matchs = rx.Matches(strContent);
+            Dictionary<int, List<string>> sentences = new Dictionary<int, List<string>>();
             string sentence;
-            List<string> words = new List<string>(); 
-            foreach (Match match in matchs )
+            List<string> words = new List<string>();
+            foreach (Match match in matchs)
             {
-                sentence=match.Value ;
+                sentence = match.Value;
                 words = ParseWords(sentence);
-                sentences.Add(match.Index,   words);
+                sentences.Add(match.Index, words);
 
             }
-             return sentences;
+            return sentences;
         }
         /// <summary>
         /// 解析句子中的单词
         /// </summary>
         /// <param name="sentence">包含符号的句子</param>
         /// <returns></returns>
-        public static List<string>   ParseWords(string sentence)
+        public static List<string> ParseWords(string sentence)
         {
             Regex reg = new Regex(@"\b\w+\b");
             MatchCollection mc = reg.Matches(sentence);
             List<string> words = new List<string>();
             foreach (Match m in mc)
             {
-               words.Add (m.Value);
+                words.Add(m.Value);
             }
             return words;
         }
+
+        /// <summary>
+        /// 计算一组数字序列的标准差
+        /// </summary>
+        /// <param name="values">数字序列</param>
+        /// <returns>标准差</returns>
+        private static double CalculateStdDev(List<int> values)
+        {
+            double ret = 0;
+            if (values.Count > 0)
+            {
+                //  计算平均数
+                double avg = values.Average();
+                //  计算各数值与平均数的差值的平方，然后求和
+                double sum = values.Sum(d => Math.Pow(d - avg, 2));
+                //  除以数量，然后开方
+                ret = Math.Sqrt(sum / values.Count());
+            }
+            return ret;
+        }
+
         #endregion
         #region 处理外键
         /// <summary>
@@ -64,7 +85,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <returns></returns>
         public static string GetTitlesByIDs(DataTable dtCorpusExtends, string ids, string typeName, string splitStr)
         {
-            string strTitles="";
+            string strTitles = "";
             string[] idKeys = Regex.Split(ids, splitStr);
             DataRow[] drs;
             foreach (string id in idKeys)
@@ -73,7 +94,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     drs = dtCorpusExtends.Select("Types='" + typeName + "' and ItemID=" + id);
                     if (drs.Length > 0)
-                        strTitles +=drs[0]["Title"].ToString() + splitStr;
+                        strTitles += drs[0]["Title"].ToString() + splitStr;
                 }
             }
             if (strTitles.Length > 0)
@@ -97,9 +118,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 if (cbl.Items[i].Selected)
                 {
                     if (builder.ToString() == "")
-                        builder.Append(fieldName + " like '%" + splitStr + cbl.Items[i].Value + splitStr+"%'");
+                        builder.Append(fieldName + " like '%" + splitStr + cbl.Items[i].Value + splitStr + "%'");
                     else
-                        builder.Append(" or " + fieldName + " like '%" + splitStr + cbl.Items[i].Value + splitStr+"%'");
+                        builder.Append(" or " + fieldName + " like '%" + splitStr + cbl.Items[i].Value + splitStr + "%'");
                 }
             }
             selval = builder.ToString();
@@ -155,5 +176,39 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
         }
         #endregion
+
+        #region DataTable方法
+
+        /// <summary>
+        /// 行列转置
+        /// </summary>
+        /// <param name="dt">源数据表</param>
+        /// <returns>转置后的数据表</returns>
+        public static DataTable TranspositionDT(DataTable dt)
+        {
+            DataTable dtResult = new DataTable();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                dtResult.Columns.Add("Col" + i);
+            }
+            for (int c = 0; c < dt.Columns.Count; c++)
+            {
+                DataRow drNew = dtResult.NewRow();
+                for (int r = 0; r < dt.Rows.Count; r++)
+                {
+                    string value = String.Empty;
+                    DataRow drOld = dt.Rows[r];
+                    if (drOld[c] != null && !Convert.IsDBNull(drOld[c]) && drOld[c].ToString() != "null")
+                    {
+                        value = drOld[c].ToString();
+                    }
+                    drNew[r] = value;
+                }
+                dtResult.Rows.Add(drNew);
+            }
+            return dtResult;
+        }
+
+        #endregion DataTable方法
     }
 }

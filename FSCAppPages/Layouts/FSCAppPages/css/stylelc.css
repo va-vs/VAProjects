@@ -142,57 +142,7 @@
 	border-right:1px solid #808080;
 }
 
-/*语料筛选结果表*/
 
-.mytable {
-	border: 1pt solid #d1e0fb;
-	margin: 0 auto;
-	width: 100%;
-}
-	.mytable tr:first-child {
-		background: #0066CC;
-		color: #fff;
-		font-weight: bold;
-		padding: 10px;
-	}
-	.mytable th {
-		color: #0066CC;
-		font-weight: bold;
-		padding: 10px;
-		border: 1pt solid #d1e0fb;
-		text-align: center;
-	}
-	.mytable td {
-		padding: 10px;
-		border: 1pt solid #d1e0fb;
-		text-align: center;
-	}
-
-	.mytable a:link {
-		color: #0066CC;
-	}
-	/* 未被访问的链接 */
-	.mytable a:visited {
-		color: #0066CC;
-	}
-	/* 已被访问的链接 */
-	.mytable a:hover {
-		color: #FF00FF;
-	}
-	/* 鼠标指针移动到链接上 */
-	.mytable a:active {
-		color: #FF0000;
-	}
-	/* 正在被点击的链接 */
-	.mytable tr:nth-of-type(odd) {
-		border: 1pt solid #d1e0fb;
-		background: #F5FAFA;
-	}
-	/* odd 标识奇数行，even标识偶数行 */
-	.mytable tr:hover {
-		background: #b6dede;
-		border: 1pt solid #d1e0fb;
-	}
 
 
 .resultDiv {

@@ -9,6 +9,7 @@
 
 <asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
 	<link rel="stylesheet" href="../css/stylelc.css" type="text/css" charset="utf-8"  />
+	<link rel="stylesheet" href="../css/tab.css"  type="text/css" charset="utf-8" />
 	<script type="text/javascript">
 		function Check_Uncheck_All() {
 			var cbl0 = document.getElementById("<%=cblGenre.ClientID%>");
@@ -271,89 +272,37 @@
 									</tr>
 								</table>
 								<div id="divforCorpusResult" runat="server" visible="false">
-									<asp:Table ID="tbforGrade" runat="server"></asp:Table>
-									<asp:Table ID="tbforTopic" runat="server"></asp:Table>
-									<asp:Table ID="tbforGenre" runat="server"></asp:Table>
-									<table class="mytable">
-										<tr>
-											<th></th>
-											<th>F1</th>
-											<th>S2</th>
-											<th>J3</th>
-											<th>S4</th>
-										</tr>
-										<tr>
-											<th>texts</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>types</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>tokens</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>TTR</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>mean woed length(in characters)
-											</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>mean woed length standard deviation</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>mean in woeds</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>standard deviation</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>topics</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-										<tr>
-											<th>genres</th>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-											<td>1,000</td>
-										</tr>
-									</table>
+
+									<div id="tab">
+										<h3 class="up" id="two1" onmouseover="setContentTab('two',1,3)">Summary by Grade</h3>
+										<div class="block" id="con_two_1">
+											<asp:Table ID="tbforGrade" runat="server" CssClass="mytable"></asp:Table>
+										</div>
+										<h3 id="two2" onmouseover="setContentTab('two',2,3)">Summary by Topic</h3>
+										<div id="con_two_2">
+											<asp:Table ID="tbforTopic" runat="server" CssClass="mytable"></asp:Table>
+										</div>
+										<h3 id="two3" onmouseover="setContentTab('two',3,3)">Summary by Genre</h3>
+										<div id="con_two_3">
+											<asp:Table ID="tbforGenre" runat="server" CssClass="mytable"></asp:Table>
+										</div>
+									</div>
+
+									<script type="text/javascript">
+										function setContentTab(name, curr, n) {
+											for (i = 1; i <= n; i++) {
+												var menu = document.getElementById(name + i);
+												var cont = document.getElementById("con_" + name + "_" + i);
+												menu.className = i == curr ? "up" : "";
+												if (i == curr) {
+													cont.style.display = "block";
+													cont.className="block";
+												} else {
+													cont.style.display = "none";
+												}
+											}
+										}
+									</script>
 								</div>
 							</asp:View>
 
