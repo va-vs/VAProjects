@@ -382,6 +382,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         List<string> listWords = new List<string>();
                         List<int> listParaLength = new List<int>();
                         drSummary["texts"] = dtSelect.Rows.Count;//筛选后的语料条数
+                        int rowIndex = 0;
                         foreach (DataRow dr in dtSelect.Rows)
                         {
                             string para = dr["OriginalText"].ToString();//本条语料的内容
@@ -389,10 +390,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                             foreach (int key in dictPara.Keys)
                             {
                                 listParaLength.Add(dictPara[key].Count);
-                                listWords = listWords.Concat(dictPara[key]).ToList<string>(); //保留重复项，合并词汇数组
+                                //listWords = listWords.Concat(dictPara[key]).ToList<string>(); //保留重复项，合并词汇数组
                             }
-                            fk1.Add(dr[listFKs[0]].ToString());
-                            fk2.Add(dr[listFKs[1]].ToString());
+                            string strFks = dr[listFKs[0]].ToString();
+                            if (!fk1.Contains(strFks))
+                                fk1.Add(strFks);
+                            strFks = dr[listFKs[1]].ToString();
+                            if (!fk2.Contains(strFks))
+                                fk2.Add(strFks);
+                            rowIndex++;
+
                         }
 
                         double avg = listParaLength.Average();
