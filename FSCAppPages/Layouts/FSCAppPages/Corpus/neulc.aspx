@@ -326,6 +326,7 @@
 											<asp:ListItem Value="0" Selected="true">Fill Text by Yourself </asp:ListItem>
 											<asp:ListItem Value="1" Enabled="false">Get Text From Corpus </asp:ListItem>
 										</asp:RadioButtonList>
+                                        <asp:HiddenField ID="hdftxtFrom" Value="0" runat="server" />
 									</div>
 									<div id="divfromshuru" class="wbdiv" runat="server">
 										<table class="wbtable">
@@ -358,11 +359,51 @@
                                             </tr>
 										</table>
 									</div>
-									<div id="divFromCorpus" runat="server" class="wbdiv" visible="false">
-										<input id="txtKeyWordsforWordlist" type="text" class="input-text" value="" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
-										<asp:Button ID="btnQueryforWordlist" runat="server" Text=" Query " CssClass="outbtndiv-button" Enabled="false" />
-                                        <div><asp:GridView ID="gvCorpusforWordList" runat="server"></asp:GridView></div>
-									</div>
+									<div id="divFromCorpus" runat="server" class="wbdiv">
+                                        <input type="text" class="input-text" value="" id="txtKeyWordsforWordlist" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
+                                        <asp:Button ID="btnQueryforWordlist" runat="server" Text=" 检 索 " CssClass="outbtndiv-button" />
+                                        <div id="divCorpusforWordList" runat="server" visible="false">
+                                            <hr />
+                                            <script type="text/javascript">
+                                                function fillTextfromRow(txt) {
+                                                    var txtCtrl = document.getElementById('<%=txtcontent.ClientID%>');
+                                                    txtCtrl.value = txt;
+                                                }
+                                            </script>
+                                                点击下面数据行，可以处理该行语料文本，点击后面的处理所有按钮，将处理筛选出的所有语料&nbsp;&nbsp;
+                                                <asp:Button ID="btnLemmaAll" runat="server" Text="处理所有" />
+                                            <br />
+                                            <asp:GridView ID="gvCorpusforWordList" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%">
+                                                <AlternatingRowStyle BackColor="White" />
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Title">
+                                                        <ItemTemplate>
+                                                            <div style="padding:5px">
+                                                                <asp:Label ID="lbTitle" runat="server" Text='<%# Bind("Title")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Text">
+                                                        <ItemTemplate>
+                                                            <div style="padding:5px">
+                                                                <asp:Label ID="lbText" runat="server" Text='<%# Bind("OriginalText")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <EditRowStyle BackColor="#2461BF" />
+                                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                                <RowStyle BackColor="#EFF3FB" />
+                                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                                <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                                            </asp:GridView>
+                                        </div>
+                                    </div>
                                     <div id="divTexts" class="wbdiv" runat="server" visible="false">
                                         <div>
                                             <textarea cols="100" id="txtcontent" v-model="body" onkeyup="wordStatic(this);" onchange="wordStatic(this);" onblur="wordStatic(this);" runat="server" rows="100" class="ta" placeholder="你可以使用上面的文件控件导入文本文件的内容，或者你可以输入或者粘贴要处理的文本!"></textarea>
