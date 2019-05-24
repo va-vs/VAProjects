@@ -86,7 +86,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th style="text-align: right;">Grade：
+                                    <th style="text-align: right;">Level：
                                     </th>
                                     <td>
                                         <asp:CheckBoxList ID="cblQueryGrade" runat="server" RepeatColumns="5" RepeatDirection="Horizontal"></asp:CheckBoxList>
@@ -203,7 +203,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Grade:
+                                <th>Level:
                                 </th>
                                 <td>
                                     <asp:CheckBoxList ID="cblGrade" RepeatDirection="Horizontal" RepeatLayout="Flow" runat="server" RepeatColumns="5" ToolTip="Choose one Grade that the Corpora Author belongs to"></asp:CheckBoxList>
