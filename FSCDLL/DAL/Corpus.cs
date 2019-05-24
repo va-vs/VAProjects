@@ -20,11 +20,21 @@ namespace FSCDLL.DAL
             DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "FSC_GetCorpus");
             return ds;
         }
-       /// <summary>
-       /// 获取语法表中的常量表数据
-       /// </summary>
-       /// <param name="types">类型</param>
-       /// <returns></returns>
+        /// <summary>
+        /// 通过查询条件获取所有语料库的内容
+        /// </summary>
+        /// <param name="filterExpression">由字符串组成的查询条件</param>
+        /// <returns></returns>
+        public static DataSet GetCorpusByFilterString(string filterExpression)
+        {
+            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusBySql");
+             return ds;
+        }
+        /// <summary>
+        /// 获取语法表中的常量表数据
+        /// </summary>
+        /// <param name="types">类型</param>
+        /// <returns></returns>
         public static DataSet GetCopusExtendByTypes(string types)
         {
             DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCopusExtendByTypes",types );
