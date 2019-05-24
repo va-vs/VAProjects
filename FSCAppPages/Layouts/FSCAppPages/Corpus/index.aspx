@@ -13,7 +13,7 @@
 
 <asp:Content ID="Main" ContentPlaceHolderID="PlaceHolderMain" runat="server">
 
-	<div class="div">
+	<div id="divIndex" class="divIndex" runat="server">
 		<h3>NEU English Corpus</h3>
 		<p></p>
 		<table>
@@ -27,7 +27,7 @@
 			</tr>
 		</table>
 		  <hr style="margin-top:100px;"/>
-		  <ul class="ext_link">
+		  <ul>
 			<li><a href="https://www.english-corpora.org/bnc/" target="_blank">BNC</a></li>
 			<li><a href="https://www.english-corpora.org/coca/" target="_blank">COCA</a></li>
 			<li><a href="http://corpus.leeds.ac.uk/itweb/htdocs/Query.html#" target="_blank">IntelliText</a></li>
