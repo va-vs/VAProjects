@@ -86,10 +86,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th style="text-align: right;">Grade：
+                                    <th style="text-align: right;">Level：
                                     </th>
                                     <td>
-                                        <asp:CheckBoxList ID="cblQueryGrade" runat="server" RepeatColumns="5" RepeatDirection="Horizontal"></asp:CheckBoxList>
+                                        <asp:CheckBoxList ID="cblQueryLevel" runat="server" RepeatColumns="5" RepeatDirection="Horizontal"></asp:CheckBoxList>
                                     </td>
                                 </tr>
                                 <tr>
@@ -124,10 +124,10 @@
                                         <asp:Label runat="server" Text='<%#Eval("Title")%>' ID="lbTitle"></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="&nbsp;Grade&nbsp;">
+                                <asp:TemplateField HeaderText="&nbsp;Level&nbsp;">
                                     <ItemTemplate>
-                                        <asp:HiddenField ID="hdfGradeId" runat="server" Value='<%#Eval("GradeID")%>' />
-                                        <asp:Label runat="server" Text="" ID="lbGrade"></asp:Label>
+                                        <asp:HiddenField ID="hdfLevelId" runat="server" Value='<%#Eval("LevelID")%>' />
+                                        <asp:Label runat="server" Text="" ID="lbLevel"></asp:Label>
                                     </ItemTemplate>
                                     <ItemStyle HorizontalAlign="Center" />
                                 </asp:TemplateField>
@@ -203,10 +203,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Grade:
+                                <th>Level:
                                 </th>
                                 <td>
-                                    <asp:CheckBoxList ID="cblGrade" RepeatDirection="Horizontal" RepeatLayout="Flow" runat="server" RepeatColumns="5" ToolTip="Choose one Grade that the Corpora Author belongs to"></asp:CheckBoxList>
+                                    <asp:CheckBoxList ID="cblLevel" RepeatDirection="Horizontal" RepeatLayout="Flow" runat="server" RepeatColumns="5" ToolTip="Choose one Level that the Corpora Author belongs to"></asp:CheckBoxList>
                                 </td>
                             </tr>
                             <tr>

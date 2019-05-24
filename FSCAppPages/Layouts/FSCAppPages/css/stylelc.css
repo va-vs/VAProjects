@@ -18,7 +18,7 @@
 
 /*页面布局*/
 .divneulc {
-	margin:0 auto;
+	margin: 0 auto;
 	width: 100%;
 	min-width: 800px;
 }
@@ -26,27 +26,29 @@
 .neulctable {
 	width: 100%;
 	border: 1px #808080 solid;
-	line-height:30px;
+	line-height: 30px;
 }
 
 .wbdiv {
 	width: 98%;
 	line-height: 30px;
-	padding-left:20px;
-	margin:5px;
+	padding-left: 20px;
+	margin: 5px;
 }
 
-.wbtable{
-	width:98%;
-	line-height:30px;
+.wbtable {
+	width: 98%;
+	line-height: 30px;
 }
-.wbtable tr th{
-	text-align:right;
-	padding:5px;
-}
+
+	.wbtable tr th {
+		text-align: right;
+		padding: 5px;
+	}
+
 	.wbtable tr td {
-		text-align:left;
-		padding:5px;
+		text-align: left;
+		padding: 5px;
 	}
 
 .info {
@@ -135,11 +137,11 @@
 
 .mnuTopMenu {
 	font-size: 15px;
-	padding:5px;
+	padding: 5px;
 }
 
-.mnuStaticItem{
-	border-right:1px solid #808080;
+.mnuStaticItem {
+	border-right: 1px solid #808080;
 }
 
 
@@ -155,14 +157,14 @@
 	border-radius: 15px;
 }
 
-.input-text{
+.input-text {
 	border: 1px solid #808080;
 	border-radius: 5px 5px 5px 5px;
 	font-size: 13px;
 	height: 25px;
 	line-height: 25px;
 	margin-right: 10px;
-	padding-left:5px;
+	padding-left: 5px;
 }
 
 .ta {
@@ -191,23 +193,26 @@
 	background-image: none;
 	width: 250px;
 	margin-right: 10px;
-	line-height:25px;
+	line-height: 25px;
 }
 
-.dropdownlist{
-	height:25px;
+.dropdownlist {
+	height: 25px;
 }
-.cblList{
-	padding-left:10px;
-	padding-right:10px;
+
+.cblList {
+	padding-left: 10px;
+	padding-right: 10px;
 }
-.cblList input {
-	margin-left: 20px;
-	margin-right:10px;
-}
-.cblList label {
-	display: inline-block;
-}
+
+	.cblList input {
+		margin-left: 20px;
+		margin-right: 10px;
+	}
+
+	.cblList label {
+		display: inline-block;
+	}
 
 .fakeContainer {
 	float: left;
@@ -218,24 +223,26 @@
 	background-color: #ffffff;
 	overflow: hidden;
 }
+
 .divbr {
 	clear: both;
 	width: 100%;
 	height: 5px;
 }
+
 .divhr {
 	clear: both;
 	width: 100%;
-	margin-top:5px;
-	margin-bottom:5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 	height: 2px;
-	background-color:#808080;
+	background-color: #808080;
 }
 
 /*语料彩色可视化*/
 .divmain {
 	width: 100%;
-	margin-bottom:10px;
+	margin-bottom: 10px;
 }
 
 .it-ec-textdiv {
@@ -245,9 +252,9 @@
 	border: 1px solid #808080;
 	line-height: 25px;
 	font-size: 12px;
-	padding:5px;
-	height:400px;
-	overflow-y:auto;
+	padding: 5px;
+	height: 400px;
+	overflow-y: auto;
 }
 
 .it-ec-statsdiv {
@@ -269,7 +276,7 @@
 	margin: 5px;
 	border-bottom: 1px solid #808080;
 	padding: 5px;
-	text-align:right;
+	text-align: right;
 }
 
 .outbtndiv-button {
@@ -289,7 +296,7 @@
 
 .it-chart-dl {
 	margin-left: 10px;
-	width:400px;
+	width: 400px;
 }
 
 .it-chart-dt {
@@ -393,122 +400,118 @@ span.MW {
 		height: 100%;
 	}
 
+/*首页Index.aspx 样式*/
 
-	.div{
-		margin:0 auto;
-			width:90%;
-			max-width:750px;
-			text-align:center;
-			vertical-align:middle;
-			font-size:16px;
-			padding-top:100px;
-		}
-		.div table{
-			width:100%;
-		}
-		.div table a{
-			color:#000;
-			border:1px solid #808080;
-			padding:5px;
-		}
-		.div table a:hover{
-			color:#ff6a00;
-			cursor:pointer;
-		}
-		.div table a:visited{
-			color:#000;
-		}
-		/* 底部快速链接与版权 */
-
-.foot {
-	width: 100%;
-	margin-top: -20px;
-	/* margin-bottom: -40px; */
-	background: #ecf7fb;
-	border-top: #efefef 1px solid;
-}
-
-.ext_link {
-	width: auto;
-	height: 12px;
+.divIndex {
 	margin: 0 auto;
+	width: 100%;
+	max-width: 750px;
 	text-align: center;
-	max-width: 1000px;
+	vertical-align: middle;
+	font-size: 16px;
+	padding: 100px;
+	border: 1px solid #808080;
 }
 
-.ext_link li {
-	list-style: none;
-	width: auto;
-	display: inline-block;
-	line-height: 20px;
-	text-align: center;
-	border-left: #000 1px solid;
-	border-color: #525252;
-	font-size: 13px;
-	padding-left: 10px;
-	padding-right: 10px;
-}
+	.divIndex table {
+		width: 100%;
+	}
 
-.ext_link li:first-child {
-	border-left: 0px;
-}
-
-.ext_link a {
-	color: #525252;
-	text-decoration: none;
-}
-
-.ext_link a:hover {
-	color: red;
-	text-decoration: none;
-}
-
-
-/*admin*/
-.addBtn {
-			font-weight: bold;
-			border: none;
-			background-color: #6699FF;
-			padding: 5px;
-			font-size: 2em;
-			color: #fff;
-			border-radius: 100%;
-			width: 60px;
-			height: 60px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			cursor: pointer;
-			cursor: hand;
-			margin-top: 5px;
-			outline: none;
-			user-select: none;
-		}
-
-		.myform {
+		.divIndex table a {
+			color: #000;
+			border: 1px solid #808080;
 			padding: 5px;
 		}
 
-			.myform tr {
-				line-height: 30px;
-				padding-bottom: 5px;
+			.divIndex table a:hover {
+				color: #ff6a00;
+				cursor: pointer;
 			}
 
-				.myform tr th {
-					text-align: right;
-					width: 100px;
-					max-width: 300px;
-					vertical-align: top;
-				}
+			.divIndex table a:visited {
+				color: #000;
+			}
+	/* 首页底部快速链接 */
 
-				.myform tr td {
-					text-align: left;
-				}
+	.divIndex ul {
+		width: auto;
+		height: 12px;
+		margin: 0 auto;
+		text-align: center;
+		max-width: 1000px;
+	}
 
-					.myform tr td text {
-						width: 280px;
-					}
-
-		.myGrid {
-			min-width: 600px;
+		.divIndex ul li {
+			list-style: none;
+			width: auto;
+			display: inline-block;
+			line-height: 20px;
+			text-align: center;
+			border-left: #000 1px solid;
+			border-color: #525252;
+			font-size: 13px;
+			padding-left: 10px;
+			padding-right: 10px;
 		}
+
+			.divIndex ul li:first-child {
+				border-left: 0px;
+			}
+
+			.divIndex ul li a {
+				color: #525252;
+				text-decoration: none;
+			}
+
+				.divIndex ul li a:hover {
+					color: red;
+					text-decoration: none;
+				}
+/*admin*/
+.addBtn {
+	font-weight: bold;
+	border: none;
+	background-color: #6699FF;
+	padding: 5px;
+	font-size: 2em;
+	color: #fff;
+	border-radius: 100%;
+	width: 60px;
+	height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+	cursor: hand;
+	margin-top: 5px;
+	outline: none;
+	user-select: none;
+}
+
+.myform {
+	padding: 5px;
+}
+
+	.myform tr {
+		line-height: 30px;
+		padding-bottom: 5px;
+	}
+
+		.myform tr th {
+			text-align: right;
+			width: 100px;
+			max-width: 300px;
+			vertical-align: top;
+		}
+
+		.myform tr td {
+			text-align: left;
+		}
+
+			.myform tr td text {
+				width: 280px;
+			}
+
+.myGrid {
+	min-width: 600px;
+}

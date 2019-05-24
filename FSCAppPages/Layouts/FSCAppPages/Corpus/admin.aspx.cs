@@ -59,24 +59,24 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         lblContext.Text = lblContext.Text.Substring(0, 100) + "……";
                     }
 
-                    HiddenField hId = gRow.FindControl("hdfGradeId") as HiddenField;
-                    Label lblGrade;
+                    HiddenField hId = gRow.FindControl("hdfLevelId") as HiddenField;
+                    Label lblLevel;
                     if (hId.Value.Length > 0)
                     {
-                        lblGrade = gRow.FindControl("lbGrade") as Label;
-                        lblGrade.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Grade", split);
+                        lblLevel = gRow.FindControl("lbLevel") as Label;
+                        lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Level", split);
                     }
                     hId = gRow.FindControl("hdfGenreId") as HiddenField;
                     if (hId.Value.Length > 0)
                     {
-                        lblGrade = gRow.FindControl("lbGenre") as Label;
-                        lblGrade.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Genre", split);
+                        lblLevel = gRow.FindControl("lbGenre") as Label;
+                        lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Genre", split);
                     }
                     hId = gRow.FindControl("hdfTopicId") as HiddenField;
                     if (hId.Value.Length > 0)
                     {
-                        lblGrade = gRow.FindControl("lbTopic") as Label;
-                        lblGrade.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Topic", split);
+                        lblLevel = gRow.FindControl("lbTopic") as Label;
+                        lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Topic", split);
                     }
                 }
             }
@@ -174,7 +174,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         //添加新的语料时先清空原有的控件
         private void ClearControls()
         {
-            foreach (ListItem itm in cblGrade.Items)
+            foreach (ListItem itm in cblLevel.Items)
             {
                 itm.Selected = false;
             }
@@ -206,7 +206,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             txtOriginalText.Text = drCorpus["OriginalText"].ToString();
 
             Common.SetCBListChecked(cblTopics, drCorpus["TopicID"].ToString(), split);
-            Common.SetCBListChecked(cblGrade, drCorpus["GradeID"].ToString(), split);
+            Common.SetCBListChecked(cblLevel, drCorpus["LevelID"].ToString(), split);
             Common.SetCBListChecked(cblGenre, drCorpus["GenreID"].ToString(), split);
         }
         /// <summary>
@@ -214,7 +214,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// </summary>
         private void InitControls()
         {
-            string types = "Topic";//Genre Grade
+            string types = "Topic";//Genre Level
             DataSet ds = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
 
             //以下为查询的条件部分
@@ -237,17 +237,17 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             cblGenre.DataTextField = "Title";
             cblGenre.DataValueField = "ItemID";
             cblGenre.DataBind();
-            types = "Grade";
-            DataSet dsGrade = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            cblQueryGrade.DataSource = dsGrade.Tables[0];
-            cblQueryGrade.DataTextField = "Title";
-            cblQueryGrade.DataValueField = "ItemID";
-            cblQueryGrade.DataBind();
+            types = "Level";
+            DataSet dsLevel = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+            cblQueryLevel.DataSource = dsLevel.Tables[0];
+            cblQueryLevel.DataTextField = "Title";
+            cblQueryLevel.DataValueField = "ItemID";
+            cblQueryLevel.DataBind();
             //等级
-            cblGrade.DataSource = dsGrade.Tables[0].Copy();
-            cblGrade.DataTextField = "Title";
-            cblGrade.DataValueField = "ItemID";
-            cblGrade.DataBind();
+            cblLevel.DataSource = dsLevel.Tables[0].Copy();
+            cblLevel.DataTextField = "Title";
+            cblLevel.DataValueField = "ItemID";
+            cblLevel.DataBind();
         }
         private void SaveCorpus()
         {//此处要改
@@ -290,8 +290,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dr["TopicID"] = ids;
             ids = Common.GetCBListChecked(cblGenre, split);
             dr["GenreID"] = ids;
-            ids = Common.GetCBListChecked(cblGrade, split);
-            dr["GradeID"] = ids;
+            ids = Common.GetCBListChecked(cblLevel, split);
+            dr["LevelID"] = ids;
             dr["OriginalText"] = txtOriginalText.Text;
             //赋码未添加
             //dr["CodedText"] ="";
@@ -310,10 +310,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <returns></returns>
         private string GetSelectQuery()
         {
-            //此处进行查询，关键词、grade、topic、genre
+            //此处进行查询，关键词、Level、topic、genre
             string strQuery = "";
-            if (cblGrade.SelectedIndex >= 0)
-                strQuery = Common.GetQueryString(cblGrade, "GradeID", split);
+            if (cblLevel.SelectedIndex >= 0)
+                strQuery = Common.GetQueryString(cblLevel, "LevelID", split);
             string strSql = "";
             if (cblGenre.SelectedIndex >= 0)
                 strSql = Common.GetQueryString(cblGenre, "GenreID", split);

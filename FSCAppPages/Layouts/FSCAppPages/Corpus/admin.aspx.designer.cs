@@ -58,13 +58,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.TextBox txtKeyWord;
         
         /// <summary>
-        /// cblQueryGrade 控件。
+        /// cblQueryLevel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cblQueryGrade;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblQueryLevel;
         
         /// <summary>
         /// cblQueryGenre 控件。
@@ -130,13 +130,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.CheckBoxList cblGenre;
         
         /// <summary>
-        /// cblGrade 控件。
+        /// cblLevel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cblGrade;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblLevel;
         
         /// <summary>
         /// txtTitle 控件。

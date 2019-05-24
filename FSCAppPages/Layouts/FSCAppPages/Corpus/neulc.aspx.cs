@@ -18,7 +18,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
     public partial class neulc : LayoutsPageBase
     {
-
         #region 0 公用
         public ArrayList CiLib;
         //数据分隔符，用来分隔外键的ID值
@@ -33,12 +32,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             muNeulc.MenuItemClick += muNeulc_MenuItemClick;
 
-
             btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
 
             if (!IsPostBack)
             {
-
                 InitQueryControls();
                 ClearQueryControls();
                 muNeulc.Items[0].Selected = true;
@@ -117,14 +114,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <summary>
         /// 输出单词等级颜色示例
         /// </summary>
-        /// <param name="cngrade">级别标记</param>
+        /// <param name="cnLevel">级别标记</param>
         /// <param name="tags">级别号</param>
         /// <param name="wordCount">词频：该级别词汇量</param>
         /// <param name="frequency">todo: describe frequency parameter on GetLegend</param>
         /// <returns>图例Html字符串</returns>
-        public string GetLegend(string cngrade, int frequency, int wordCount)
+        public string GetLegend(string cnLevel, int frequency, int wordCount)
         {
-            //****************单词分级cngrade颜色定义*********************/
+            //****************单词分级cnLevel颜色定义*********************/
             //-2:忽略处理的词汇
             //-1:无法在基础词汇表中找到其原型,即单词属于无法处理词汇
             //0:不确定词汇级别,即单词属于超纲词汇
@@ -133,13 +130,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             //3:单词属于较高要求词汇
             //4:单词属于更高要求词汇
             string[] strColors = new string[7] { "grey", "orange", "red", "indigo", "blue", "green", "yellow" };
-            string[] strENGrades = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
-            string[] strCNGrades = new string[7] { "忽略处理", "未处理", "超纲词汇", "高中大纲", "基本要求", "较高要求", "更高要求" };//级别，主要用于显示文字
-            int gradeindex = Array.IndexOf(strCNGrades, cngrade);
+            string[] strENLevels = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
+            string[] strCNLevels = new string[7] { "忽略处理", "未处理", "超纲词汇", "高中大纲", "基本要求", "较高要求", "更高要求" };//级别，主要用于显示文字
+            int Levelindex = Array.IndexOf(strCNLevels, cnLevel);
             decimal percent = Math.Round(((decimal)frequency / wordCount) * 100, 4);
-            string colorstr = string.Format("<dt class='it-chart-dt' data-grade='{0}' onclick='HighLightthis(this)'>{1}</dt>", strENGrades[gradeindex], cngrade);
-            colorstr += string.Format("<dd class='it-chart-dd' data-grade='{0}' onclick='HighLightthis(this)'>", strENGrades[gradeindex]);
-            colorstr += string.Format("<div class='it-chart-bar' style='background-color: {0}; width:{1}%;'></div>", strColors[gradeindex], percent);
+            string colorstr = string.Format("<dt class='it-chart-dt' data-Level='{0}' onclick='HighLightthis(this)'>{1}</dt>", strENLevels[Levelindex], cnLevel);
+            colorstr += string.Format("<dd class='it-chart-dd' data-Level='{0}' onclick='HighLightthis(this)'>", strENLevels[Levelindex]);
+            colorstr += string.Format("<div class='it-chart-bar' style='background-color: {0}; width:{1}%;'></div>", strColors[Levelindex], percent);
             colorstr += string.Format("<div class='it-chart-label'>{0}({1}%)</div>", frequency, percent.ToString("0.00"));
             colorstr += "</dd>";
             return colorstr;
@@ -149,7 +146,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         public StringBuilder GetCopusContext(IEnumerable<List<string>> showWordsList)
         {
             StringBuilder sb = new StringBuilder();
-            string[] strENGrades = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
+            string[] strENLevels = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
             //string divString = string.Empty;
             //int i = 0;//计数器
             try
@@ -162,22 +159,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     string className = "";
                     if (stags < 2)
                     {
-                        className = string.Format("RB {0} {1}", strENGrades[stags + 2], sword);
+                        className = string.Format("RB {0} {1}", strENLevels[stags + 2], sword);
                     }
                     else
                     {
-                        className = string.Format("RB {0} {1}", strENGrades[stags - 2], sword);
+                        className = string.Format("RB {0} {1}", strENLevels[stags - 2], sword);
                     }
                     //if (stags > maxIndex + 4 || stags == 0) //没有选择的级别或者没有确定级别的基础词汇,即超纲词汇
                     //{
-                    //    className = string.Format("RB {0} {1}", strENGrades[stags], sword);
+                    //    className = string.Format("RB {0} {1}", strENLevels[stags], sword);
                     //}
                     //else //不在基础词汇表中或者是已经指定级别的词汇
                     //{
                     //    if (stags >= 5)
-                    //        className = string.Format("RB {0} {1}", strENGrades[stags - 4], sword);
+                    //        className = string.Format("RB {0} {1}", strENLevels[stags - 4], sword);
                     //    else
-                    //        className = string.Format("RB {0} {1}", strENGrades[stags], sword);
+                    //        className = string.Format("RB {0} {1}", strENLevels[stags], sword);
                     //}
                     sb.AppendFormat("<span class='{0}'> {1}</span>", className, sword);
                 }
@@ -270,9 +267,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 if (result0 != "1;1;1")//不是所有的筛选项都被筛选了
                 {
                     //string[] strs = result0.Split(';');
-                    //if (strs[0] != "1")//Grade
+                    //if (strs[0] != "1")//Level
                     //{
-                    //    lbErr.Text = "你尚未选择筛选的Grade";
+                    //    lbErr.Text = "你尚未选择筛选的Level";
                     //    return;
                     //}
 
@@ -287,35 +284,37 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     //    lbErr.Text = "你尚未选择筛选的Topic";
                     //    return;
                     //}
-                    lbErr.Text = "Grade、Genre、Topic中每项都至少要选择一个条目！";
+                    lbErr.Text = "Level、Genre、Topic中每项都至少要选择一个条目！";
+                    rbltxtFrom.Items[1].Enabled = false;
                     return;
                 }
                 else
                 {
                     string newQueryStr = strResult[1];
                     DataSet dsAll = FSCDLL.DAL.Corpus.GetCorpus();
-                    BuildTable(dsAll, cblGrade, "GradeID", tbforGrade);
-                    //if (ViewState["filterExp"] != null)//已有检索历史
-                    //{
-                    //    string oldQueryStr = ViewState["filterExp"].ToString();
-                    //    if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
-                    //    {
-                    //        ViewState["filterExp"] = newQueryStr;
-                    //        ViewState["dsCorpus"] = null;//清空检索
-                    //        QueryCorpus();//检索语料库
-                    //    }
-                    //}
-                    //else//尚未检索过
-                    //{
-                    //    ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
-                    //    ViewState["dsCorpus"] = null;//清空检索
-                    //    QueryCorpus();
-                    //}
+                    if (ViewState["filterExp"] != null)//已有检索历史
+                    {
+                        string oldQueryStr = ViewState["filterExp"].ToString();
+                        if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
+                        {
+                            ViewState["filterExp"] = newQueryStr;
+                            ViewState["dsCorpus"] = null;//清空检索
+                            QueryCorpus();//检索语料库
+                        }
+                    }
+                    else//尚未检索过
+                    {
+                        ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
+                        ViewState["dsCorpus"] = null;//清空检索
+                        QueryCorpus();
+                    }
+                    divforCorpusResult.Visible = true;
+                    rbltxtFrom.Items[1].Enabled = true;//经过检索后，WordList中才可以使用关键词检索语料库文本做WordList
                 }
             }
             catch (Exception ex)
             {
-
+                rbltxtFrom.Items[1].Enabled = false;
                 lbErr.Text = ex.ToString();
             }
         }
@@ -329,9 +328,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #region Corpus方法
 
 
-        private DataTable BuildDTSummary(DataSet dsCorpus, string fkid, CheckBoxList cbl)
+        private DataTable BuildDTSummary(DataTable dtCorpus, string fkid, CheckBoxList cbl)
         {
-            DataTable dt = dsCorpus.Tables[0];
+            #region 构造汇总表
             DataTable dtSummary = new DataTable();
             dtSummary.Columns.Add("Summary");
             dtSummary.Columns.Add("texts");
@@ -342,7 +341,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtSummary.Columns.Add("wstandard");
             dtSummary.Columns.Add("pAvglength");
             dtSummary.Columns.Add("pstandard");
-            List<string> listFKs = new List<string> { "GradeID", "TopicID", "GenreID" };
+            List<string> listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
             listFKs.Remove(fkid);
             foreach (string fk in listFKs)
             {
@@ -350,7 +349,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             DataRow drSummary = dtSummary.NewRow();
 
-            drSummary[0] = " ";
+            drSummary[0] = fkid.Replace("ID", "s");
             drSummary[1] = "texts";
             drSummary[2] = "types";
             drSummary[3] = "tokens";
@@ -362,6 +361,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             drSummary[9] = listFKs[0].Replace("ID", "s");
             drSummary[10] = listFKs[1].Replace("ID", "s");
             dtSummary.Rows.Add(drSummary);
+            #endregion 构造汇总表
+
+            //DataTable dtWords = new DataTable("词汇表");
+            //DataColumn colID = new DataColumn()
+            //{
+            //    ColumnName = "ID",/*自增列名称*/
+            //    AutoIncrement = true /*设置是否为自增列*/,
+            //    AutoIncrementSeed = 1 /*设置自增初始值*/,
+            //    AutoIncrementStep = 1 /*设置每次子增值*/
+            //};
+            //dtWords.Columns.Add(colID);
+            //dtWords.Columns.Add("Words");
+            //dtWords.Columns.Add("Length");
+
             for (int i = 0; i < cbl.Items.Count; i++)
             {
                 if (cbl.Items[i].Selected)
@@ -370,7 +383,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     drSummary = dtSummary.NewRow();
                     drSummary["Summary"] = cbl.Items[i].Text;//统计项，比如年级中的F1，S2...
                     //用dataview的方法实现筛选，dt为内存表
-                    DataView dv = dt.DefaultView;
+                    DataView dv = dtCorpus.DefaultView;
                     string filterStr = string.Format("{0} = '{1}'", fkid, selectValue);
                     dv.RowFilter = filterStr;
                     //将查得的数据转换为DataTable
@@ -390,15 +403,24 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                             foreach (int key in dictPara.Keys)
                             {
                                 listParaLength.Add(dictPara[key].Count);
-
+                                foreach (string wd in dictPara[key])
+                                {
+                                    listWords.Add(wd);//获取单词长度
+                                }
                                 //listWords = listWords.Concat(dictPara[key]).ToList<string>(); //保留重复项，合并词汇数组
                             }
                             string strFks = dr[listFKs[0]].ToString();
                             if (!fk1.Contains(strFks))
+                            {
                                 fk1.Add(strFks);
+                            }
+
                             strFks = dr[listFKs[1]].ToString();
                             if (!fk2.Contains(strFks))
+                            {
                                 fk2.Add(strFks);
+                            }
+
                             rowIndex++;
 
                         }
@@ -451,14 +473,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             return dtSummary;
         }
 
-        private void BuildTable(DataSet dsCorpus, CheckBoxList cbl, string fkid, Table tbSummary)
+        private void BuildTable(DataTable dtCorpus, CheckBoxList cbl, string fkid, Table tbSummary)
         {
-            DataTable dt = dsCorpus.Tables[0];
-            DataTable dtSummary = BuildDTSummary(dsCorpus, fkid, cbl);
+            DataTable dtSummary = BuildDTSummary(dtCorpus, fkid, cbl);
             DataTable dtResult = Common.TranspositionDT(dtSummary);
             List<string> listValues = new List<string>();
             List<string> listTexts = new List<string>();
             List<Dictionary<int, List<string>>> listDict = new List<Dictionary<int, List<string>>>();
+
+            tbSummary.Rows.Clear();//清空原表格内容
             //表头行
             DataRow drHead = dtResult.Rows[0];
             TableHeaderRow thr = new TableHeaderRow();
@@ -481,22 +504,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 tr.Cells.Add(thc);
                 for (int j = 1; j < dtResult.Columns.Count; j++)
                 {
-                    TableCell tc = new TableCell();
-                    tc = new TableHeaderCell() { Text = dr[j].ToString() };
+                    TableCell tc = new TableCell() { Text = dr[j].ToString() };
                     tr.Cells.Add(tc);
                 }
                 tbSummary.Rows.Add(tr);
             }
-
         }        /// <summary>
         /// 根据条件筛选大库，生成关键小库的数据集
         /// </summary>
         private void QueryCorpus()
         {
             DataTable dtAll;
-            DataSet dsAll = FSCDLL.DAL.Corpus.GetCorpus();
             if (ViewState["dtAll"] == null)
             {
+                DataSet dsAll = FSCDLL.DAL.Corpus.GetCorpus();
                 dtAll = dsAll.Tables[0];
                 ViewState["dtAll"] = dtAll;
             }
@@ -513,22 +534,21 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dsResult.Merge(drs);
             ViewState["dsCorpus"] = dsResult;
 
-            BuildTable(dsAll, cblGrade, "GradeID", tbforGrade);
-            //BuildTable(dsAll, cblTopic, "TopicID", tbforTopic);
-            //BuildTable(dsAll, cblGenre, "GenreID", tbforGenre);
-            divforCorpusResult.Visible = true;
+            BuildTable(dtAll, cblLevel, "LevelID", tbforLevel);
+            BuildTable(dtAll, cblTopic, "TopicID", tbforTopic);
+            BuildTable(dtAll, cblGenre, "GenreID", tbforGenre);
         }        /// <summary>
         /// 构造检索字符串，用于检索大库
         /// </summary>
         /// <returns></returns>
         private string[] GetSelectQuery()
         {
-            //三个筛选条件：grade、topic、genre
+            //三个筛选条件：Level、topic、genre
             string strQuery = "";
             string strResult = "";
-            if (cblGrade.SelectedIndex >= 0)
+            if (cblLevel.SelectedIndex >= 0)
             {
-                strQuery = Common.GetQueryString(cblGrade, "GradeID", split);
+                strQuery = Common.GetQueryString(cblLevel, "LevelID", split);
                 strResult = "1;";
             }
             else
@@ -613,13 +633,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             cblGenre.DataBind();
 
             //年级
-            types = "Grade";
-            DataSet dsGrade = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            cblGrade.Items.Clear();
-            cblGrade.DataSource = dsGrade.Tables[0].Copy();
-            cblGrade.DataTextField = "Title";
-            cblGrade.DataValueField = "ItemID";
-            cblGrade.DataBind();
+            types = "Level";
+            DataSet dsLevel = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+            cblLevel.Items.Clear();
+            cblLevel.DataSource = dsLevel.Tables[0].Copy();
+            cblLevel.DataTextField = "Title";
+            cblLevel.DataValueField = "ItemID";
+            cblLevel.DataBind();
         }
 
         /// <summary>
@@ -637,14 +657,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 itm.Selected = false;
             }
 
-            foreach (ListItem itm in cblGrade.Items)
+            foreach (ListItem itm in cblLevel.Items)
             {
                 itm.Selected = false;
             }
             divforCorpusResult.Visible = false;
         }
 
-        #endregion Corpus方法
+        #endregion
 
         #endregion
 
@@ -771,19 +791,19 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void RbltxtFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (rbltxtFrom.SelectedValue == "0")
-            {
-                divfromshuru.Visible = false;
-                divTexts.Visible = true;
-                divFromCorpus.Visible = true;
-                txtKeyWordsforWordlist.Value = "";
-            }
-            else
+            if (rbltxtFrom.SelectedValue == "0")//文本来自于用输入
             {
                 divfromshuru.Visible = true;
                 divTexts.Visible = true;
-                username.Value = "";
+                divFromCorpus.Visible = false;
+                txtKeyWordsforWordlist.Value = "";
+
                 txt_Title.Value = "";
+            }
+            else//文本来自于语料库
+            {
+                divfromshuru.Visible = false;
+                divTexts.Visible = true;
                 divFromCorpus.Visible = false;
             }
             txtcontent.InnerText = "";
@@ -829,8 +849,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="sender"></param>
         /// <param name="e"></param>        private void BtnCloseLemma_Click(object sender, EventArgs e)
         {
-            username.Value = "";
-
             outputDiv.Visible = false;
             inputDiv.Visible = true;
         }
@@ -851,33 +869,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             lemmanew.Enabled = false;
             #region 0 变量定义与表单校验
-            string titleStr;//标题
-            string nameStr;//用户名
-            string txtStr = txtcontent.Value.Trim();//正文文本
 
-            //检验文档标题、用户名、正文是否输入完成
-            if (string.IsNullOrEmpty(txt_Title.Value) || txt_Title.Value == "Type the title or click to choose it")//标题为空或者为文本框提示值,即未输入标题
-            {
-                PageAlert("你还未选择或输入文档标题!", this);
-                txt_Title.Focus();
-                lemmanew.Enabled = true;
-                return;
-            }
-            else
-            {
-                titleStr = txt_Title.Value;//标题
-            }
-            if (string.IsNullOrEmpty(username.Value))//用户名为空,即未输入有效用户名
-            {
-                PageAlert("请先输入你的姓名，本系统不支持匿名操作！", this);
-                username.Focus();
-                lemmanew.Enabled = true;
-                return;
-            }
-            else
-            {
-                nameStr = username.Value;//用户名
-            }
+            string txtStr = txtcontent.Value.Trim();//正文文本
+            //检验文档正文是否输入完成
             if (string.IsNullOrEmpty(txtcontent.Value)) //处理的文本还未输入
             {
                 PageAlert("你还未输入或导入需要处理的文本,请确认后再试！", this);
@@ -912,18 +906,30 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             #endregion
 
             #region 3 保存要处理的文本
-            SPUser currentUser = SPContext.Current.Web.CurrentUser;
-
-            string spName = currentUser.Name;
-            if (nameStr != spName)
+            int userId = FSCDLL.Common.Users.UserID;
+            DateTime dtNow = DateTime.Now;
+            string nowStr = string.Format("{0:yyyyMMddHHmmssffff}", dtNow);//时间格式字符串：年月日时分秒4位毫秒
+            string titleStr;//标题
+            if (string.IsNullOrEmpty(txt_Title.Value) || txt_Title.Value == "Type the title or click to choose it")//标题为空或者为文本框提示值,即未输入标题
             {
-                nameStr = string.Format("{0}_{1}", nameStr, spName);
+
+                titleStr = string.Format("{0}({1})", userId, nowStr);
             }
-            titleStr = TextInput.FilterSpecial(titleStr, "");
-            string filePath = GetDbPath() + @"export/";//txt文件保存的路径
-            string nowStr = string.Format("{0:yyyyMMddHHmmssffff}", DateTime.Now);//时间格式字符串：年月日时分秒4位毫秒
-            string fileTitle = string.Format("{0}({1}){2}.txt", titleStr, nameStr, nowStr); ;//文章标题+ _ + 处理人姓名 + 处理人所属院校（登录名）+ 当前时间
-            TextInput.FileWrite(fileTitle, txtStr, filePath);//将即将处理的文本保存到服务器上的指定目录中;
+            else
+            {
+                titleStr = txt_Title.Value;//标题
+            }
+            DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
+            DataRow drCorpus = dtCorpus.NewRow();
+            drCorpus["Title"] = titleStr;
+            drCorpus["OriginalText"] = txtcontent.Value;
+            drCorpus["Created"] = dtNow;
+            drCorpus["Author"] = userId;
+            drCorpus["Flag"] = 3;
+            FSCDLL.DAL.Corpus.InsertCorpus(null, drCorpus);
+            //string filePath = GetDbPath() + @"export/";//txt文件保存的路径
+            //string fileTitle = string.Format("{0}({1}){2}.txt", titleStr, nameStr, nowStr);//文章标题+ _ + 处理人姓名 + 处理人所属院校（登录名）+ 当前时间
+            //TextInput.FileWrite(fileTitle, txtStr, filePath);//将即将处理的文本保存到服务器上的指定目录中;
 
             inputDiv.Visible = false;
             #endregion

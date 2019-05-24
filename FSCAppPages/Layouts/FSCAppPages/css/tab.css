@@ -1,7 +1,7 @@
 ﻿/* CSS Document */
-/*语料筛选结果切换标签*/
+
 #tab {
-	width:95%;
+	width: 100%;
 	height: 216px;
 	position: relative;
 	margin: 40px auto 0 auto;
@@ -11,7 +11,7 @@
 /*设置容器高宽等*/
 
 html>body #tab {
-	width: 95%;
+	width: 100%;
 }
 
 
@@ -21,7 +21,7 @@ html>body #tab {
 	position: absolute;
 	top: 30px;
 	left: 0;
-	width:100%;
+	width: 100%;
 	/*height: 186px;*/
 }
 
@@ -37,7 +37,7 @@ html>body #tab {
 
 #tab .block {
 	display: block;
-	border: 1px solid #808080;
+	border: 1px solid #0292cf;
 }
 
 
@@ -134,54 +134,81 @@ a.tab_menu:hover {
 	text-decoration: underline;
 }
 
+
 /*语料筛选结果表*/
 
-.mytable {
-	border: 1pt solid #d1e0fb;
+#tab div table {
+	border: none;
+	border-collapse: collapse;
 	margin: 0 auto;
 	width: 100%;
 }
-	.mytable tr:first-child {
-		background: #0066CC;
-		color: #fff;
-		font-weight: bold;
-		padding: 10px;
-	}
-	.mytable th {
-		color: #0066CC;
-		font-weight: bold;
-		padding: 10px;
-		border: 1pt solid #d1e0fb;
-		text-align: center;
-	}
-	.mytable td {
-		padding: 10px;
-		border: 1pt solid #d1e0fb;
-		text-align: center;
-	}
 
-	.mytable a:link {
-		color: #0066CC;
-	}
-	/* 未被访问的链接 */
-	.mytable a:visited {
-		color: #0066CC;
-	}
-	/* 已被访问的链接 */
-	.mytable a:hover {
-		color: #FF00FF;
-	}
-	/* 鼠标指针移动到链接上 */
-	.mytable a:active {
-		color: #FF0000;
-	}
-	/* 正在被点击的链接 */
-	.mytable tr:nth-of-type(odd) {
-		border: 1pt solid #d1e0fb;
-		background: #F5FAFA;
-	}
-	/* odd 标识奇数行，even标识偶数行 */
-	.mytable tr:hover {
-		background: #b6dede;
-		border: 1pt solid #d1e0fb;
-	}
+#tab div table tr{
+	border-bottom: 1px solid #808080;
+	border-top: 1px solid #808080;
+}
+
+#tab div table tr:first-child {
+	background: #0066CC;
+	color: #fff;
+	font-weight: bold;
+	padding: 10px;
+	border-bottom: 5px solid #808080;
+
+}
+
+#tab div table th {
+	color: #0066CC;
+	font-weight: bold;
+	padding: 10px;
+	text-align: center;
+	max-width: 200px;
+}
+
+#tab div table td {
+	padding: 10px;
+	text-align: center;
+}
+
+#tab div table a:link {
+	color: #0066CC;
+}
+
+
+/* 未被访问的链接 */
+
+#tab div table a:visited {
+	color: #0066CC;
+}
+
+
+/* 已被访问的链接 */
+
+#tab div table a:hover {
+	color: #FF00FF;
+}
+
+
+/* 鼠标指针移动到链接上 */
+
+#tab div table a:active {
+	color: #FF0000;
+}
+
+
+/* 正在被点击的链接 */
+
+#tab div table tr:nth-of-type(odd) {
+	border: 1pt solid #d1e0fb;
+	background: #F5FAFA;
+	border-bottom: 1px solid #808080;
+	border-top: 1px solid #808080;
+}
+
+
+/* odd 标识奇数行，even标识偶数行 */
+
+#tab div table tr:hover {
+	background: #b6dede;
+}

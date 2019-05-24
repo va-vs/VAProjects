@@ -17,7 +17,7 @@
 		   for (var i = 0; i < input.length; i++) {
 			   input[i].checked = false;
 		   }
-		   var cbl1 = document.getElementById("<%=cblGrade.ClientID%>");
+		   var cbl1 = document.getElementById("<%=cblLevel.ClientID%>");
 		   var input = cbl1.getElementsByTagName("input");
 		   for (var i = 0; i < input.length; i++) {
 			   input[i].checked = false;
@@ -40,7 +40,7 @@
 		}
 
 		function HighLightthis(val) {
-			var setValue = val.getAttribute("data-grade");
+			var setValue = val.getAttribute("data-Level");
 			var obj = js("<%=divContext.ClientID%>");
 			var oldClass = "";
 			var newClass = "";
@@ -232,13 +232,13 @@
 										<td colspan="2">Select files you need according to:</td>
 									</tr>
 									<tr>
-										<td style="text-align: right">Grade:</td>
+										<td style="text-align: right">Level:</td>
 										<td>
-											<asp:CheckBoxList ID="cblGrade" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList" RepeatColumns="6">
-												<asp:ListItem Value="1">F1(freshmen)</asp:ListItem>
-												<asp:ListItem Value="2">S2(sophomores)</asp:ListItem>
-												<asp:ListItem Value="3">J3(juniors)</asp:ListItem>
-												<asp:ListItem Value="4">S4(seniors)</asp:ListItem>
+											<asp:CheckBoxList ID="cblLevel" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList" RepeatColumns="6">
+												<asp:ListItem Value="1">L1(freshmen)</asp:ListItem>
+												<asp:ListItem Value="2">L2(sophomores)</asp:ListItem>
+												<asp:ListItem Value="3">L3(juniors)</asp:ListItem>
+												<asp:ListItem Value="4">L4(seniors)</asp:ListItem>
 											</asp:CheckBoxList>
 										</td>
 									</tr>
@@ -274,17 +274,17 @@
 								<div id="divforCorpusResult" runat="server" visible="false">
 
 									<div id="tab">
-										<h3 class="up" id="two1" onmouseover="setContentTab('two',1,3)">Summary by Grade</h3>
+										<h3 class="up" id="two1" onclick="setContentTab('two',1,3)">Summary by Level</h3>
 										<div class="block" id="con_two_1">
-											<asp:Table ID="tbforGrade" runat="server" CssClass="mytable"></asp:Table>
+											<asp:Table ID="tbforLevel" runat="server"></asp:Table>
 										</div>
-										<h3 id="two2" onmouseover="setContentTab('two',2,3)">Summary by Topic</h3>
+										<h3 id="two2" onclick="setContentTab('two',2,3)">Summary by Topic</h3>
 										<div id="con_two_2">
-											<asp:Table ID="tbforTopic" runat="server" CssClass="mytable"></asp:Table>
+											<asp:Table ID="tbforTopic" runat="server"></asp:Table>
 										</div>
-										<h3 id="two3" onmouseover="setContentTab('two',3,3)">Summary by Genre</h3>
+										<h3 id="two3" onclick="setContentTab('two',3,3)">Summary by Genre</h3>
 										<div id="con_two_3">
-											<asp:Table ID="tbforGenre" runat="server" CssClass="mytable"></asp:Table>
+											<asp:Table ID="tbforGenre" runat="server"></asp:Table>
 										</div>
 									</div>
 
@@ -323,68 +323,82 @@
 								<div id="inputDiv" runat="server">
 									<div id="divtxtFrom">
 										<asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList">
-											<asp:ListItem Value="0" Enabled="false">Get Text From Corpus </asp:ListItem>
-											<asp:ListItem Value="1" Selected="true">Fill Text by Yourself </asp:ListItem>
+											<asp:ListItem Value="0" Selected="true">Fill Text by Yourself </asp:ListItem>
+											<asp:ListItem Value="1" Enabled="false">Get Text From Corpus </asp:ListItem>
 										</asp:RadioButtonList>
 									</div>
-									<div id="divFromCorpus" runat="server" class="wbdiv">
-										<asp:GridView ID="gvCorpusforWordList" runat="server"></asp:GridView>
-										<input type="text" class="input-text" value="" id="txtKeyWordsforWordlist" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
-										<asp:Button ID="btnQueryforWordlist" runat="server" Text=" Query " CssClass="outbtndiv-button" Enabled="false" />
-									</div>
-									<div class="wbdiv" id="divfromshuru" runat="server" visible="false">
+									<div id="divfromshuru" class="wbdiv" runat="server">
 										<table class="wbtable">
 											<tr>
-												<th>Text Title：</th>
+												<th>Title：</th>
 												<td>
-													<input type="text" value="" class="input-text" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" id="txt_Title" placeholder="Type the title" runat="server" />
+													<input type="text" value="" class="input-text" id="txt_Title" placeholder="Type the title" runat="server" />
 												</td>
-												<th>Your Name：</th>
-												<td>
-													<input id="username" type="text" class="input-text" title="Type Your Name" placeholder="Type Your Name" runat="server" style="height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" />
-												</td>
+                                                <th>
+                                                    Author：
+                                                </th>
+                                                <td>
+                                                    <input type="text" value="" class="input-text"  id="txt_Author" placeholder="Type the Author's Name" runat="server" />
+                                                </td>
+                                                <th>
+                                                    Topic：
+                                                </th>
+                                                <td>
+                                                    <asp:DropDownList ID="ddlTopics" runat="server"></asp:DropDownList>
+                                                </td>
 											</tr>
-
-											<tr>
-												<th>Select Text File：
-												</th>
+                                            <tr>
+                                                <th>Text File：</th>
 												<td>
 													<input type="file" onchange="upload(this)" />
 												</td>
-												<th>Select WordList：
-												</th>
-												<td>
-													<asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList">
-														<asp:ListItem Value="0" Selected="true">教学大纲</asp:ListItem>
-														<asp:ListItem Value="1" Enabled="false">GSL</asp:ListItem>
-														<asp:ListItem Value="2" Enabled="false">AWL</asp:ListItem>
-														<asp:ListItem Value="3" Enabled="false">EVP</asp:ListItem>
-													</asp:RadioButtonList>
-												</td>
-											</tr>
+                                                <td colspan="4">
+                                                    你可以使用左边的文件控件从文本文件的导入内容，或者你可以在下方文本框中输入或者粘贴要处理的文本!
+                                                </td>
+                                            </tr>
 										</table>
 									</div>
-									<div id="divTexts" class="wbdiv" runat="server" visible="false">
-										<textarea cols="100" id="txtcontent" v-model="body" onkeyup="wordStatic(this);" onchange="wordStatic(this);" onblur="wordStatic(this);" runat="server" rows="100" class="ta" placeholder="Please Type or paste your text here and click the submit button below!"></textarea>
-										<table style="width: 98%">
-											<tr>
-												<td style="text-align: left; padding: 5px;">
-													<div>
-														(<span style="color: blue">Limit: 100,000 Words</span>)
+									<div id="divFromCorpus" runat="server" class="wbdiv" visible="false">
+										<input id="txtKeyWordsforWordlist" type="text" class="input-text" value="" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
+										<asp:Button ID="btnQueryforWordlist" runat="server" Text=" Query " CssClass="outbtndiv-button" Enabled="false" />
+                                        <div><asp:GridView ID="gvCorpusforWordList" runat="server"></asp:GridView></div>
+									</div>
+                                    <div id="divTexts" class="wbdiv" runat="server" visible="false">
+                                        <div>
+                                            <textarea cols="100" id="txtcontent" v-model="body" onkeyup="wordStatic(this);" onchange="wordStatic(this);" onblur="wordStatic(this);" runat="server" rows="100" class="ta" placeholder="你可以使用上面的文件控件导入文本文件的内容，或者你可以输入或者粘贴要处理的文本!"></textarea>
+                                        </div>
+                                        <div id="txtInfo">
+                                            (<span style="color: blue">Limit: 100,000 Words</span>)
 														&nbsp;&nbsp;
 														<span id="mywords" style="display: none;">
-															<span id="wcount" style="color: red">Entered：0 Words;</span>
-															<span id="lcount" style="color: green">Remaining: 30,000 Words</span>
-														</span>
-													</div>
-												</td>
-												<td style="text-align: right; padding-right: 10px;">
-													<asp:Button ID="clearBtn" runat="server" Text="Clear" CssClass="outbtndiv-button" ToolTip="Clear the Texts" />
-													<asp:Button ID="lemmanew" runat="server" Text="Submit" CssClass="outbtndiv-button" ToolTip="Submit to Process" />
-												</td>
-											</tr>
-										</table>
-									</div>
+                                                            <span id="wcount" style="color: red">Entered：0 Words;</span>
+                                                            <span id="lcount" style="color: green">Remaining: 30,000 Words</span>
+                                                        </span>
+                                        </div>
+
+                                        <div id="divLemma">
+                                            <table>
+                                                <tr>
+                                                    <th>Select WordList：
+                                                    </th>
+                                                    <td colspan="3">
+                                                        <asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList">
+                                                            <asp:ListItem Value="0" Selected="true">教学大纲</asp:ListItem>
+                                                            <asp:ListItem Value="1" Enabled="false">GSL</asp:ListItem>
+                                                            <asp:ListItem Value="2" Enabled="false">AWL</asp:ListItem>
+                                                            <asp:ListItem Value="3" Enabled="false">EVP</asp:ListItem>
+                                                        </asp:RadioButtonList>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <asp:Button ID="clearBtn" runat="server" Text="Clear" CssClass="outbtndiv-button" ToolTip="Clear the Texts" />
+                                                            <asp:Button ID="lemmanew" runat="server" Text="Submit" CssClass="outbtndiv-button" ToolTip="Submit to Process" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
 								</div>
 
 								<%-- 输出结果 --%>
@@ -403,38 +417,38 @@
 												<asp:Button ID="btnCloseLemma" runat="server" Text="Close" CssClass="outbtndiv-button" ToolTip="关闭页面" />
 											</div>
 											<dl class="it-chart-dl" id="dlChart" runat="server">
-												<dt class="it-chart-dt" data-grade="UN" onclick="HighLightthis(this)">忽略处理</dt>
-												<dd class="it-chart-dd" data-grade="UN" onclick="HighLightthis(this)">
+												<dt class="it-chart-dt" data-Level="UN" onclick="HighLightthis(this)">忽略处理</dt>
+												<dd class="it-chart-dd" data-Level="UN" onclick="HighLightthis(this)">
 													<div class="it-chart-bar" style="background-color: grey; width: 11.1588%;"></div>
 													<div class="it-chart-label">26(11.16%)</div>
 												</dd>
-												<dt class="it-chart-dt" data-grade="C1" onclick="HighLightthis(this)">未处理</dt>
-												<dd class="it-chart-dd" data-grade="C1" onclick="HighLightthis(this)">
+												<dt class="it-chart-dt" data-Level="C1" onclick="HighLightthis(this)">未处理</dt>
+												<dd class="it-chart-dd" data-Level="C1" onclick="HighLightthis(this)">
 													<div class="it-chart-bar" style="background-color: orange; width: 2.5751%;"></div>
 													<div class="it-chart-label">6(2.58%)</div>
 												</dd>
-												<dt class="it-chart-dt" data-grade="C2" onclick="HighLightthis(this)">超纲词汇</dt>
-												<dd class="it-chart-dd" data-grade="C2" onclick="HighLightthis(this)">
+												<dt class="it-chart-dt" data-Level="C2" onclick="HighLightthis(this)">超纲词汇</dt>
+												<dd class="it-chart-dd" data-Level="C2" onclick="HighLightthis(this)">
 													<div class="it-chart-bar" style="background-color: red; width: 1.7167%;"></div>
 													<div class="it-chart-label">4(1.72%)</div>
 												</dd>
-												<dt class="it-chart-dt" data-grade="A1" onclick="HighLightthis(this)">高中大纲</dt>
-												<dd class="it-chart-dd" data-grade="A1" onclick="HighLightthis(this)">
+												<dt class="it-chart-dt" data-Level="A1" onclick="HighLightthis(this)">高中大纲</dt>
+												<dd class="it-chart-dd" data-Level="A1" onclick="HighLightthis(this)">
 													<div class="it-chart-bar" style="background-color: indigo; width: 99.8283%; max-width: unset"></div>
 													<div class="it-chart-label">186(88.83%)</div>
 												</dd>
-												<dt class="it-chart-dt" data-grade="A2" onclick="HighLightthis(this)">基本要求</dt>
-												<dd class="it-chart-dd" data-grade="A2" onclick="HighLightthis(this)">
+												<dt class="it-chart-dt" data-Level="A2" onclick="HighLightthis(this)">基本要求</dt>
+												<dd class="it-chart-dd" data-Level="A2" onclick="HighLightthis(this)">
 													<div class="it-chart-bar" style="background-color: blue; width: 3.4335%;"></div>
 													<div class="it-chart-label">8(3.43%)</div>
 												</dd>
-												<dt class="it-chart-dt" data-grade="B1" onclick="HighLightthis(this)">较高要求</dt>
-												<dd class="it-chart-dd" data-grade="B1" onclick="HighLightthis(this)">
+												<dt class="it-chart-dt" data-Level="B1" onclick="HighLightthis(this)">较高要求</dt>
+												<dd class="it-chart-dd" data-Level="B1" onclick="HighLightthis(this)">
 													<div class="it-chart-bar" style="background-color: green; width: 1.2876%;"></div>
 													<div class="it-chart-label">3(1.29%)</div>
 												</dd>
-												<dt class="it-chart-dt" data-grade="B2" onclick="HighLightthis(this)">更高要求</dt>
-												<dd class="it-chart-dd" data-grade="B2" onclick="HighLightthis(this)">
+												<dt class="it-chart-dt" data-Level="B2" onclick="HighLightthis(this)">更高要求</dt>
+												<dd class="it-chart-dd" data-Level="B2" onclick="HighLightthis(this)">
 													<div class="it-chart-bar" style="background-color: yellow; width: 0%;"></div>
 													<div class="it-chart-label">0(0.00%)</div>
 												</dd>
