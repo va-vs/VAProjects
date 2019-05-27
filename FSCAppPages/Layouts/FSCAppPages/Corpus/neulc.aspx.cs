@@ -34,12 +34,32 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
 
+            //WordList控件事件绑定
+            lemmanew.Click += lemmanew_Click;
+            btnBackLemma.Click += BtnBackLemma_Click;
+            btnCloseLemma.Click += BtnCloseLemma_Click;
+            rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
+            btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
+            gvCorpusforWordList.RowDataBound += GvCorpusforWordList_RowDataBound;
+            btnLemmaAll.Click += BtnLemmaAll_Click;
+            string WordsFile = GetDbPath() + "words/AllWords.txt";
+            CiLib = WordBLL.cibiaoku(WordsFile);
+
             if (!IsPostBack)
             {
                 InitQueryControls();
                 ClearQueryControls();
                 muNeulc.Items[0].Selected = true;
                 Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
+
+                //WordList 变量与状态
+                divfromshuru.Visible = true;
+                divTexts.Visible = true;
+                divFromCorpus.Visible = false;
+                outputDiv.Visible = false;
+                mvNeulc.ActiveViewIndex = 0;
+                rbltxtFrom.SelectedValue = "0";
+                hdftxtFrom.Value = "0";
             }
 
         }
@@ -216,17 +236,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 case "3"://WordList
                     {
                         mvNeulc.ActiveViewIndex = 3;
-                        inputDiv.Visible = true;
-                        outputDiv.Visible = false;
-                        mvNeulc.ActiveViewIndex = 0;
-                        rbltxtFrom.SelectedValue = "0";
-                        lemmanew.Click += lemmanew_Click;
-                        btnBackLemma.Click += BtnBackLemma_Click;
-                        btnCloseLemma.Click += BtnCloseLemma_Click;
-                        rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
-                        btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
-                        string WordsFile = GetDbPath() + "words/AllWords.txt";
-                        CiLib = WordBLL.cibiaoku(WordsFile);
                         break;
                     }
                 case "4"://Cluster
@@ -623,6 +632,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             cblTopic.DataValueField = "ItemID";
             cblTopic.DataBind();
 
+            //同时绑定WordList中的话题下拉列表框
+            ddlTopics.DataSource = ds.Tables[0].Copy();
+            ddlTopics.DataTextField = "Title";
+            ddlTopics.DataValueField = "ItemID";
+            ddlTopics.DataBind();
+
             //文体
             types = "Genre";
             DataSet dsGenre = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
@@ -707,6 +722,52 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #region 6 WordList
 
         #region WordList事件
+        private void BtnLemmaAll_Click(object sender, EventArgs e)
+        {
+            DataTable dtCorpusforWordList = (DataTable)ViewState["dtCorpusforWordList"];
+            StringBuilder sb = new StringBuilder();
+
+            foreach (DataRow dr in dtCorpusforWordList.Rows)
+            {
+                sb.AppendLine(dr["OriginalText"].ToString());
+            }
+            txtcontent.Value = sb.ToString();
+        }
+
+
+        private void GvCorpusforWordList_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                if (((Label)e.Row.FindControl("lbText")) != null)
+                {
+                    Label lbText = (Label)(e.Row.FindControl("lbText"));
+                    string strContext = lbText.Text;
+                    string js = string.Format("fillTextfromRow(\"{0}\");", strContext);
+                    e.Row.Attributes.Add("onclick", js);
+                    string[] paraWords = strContext.Split(' ');
+                    int wordDisp = 10;
+                    if (paraWords.Length < wordDisp)
+                    {
+                        wordDisp = paraWords.Length;
+
+                    }
+                    string temp = "";
+                    for (int i = 0; i < wordDisp; i++)
+                    {
+                        temp += paraWords[i] + " ";
+                    }
+                    lbText.Text = temp.TrimEnd() + "...";
+                }
+
+                //添加鼠标效果，当鼠标移动到行上时，变颜色
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.fontWeight='Bold',this.style.cursor='pointer';");
+                //当鼠标离开的时候 将背景颜色还原的以前的颜色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
+        }
+
+
         /// <summary>
         /// 返回按钮
         /// </summary>
@@ -797,11 +858,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 divTexts.Visible = true;
                 divFromCorpus.Visible = false;
                 txtKeyWordsforWordlist.Value = "";
+                hdftxtFrom.Value = "0";
 
                 txt_Title.Value = "";
             }
             else//文本来自于语料库
             {
+                hdftxtFrom.Value = "1";
+
                 divfromshuru.Visible = false;
                 divTexts.Visible = true;
                 divFromCorpus.Visible = false;
@@ -829,10 +893,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (drs.Length > 0)
             {
                 DataTable dtCorpusforWordList = dtCorpus.Clone();
-                foreach (var dr in drs)
+                foreach (DataRow dr in drs)
                 {
                     dtCorpusforWordList.Rows.Add(dr.ItemArray);
                 }
+                divCorpusforWordList.Visible = true;
+                ViewState["dtCorpusforWordList"] = dtCorpusforWordList;
                 gvCorpusforWordList.DataSource = dtCorpusforWordList;
                 gvCorpusforWordList.DataBind();
             }
@@ -868,10 +934,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         protected void lemmanew_Click(object sender, EventArgs e)
         {
             lemmanew.Enabled = false;
-            #region 0 变量定义与表单校验
-
-            string txtStr = txtcontent.Value.Trim();//正文文本
-            //检验文档正文是否输入完成
+            #region 变量定义与表单校验
+            string txtStr = "";//正文文本
+                               //检验文档正文是否输入完成
             if (string.IsNullOrEmpty(txtcontent.Value)) //处理的文本还未输入
             {
                 PageAlert("你还未输入或导入需要处理的文本,请确认后再试！", this);
@@ -881,92 +946,98 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             else
             {
-                string regEx = @"((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&%_\./-~-]*)?";
-                txtStr = Regex.Replace(txtcontent.Value, regEx, ";");//正则表达式排除文中的网址
+                txtStr = txtcontent.Value;
+                TextLemma(txtStr);
+                string txtfrom = hdftxtFrom.Value;
+                if (txtfrom == "0")//用户输入的文本处理
+                {
+                    #region  保存要处理的文本
+                    //仅有处理非语料库内的文本时才做保存采集操作
+                    int userId = FSCDLL.Common.Users.UserID;
+                    DateTime dtNow = DateTime.Now;
+                    string nowStr = string.Format("{0:yyyyMMddHHmmssffff}", dtNow);//时间格式字符串：年月日时分秒4位毫秒
+                    string titleStr;//标题
+                    if (string.IsNullOrEmpty(txt_Title.Value) || txt_Title.Value == "Type the title")//标题为空或者为文本框提示值,即未输入标题
+                    {
+
+                        titleStr = string.Format("{0}({1})", userId, nowStr);
+                    }
+                    else
+                    {
+                        titleStr = txt_Title.Value;//标题
+                    }
+                    DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
+                    DataRow drCorpus = dtCorpus.NewRow();
+                    drCorpus["Title"] = titleStr;
+                    drCorpus["OriginalText"] = txtcontent.Value;
+                    drCorpus["Created"] = dtNow;
+                    drCorpus["Author"] = userId;
+                    drCorpus["Flag"] = 3;
+                    FSCDLL.DAL.Corpus.InsertCorpus(null, drCorpus);
+
+                    inputDiv.Visible = false;
+                    #endregion  保存要处理的文本
+                }
             }
-            #endregion
+            #endregion 变量定义与表单校验
+
+        }
+        #endregion
+
+        #region WordList方法
+
+        private void TextLemma(string txtStr)
+        {
+            #region 0 先过滤掉网址等干扰文本
+            string regEx = @"((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&%_\./-~-]*)?";
+            txtStr = Regex.Replace(txtStr, regEx, ";");//正则表达式排除文中的网址
+            #endregion 0 先过滤掉网址等干扰文本
 
             #region 1 过滤文本判断是否包含有英文单词
-            string ignoreWordsFile = GetDbPath() + "words/ignoreWords.txt";
-            string ordinalWordsFile = GetDbPath() + "words/OrdinalWords.txt";
-            string symbolFile = GetDbPath() + "words/symbol.txt";
+            string dbPath = GetDbPath();
+            string ignoreWordsFile = dbPath + "words/ignoreWords.txt";
+            string ordinalWordsFile = dbPath + "words/OrdinalWords.txt";
+            string symbolFile = dbPath + "words/symbol.txt";
 
-            var txtlist = TextInput.ArticleToList(txtStr, ignoreWordsFile, ordinalWordsFile, symbolFile);//文本转化为字符串数组,将需要处理的单词存到数组中
+            List<List<string>> txtlist = TextInput.ArticleToList(txtStr, ignoreWordsFile, ordinalWordsFile, symbolFile);//文本转化为字符串数组,将需要处理的单词存到数组中
             if (txtlist.Count == 0)//文本中不包含有英文单词
             {
                 PageAlert("文本中不包含需要处理的英文单词！", this);
                 txtcontent.Focus();
-                lemmanew.Enabled = true;
-                return;
             }
-            #endregion
-
-            #region 2 参照词库选择
-            int maxIndex = 4;
-            #endregion
-
-            #region 3 保存要处理的文本
-            int userId = FSCDLL.Common.Users.UserID;
-            DateTime dtNow = DateTime.Now;
-            string nowStr = string.Format("{0:yyyyMMddHHmmssffff}", dtNow);//时间格式字符串：年月日时分秒4位毫秒
-            string titleStr;//标题
-            if (string.IsNullOrEmpty(txt_Title.Value) || txt_Title.Value == "Type the title or click to choose it")//标题为空或者为文本框提示值,即未输入标题
-            {
-
-                titleStr = string.Format("{0}({1})", userId, nowStr);
-            }
+            #endregion 1 过滤文本判断是否包含有英文单词
             else
             {
-                titleStr = txt_Title.Value;//标题
-            }
-            DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
-            DataRow drCorpus = dtCorpus.NewRow();
-            drCorpus["Title"] = titleStr;
-            drCorpus["OriginalText"] = txtcontent.Value;
-            drCorpus["Created"] = dtNow;
-            drCorpus["Author"] = userId;
-            drCorpus["Flag"] = 3;
-            FSCDLL.DAL.Corpus.InsertCorpus(null, drCorpus);
-            //string filePath = GetDbPath() + @"export/";//txt文件保存的路径
-            //string fileTitle = string.Format("{0}({1}){2}.txt", titleStr, nameStr, nowStr);//文章标题+ _ + 处理人姓名 + 处理人所属院校（登录名）+ 当前时间
-            //TextInput.FileWrite(fileTitle, txtStr, filePath);//将即将处理的文本保存到服务器上的指定目录中;
+                #region 2 参照词库选择
+                int maxIndex = 4;
+                #endregion 2 参照词库选择
 
-            inputDiv.Visible = false;
-            #endregion
+                #region 3 单词还原
+                string fileName = dbPath + "words/AllWords.txt";//包含原型与变型以及对应等级的词汇表
+                Dictionary<int, object> allwordsList = WordBLL.SearchWordsWithTxt(txtlist, fileName, 0);//对词汇列表进行比对还原和级别确认，输出三个数据集：1、文本词汇对应级别，2、超纲词汇对应词频，3、处理过的单词原型对应级别
+                #endregion 3 单词还原
 
-            #region 4 单词还原
-            string fileName = GetDbPath() + "words/AllWords.txt";//包含原型与变型以及对应等级的词汇表
-            int isEurope = 0;
-            //if (ckEurope.Checked)
-            //{
-            //    isEurope = 1;
-            //}
-            Dictionary<int, object> allwordsList = WordBLL.SearchWordsWithTxt(txtlist, fileName, isEurope);//对词汇列表进行比对还原和级别确认，输出三个数据集：1、文本词汇对应级别，2、超纲词汇对应词频，3、处理过的单词原型对应级别
-            #endregion
-
-            #region 5 WordList和结果输出
-            if (allwordsList.Count > 0)
-            {
-                var showWordsList = (List<List<string>>)allwordsList[0];//文本处理后包含的级别及每个级别词频的列表集合
-                DataTable dt = OutputResult.InitWordsAnalysisTable(showWordsList, maxIndex, symbolFile);
-
-                StringBuilder sb = new StringBuilder();
-                for (int k = 0; k < dt.Rows.Count; k++)
+                #region 4 WordList和结果输出
+                if (allwordsList.Count > 0)
                 {
-                    DataRow dr = dt.Rows[k];
-                    sb.Append(GetLegend(dr[0].ToString(), int.Parse(dr[1].ToString()), txtlist.Count));
+                    var showWordsList = (List<List<string>>)allwordsList[0];//文本处理后包含的级别及每个级别词频的列表集合
+                    DataTable dt = OutputResult.InitWordsAnalysisTable(showWordsList, maxIndex, symbolFile);
+
+                    StringBuilder sb = new StringBuilder();
+                    for (int k = 0; k < dt.Rows.Count; k++)
+                    {
+                        DataRow dr = dt.Rows[k];
+                        sb.Append(GetLegend(dr[0].ToString(), int.Parse(dr[1].ToString()), txtlist.Count));
+                    }
+
+                    dlChart.InnerHtml = sb.ToString();
+                    divContext.InnerHtml = GetCopusContext(showWordsList).ToString();
+                    outputDiv.Visible = true;
                 }
-
-                dlChart.InnerHtml = sb.ToString();
-                divContext.InnerHtml = GetCopusContext(showWordsList).ToString();
-                outputDiv.Visible = true;
+                #endregion 4 WordList和结果输出
             }
-            lemmanew.Enabled = true;
-            #endregion
-        }
-        #endregion WordList事件
 
-        #region WordList方法
+        }
 
         private string GetDbPath()
         {
