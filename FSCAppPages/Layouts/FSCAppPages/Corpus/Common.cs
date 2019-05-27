@@ -15,19 +15,23 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
     {
         #region 句子中检索单词
         /// <summary>
-        /// 
+        /// 返回包含三列的数据表（left,match,right）
         /// </summary>
         /// <param name="findWord">要查询的单词</param>
         /// <param name="strContent">文本内容</param>
         /// <param name="position">单词的匹配位置；-1：左匹配，0：中间匹配，1：匹配</param>
         /// <param name="wordsCount">显示的其他单词的个数</param>
-        /// <returns></returns>
-        public static List<List<string>> FindWord(string findWord, string strContent, int position, int wordsCount)
+        /// <returns>DataTable</returns>
+        public static DataTable  FindWord(string findWord, string strContent, int position, int wordsCount)
         {
             string ignore = "[\r\n\t\"]";//需要替换的符号
             strContent = Regex.Replace(strContent, ignore, " ");
             strContent = Regex.Replace(strContent, "\\s{2,}", " ");
             //s{2,} 中的s表示空格，数字2表示两个或以上的空格
+            DataTable dtResults = new DataTable();
+            dtResults.Columns.Add("left", typeof(string));
+            dtResults.Columns.Add("match", typeof(string));
+            dtResults.Columns.Add("right", typeof(string));
             List<List<string>> results = new List<List<string>>();
             List<string> words = ParseWords(strContent);
             int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
@@ -35,9 +39,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             int rightIndex;
             int start;
             string resultWord;//前面或后面的单词
+            DataRow dr = null;
             while (wordIndex > -1)
             {
                 resultWord = "";
+                dr = dtResults.Rows.Add ();
                 if (position >= 0)//右匹配，找左边的单词
                 {
                     leftIndex = wordIndex - wordsCount;
@@ -52,9 +58,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
                 else
                     resultWord = "";
-                words.Add(resultWord);
+                dr["left"]=resultWord ;
 
-                words.Add(findWord);
+                dr["match"]=findWord ;
                 //处理中间
                 if (position > 0)
                     resultWord = "";
@@ -73,12 +79,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
                 words.Add(resultWord);
                 //三部分的数组
-                results.Add(words);
+                dr["right"]=words ;
               
                 wordIndex = words.FindIndex(wordIndex + wordsCount, word => word == findWord);
             }
 
-            return results;
+            return dtResults ;
         }
         #endregion
         #region 处理句子与单词
