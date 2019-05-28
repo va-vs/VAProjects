@@ -27,7 +27,7 @@ namespace FSCDLL.DAL
         /// <returns></returns>
         public static DataSet GetCorpusByFilterString(string filterExpression)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusBySql");
+            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusBySql",filterExpression);
              return ds;
         }
         /// <summary>

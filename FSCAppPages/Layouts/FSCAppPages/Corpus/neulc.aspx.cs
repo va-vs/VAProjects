@@ -41,6 +41,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
             btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
             gvCorpusforWordList.RowDataBound += GvCorpusforWordList_RowDataBound;
+            gvCorpusforWordList.PageIndexChanging += GvCorpusforWordList_PageIndexChanging; 
             btnLemmaAll.Click += BtnLemmaAll_Click;
             //string WordsFile = GetDbPath() + "words/AllWords.txt";
             //CiLib = WordBLL.cibiaoku(WordsFile);
@@ -63,10 +64,19 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
 
         }
-
-
-
-
+        //分页事件
+        private void GvCorpusforWordList_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvCorpusforWordList.PageIndex = e.NewPageIndex;
+            Requery();
+        }
+        //重新绑定数据视图
+        private void Requery()
+        {
+            DataTable dt = (DataTable)ViewState["dtCorpusSource"];
+            gvCorpusforWordList.DataSource = dt.DefaultView;
+            gvCorpusforWordList.DataBind();
+        }
         #endregion
         #region 公用方法        /// <summary>
         /// 页面提醒
@@ -224,6 +234,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             try
             {
+                lbErr.Text = "";
+                ViewState["filterExp"] = null;
                 switch (muNeulc.SelectedValue)
                 {
                     case "1"://Concordance
@@ -291,21 +303,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 else
                 {
                     string newQueryStr = strResult[1];
-                    DataSet dsAll = FSCDLL.DAL.Corpus.GetCorpus();
                     if (ViewState["filterExp"] != null)//已有检索历史
                     {
                         string oldQueryStr = ViewState["filterExp"].ToString();
                         if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
                         {
                             ViewState["filterExp"] = newQueryStr;
-                            ViewState["dsCorpus"] = null;//清空检索
+                            ViewState["dtCorpus"] = null;//清空检索
                             QueryCorpus();//检索语料库
                         }
                     }
                     else//尚未检索过
                     {
                         ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
-                        ViewState["dsCorpus"] = null;//清空检索
+                        ViewState["dtCorpus"] = null;//清空检索
                         QueryCorpus();
                     }
                     divforCorpusResult.Visible = true;
@@ -508,29 +519,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// </summary>
         private void QueryCorpus()
         {
-            DataTable dtAll;
-            if (ViewState["dtAll"] == null)
-            {
-                DataSet dsAll = FSCDLL.DAL.Corpus.GetCorpus();
-                dtAll = dsAll.Tables[0];
-                ViewState["dtAll"] = dtAll;
-            }
-            else
-            {
-                dtAll = (DataTable)ViewState["dtAll"];
-            }
-
             string filterExpression = ViewState["filterExp"].ToString();
-            DataRow[] drs = dtAll.Select(filterExpression);
-            DataTable dtResult = dtAll.Clone();
-            DataSet dsResult = new DataSet();
-            dsResult.Tables.Add(dtResult);
-            dsResult.Merge(drs);
-            ViewState["dsCorpus"] = dsResult;
-
-            BuildTable(dtAll, cblLevel, "LevelID", tbforLevel);
-            BuildTable(dtAll, cblTopic, "TopicID", tbforTopic);
-            BuildTable(dtAll, cblGenre, "GenreID", tbforGenre);
+            DataSet dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
+            ViewState["dtCorpus"] = dsResult.Tables[0] ;
+            DataTable dtResult = dsResult.Tables[0].Copy();
+            BuildTable(dtResult, cblLevel, "LevelID", tbforLevel);
+            BuildTable(dtResult, cblTopic, "TopicID", tbforTopic);
+            BuildTable(dtResult, cblGenre, "GenreID", tbforGenre);
         }        /// <summary>
         /// 构造检索字符串，用于检索大库
         /// </summary>
@@ -849,10 +844,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             else//文本来自于语料库
             {
                 hdftxtFrom.Value = "1";
-
+                divFromCorpus.Visible = true;
+                divCorpusforWordList.Visible = true;
+                ViewState["dtCorpusSource"] = ViewState["dtCorpus"]; 
+                Requery();
                 divfromshuru.Visible = false;
-                divTexts.Visible = false;
-                divFromCorpus.Visible = false;
+                divTexts.Visible = true;
             }
             txtcontent.InnerText = "";
         }
@@ -870,15 +867,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 return;
             }
             string keyWords = txtKeyWordsforWordlist.Value.Trim();
-            DataSet dsCorpus = (DataSet)ViewState["dsCorpus"];
-            DataTable dtCorpus = dsCorpus.Tables[0];
-            DataView dv = dtCorpus.DefaultView;
-            dv.RowFilter = string.Format("Title like '%{0}%' or Source like '%{0}%' or OriginalText like '%{0}%' or CodedText like '%{0}%'", keyWords);
-            DataTable dtCorpusforWordList = dv.ToTable();
+            string rowFilter= string.Format("Title like '%{0}%' or Source like '%{0}%' or OriginalText like '%{0}%' or CodedText like '%{0}%'", keyWords);
+            DataTable dtCorpusforWordList =FSCDLL.DAL.Corpus.GetCorpusByFilterString(rowFilter).Tables[0];// dv.ToTable();
             if (dtCorpusforWordList.Rows.Count > 0)
             {
                 divCorpusforWordList.Visible = true;
                 ViewState["dtCorpusforWordList"] = dtCorpusforWordList;
+                ViewState["dtCorpusSource"] = dtCorpusforWordList;
                 gvCorpusforWordList.DataSource = dtCorpusforWordList;
                 gvCorpusforWordList.DataBind();
             }

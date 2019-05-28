@@ -143,17 +143,21 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 dtAll = (DataTable)ViewState["dtCorpus"];
             }
+            string filterExpression = GetSelectQuery();
+            DataSet dsResult;
+            if (ViewState["filterExp"] == null || ViewState["filterExp"].ToString() != filterExpression)
+            {
+                ViewState["filterExp"] = filterExpression;
+                dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
+                ViewState["dtResult"] = dsResult;
+            }
+            else
+                dsResult =(DataSet ) ViewState["dtResult"];
 
-            if (ViewState["filterExp"] == null)
-                ViewState["filterExp"] = GetSelectQuery();
-            string filterExpression = ViewState["filterExp"].ToString();
-            DataRow[] drs = dtAll.Select(filterExpression);
-            DataTable dtResult = dtAll.Clone();
-            DataSet dsResult = new DataSet();
-            dsResult.Tables.Add(dtResult);
-            dsResult.Merge(drs);
             gvCorpus.DataSource = dsResult.Tables[0].DefaultView;
             gvCorpus.DataBind();
+
+
         }
         //查询
         private void BtnQuery_Click(object sender, EventArgs e)

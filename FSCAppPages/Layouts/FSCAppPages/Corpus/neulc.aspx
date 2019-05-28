@@ -419,7 +419,7 @@
                                                 点击下面数据行，可以处理该行语料文本，点击后面的处理所有按钮，将处理筛选出的所有语料&nbsp;&nbsp;
                                                 <asp:Button ID="btnLemmaAll" runat="server" Text="处理所有" />
                                             <br />
-                                            <asp:GridView ID="gvCorpusforWordList" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%">
+                                            <asp:GridView ID="gvCorpusforWordList" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="50" PagerSettings-Mode="NumericFirstLast">
                                                 <AlternatingRowStyle BackColor="White" />
                                                 <Columns>
                                                     <asp:TemplateField HeaderText="Title">
@@ -559,14 +559,6 @@
 	</div>
 
 	<asp:Label ID="lbErr" runat="server" Text="" ForeColor="red"></asp:Label>
-	 <hr style="margin-top:100px;"/>
-		  <ul class="ext_link">
-			<li><a href="https://www.english-corpora.org/bnc/" target="_blank">BNC</a></li>
-			<li><a href="https://www.english-corpora.org/coca/" target="_blank">COCA</a></li>
-			<li><a href="http://corpus.leeds.ac.uk/itweb/htdocs/Query.html#" target="_blank">IntelliText</a></li>
-			<li><a href="https://www.lextutor.ca/vp/eng/" target="_blank">Lextutor</a></li>
-			<li><a href="http://www.natcorp.ox.ac.uk/corpus/creating.xml" target="_blank">Natcorp</a></li>
-		  </ul>
 </asp:Content>
 
 <asp:Content ID="PageTitle" ContentPlaceHolderID="PlaceHolderPageTitle" runat="server">
