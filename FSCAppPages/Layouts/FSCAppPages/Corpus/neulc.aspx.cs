@@ -19,9 +19,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
     public partial class neulc : LayoutsPageBase
     {
         #region 0 公用
-        public ArrayList CiLib;
+        //public ArrayList CiLib;
         //数据分隔符，用来分隔外键的ID值
-        private const string split = ";";
+        private const string splitStr = ";";
         #region 公用事件
         /// <summary>
         /// 页面加载
@@ -42,8 +42,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
             gvCorpusforWordList.RowDataBound += GvCorpusforWordList_RowDataBound;
             btnLemmaAll.Click += BtnLemmaAll_Click;
-            string WordsFile = GetDbPath() + "words/AllWords.txt";
-            CiLib = WordBLL.cibiaoku(WordsFile);
+            //string WordsFile = GetDbPath() + "words/AllWords.txt";
+            //CiLib = WordBLL.cibiaoku(WordsFile);
 
             if (!IsPostBack)
             {
@@ -65,7 +65,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
 
 
-        /// <summary>
+
+
+        #endregion
+        #region 公用方法        /// <summary>
         /// 页面提醒
         /// </summary>
         /// <param name="info"></param>
@@ -74,9 +77,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string script = string.Format("<script>alert('{0}')</script>", info);
             p.ClientScript.RegisterStartupScript(p.GetType(), "", script);
-        }
-        #endregion
-        #region 公用方法        /// <summary>
+        }        /// <summary>
         /// 去掉文件名中的特殊符号
         /// </summary>
         /// <param name="fileName">原有文件名称</param>
@@ -221,35 +222,43 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void muNeulc_MenuItemClick(object sender, MenuEventArgs e)
         {
-            switch (muNeulc.SelectedValue)
+            try
             {
-                case "1"://Concordance
-                    {
-                        mvNeulc.ActiveViewIndex = 1;
+                switch (muNeulc.SelectedValue)
+                {
+                    case "1"://Concordance
+                        {
+                            mvNeulc.ActiveViewIndex = 1;
+                            break;
+                        }
+                    case "2"://Collocate
+                        {
+                            mvNeulc.ActiveViewIndex = 2;
+                            break;
+                        }
+                    case "3"://WordList
+                        {
+                            mvNeulc.ActiveViewIndex = 3;
+                            break;
+                        }
+                    case "4"://Cluster
+                        {
+                            mvNeulc.ActiveViewIndex = 4;
+                            break;
+                        }
+                    default://Corpus
+                        mvNeulc.ActiveViewIndex = 0;
+                        InitQueryControls();
+                        ClearQueryControls();
                         break;
-                    }
-                case "2"://Collocate
-                    {
-                        mvNeulc.ActiveViewIndex = 2;
-                        break;
-                    }
-                case "3"://WordList
-                    {
-                        mvNeulc.ActiveViewIndex = 3;
-                        break;
-                    }
-                case "4"://Cluster
-                    {
-                        mvNeulc.ActiveViewIndex = 4;
-                        break;
-                    }
-                default://Corpus
-                    mvNeulc.ActiveViewIndex = 0;
-                    InitQueryControls();
-                    ClearQueryControls();
-                    break;
+                }
+                Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
             }
-            Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
+            catch (Exception ex)
+            {
+
+                lbErr.Text = ex.ToString();
+            }
         }
 
         #endregion
@@ -275,24 +284,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 string result0 = strResult[0];
                 if (result0 != "1;1;1")//不是所有的筛选项都被筛选了
                 {
-                    //string[] strs = result0.Split(';');
-                    //if (strs[0] != "1")//Level
-                    //{
-                    //    lbErr.Text = "你尚未选择筛选的Level";
-                    //    return;
-                    //}
-
-                    //if (strs[1] != "1")//Genner
-                    //{
-                    //    lbErr.Text = "你尚未选择筛选的Genre";
-                    //    return;
-                    //}
-
-                    //if (strs[2] != "1")//Topic
-                    //{
-                    //    lbErr.Text = "你尚未选择筛选的Topic";
-                    //    return;
-                    //}
                     lbErr.Text = "Level、Genre、Topic中每项都至少要选择一个条目！";
                     rbltxtFrom.Items[1].Enabled = false;
                     return;
@@ -328,15 +319,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
         }
 
-
-
-
-
         #endregion
 
         #region Corpus方法
-
-
         private DataTable BuildDTSummary(DataTable dtCorpus, string fkid, CheckBoxList cbl)
         {
             #region 构造汇总表
@@ -557,7 +542,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string strResult = "";
             if (cblLevel.SelectedIndex >= 0)
             {
-                strQuery = Common.GetQueryString(cblLevel, "LevelID", split);
+                strQuery = Common.GetQueryString(cblLevel, "LevelID", splitStr);
                 strResult = "1;";
             }
             else
@@ -567,7 +552,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string strSql = "";
             if (cblGenre.SelectedIndex >= 0)
             {
-                strSql = Common.GetQueryString(cblGenre, "GenreID", split);
+                strSql = Common.GetQueryString(cblGenre, "GenreID", splitStr);
                 strResult += "1;";
             }
             else
@@ -593,7 +578,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             strSql = "";
             if (cblTopic.SelectedIndex >= 0)
             {
-                strSql = Common.GetQueryString(cblTopic, "TopicID", split);
+                strSql = Common.GetQueryString(cblTopic, "TopicID", splitStr);
                 strResult += "1";
             }
             else
@@ -859,7 +844,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 divFromCorpus.Visible = false;
                 txtKeyWordsforWordlist.Value = "";
                 hdftxtFrom.Value = "0";
-
                 txt_Title.Value = "";
             }
             else//文本来自于语料库
@@ -867,7 +851,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 hdftxtFrom.Value = "1";
 
                 divfromshuru.Visible = false;
-                divTexts.Visible = true;
+                divTexts.Visible = false;
                 divFromCorpus.Visible = false;
             }
             txtcontent.InnerText = "";
@@ -888,15 +872,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string keyWords = txtKeyWordsforWordlist.Value.Trim();
             DataSet dsCorpus = (DataSet)ViewState["dsCorpus"];
             DataTable dtCorpus = dsCorpus.Tables[0];
-            string strSql = string.Format("Title like '%{0}%' or Source like '%{0}%' or OriginalText like '%{0}%' or CodedText like '%{0}%'", keyWords);
-            DataRow[] drs = dtCorpus.Select(strSql);
-            if (drs.Length > 0)
+            DataView dv = dtCorpus.DefaultView;
+            dv.RowFilter = string.Format("Title like '%{0}%' or Source like '%{0}%' or OriginalText like '%{0}%' or CodedText like '%{0}%'", keyWords);
+            DataTable dtCorpusforWordList = dv.ToTable();
+            if (dtCorpusforWordList.Rows.Count > 0)
             {
-                DataTable dtCorpusforWordList = dtCorpus.Clone();
-                foreach (DataRow dr in drs)
-                {
-                    dtCorpusforWordList.Rows.Add(dr.ItemArray);
-                }
                 divCorpusforWordList.Visible = true;
                 ViewState["dtCorpusforWordList"] = dtCorpusforWordList;
                 gvCorpusforWordList.DataSource = dtCorpusforWordList;
@@ -985,6 +965,18 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #endregion
 
         #region WordList方法
+
+        private void AbstinencyRadioListOption(ref RadioButtonList rbtList)
+        {
+            for (int i = 0; i < rbtList.Items.Count; i++)
+            {
+                if (rbtList.Items[i].Value == "1")
+                {
+                    rbtList.Items[i].Enabled = false;
+                }
+            }
+
+        }
 
         private void TextLemma(string txtStr)
         {

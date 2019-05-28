@@ -40,10 +40,17 @@
 	width: 98%;
 	line-height: 30px;
 }
+.wbtable tr{
+    line-height:25px;
+    word-break:keep-all;
+}
 
 	.wbtable tr th {
 		text-align: right;
 		padding: 5px;
+        vertical-align:top;
+        font-weight:600;
+
 	}
 
 	.wbtable tr td {

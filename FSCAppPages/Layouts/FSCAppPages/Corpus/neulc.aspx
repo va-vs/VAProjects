@@ -10,6 +10,57 @@
 <asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
 	<link rel="stylesheet" href="../css/stylelc.css" type="text/css" charset="utf-8"  />
 	<link rel="stylesheet" href="../css/tab.css"  type="text/css" charset="utf-8" />
+
+	<style type="text/css">
+		.qfld {
+			border: none;
+			line-height: 25px;
+		}
+
+		.qfld fieldset {
+			border: 1px solid #808080;
+			margin: 5px;
+			line-height: 30px;
+		}
+
+		.qfld fieldset legend {
+			text-align: left;
+			font-weight: bold;
+			font-size: 15px;
+		}
+
+		.cb td {
+			width: 160px;
+		}
+
+		.cb label {
+			height: 25px;
+			width: 160px;
+			display: inline-block;
+			vertical-align: middle;
+			margin-top: -4px;
+		}
+
+		.cb label:before {
+			display: inline-block;
+			background: #fff;
+			vertical-align: middle;
+			-webkit-transition: background ease-in .5s;
+			-o-transition: background ease-in .5s;
+			transition: background ease-in .5s;
+		}
+
+		.cb label:after {
+			display: inline-block;
+			background: rgb(54, 85, 5);
+			vertical-align: middle;
+			-webkit-transition: background ease-in .5s;
+			-o-transition: background ease-in .5s;
+			transition: background ease-in .5s;
+		}
+	</style>
+
+
 	<script type="text/javascript">
 		function Check_Uncheck_All() {
 			var cbl0 = document.getElementById("<%=cblGenre.ClientID%>");
@@ -27,16 +78,6 @@
 			for (var i = 0; i < input.length; i++) {
 				input[i].checked = false;
 			}
-			//if (cb.checked) {
-			//    for (var i = 0; i < input.length; i++) {
-			//        input[i].checked = true;
-			//    }
-			//}
-			//else {
-			//    for (var i = 0; i < input.length; i++) {
-			//        input[i].checked = false;
-			//    }
-			//}
 		}
 
 		function HighLightthis(val) {
@@ -227,54 +268,56 @@
 						<asp:MultiView ID="mvNeulc" runat="server">
 							<%-- 检索 --%>
 							<asp:View ID="vwQuery" runat="server">
-								<table style="border: none; line-height: 25px;" border="0">
-									<tr>
-										<td colspan="2">Select files you need according to:</td>
-									</tr>
-									<tr>
-										<td style="text-align: right">Level:</td>
-										<td>
-											<asp:CheckBoxList ID="cblLevel" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList" RepeatColumns="6">
-												<asp:ListItem Value="1">L1(freshmen)</asp:ListItem>
-												<asp:ListItem Value="2">L2(sophomores)</asp:ListItem>
-												<asp:ListItem Value="3">L3(juniors)</asp:ListItem>
-												<asp:ListItem Value="4">L4(seniors)</asp:ListItem>
-											</asp:CheckBoxList>
-										</td>
-									</tr>
-									<tr>
-										<td style="text-align: right">Genre:</td>
-										<td>
-											<asp:CheckBoxList ID="cblGenre" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList">
-												<asp:ListItem Value="1">Argumentation</asp:ListItem>
-												<asp:ListItem Value="2">Narration</asp:ListItem>
-												<asp:ListItem Value="3">Exposition</asp:ListItem>
-												<asp:ListItem Value="4">Applied Writing</asp:ListItem>
-											</asp:CheckBoxList>
-										</td>
-									</tr>
-									<tr>
-										<td style="text-align: right">Topic:</td>
-										<td>
-											<asp:CheckBoxList ID="cblTopic" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cblList">
-												<asp:ListItem Value="1">Culture</asp:ListItem>
-												<asp:ListItem Value="2">Science & Technology</asp:ListItem>
-												<asp:ListItem Value="3">Humanity</asp:ListItem>
-												<asp:ListItem Value="4">Society</asp:ListItem>
-											</asp:CheckBoxList>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="2" style="text-align: center; padding-top: 10px;">
-											<asp:Button ID="btnSubmitforCorpus" runat="server" Text="Submit" CssClass="outbtndiv-button" />&nbsp;&nbsp;
-								<asp:Button ID="btnResetforCorpus" runat="server" Text="Reset" OnClientClick="Check_Uncheck_All()" CssClass="outbtndiv-button" />
-										</td>
-									</tr>
-								</table>
+								<div class="qfld" style="font-size: 14px;">
+									Select files you need according to:
+								</div>
+								<div class="qfld">
+									<fieldset id="fdsLevel">
+										<legend>
+											Level
+										</legend>
+										<asp:CheckBoxList ID="cblLevel" runat="server" RepeatDirection="Horizontal"
+											RepeatLayout="Flow" CssClass="cb" RepeatColumns="6">
+											<asp:ListItem Value="1">L1(freshmen)</asp:ListItem>
+											<asp:ListItem Value="2">L2(sophomores)</asp:ListItem>
+											<asp:ListItem Value="3">L3(juniors)</asp:ListItem>
+											<asp:ListItem Value="4">L4(seniors)</asp:ListItem>
+										</asp:CheckBoxList>
+									</fieldset>
+									<fieldset>
+										<legend>Genre</legend>
+										<asp:CheckBoxList ID="cblGenre" runat="server" RepeatDirection="Horizontal"
+											RepeatLayout="Flow" CssClass="cb" RepeatColumns="6">
+											<asp:ListItem Value="1">Argumentation</asp:ListItem>
+											<asp:ListItem Value="2">Narration</asp:ListItem>
+											<asp:ListItem Value="3">Exposition</asp:ListItem>
+											<asp:ListItem Value="4">Applied Writing</asp:ListItem>
+										</asp:CheckBoxList>
+									</fieldset>
+									<fieldset>
+										<legend>Topic</legend>
+										<asp:CheckBoxList ID="cblTopic" runat="server" RepeatDirection="Horizontal"
+											RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
+											<asp:ListItem Value="1">Culture</asp:ListItem>
+											<asp:ListItem Value="2">Science & Technology</asp:ListItem>
+											<asp:ListItem Value="3">Humanity</asp:ListItem>
+											<asp:ListItem Value="4">Society</asp:ListItem>
+										</asp:CheckBoxList>
+									</fieldset>
+								</div>
+
+								<div class="qfld" style="text-align: center;margin-top: 10px;">
+									<asp:Button ID="btnSubmitforCorpus" runat="server" Text="Submit"
+										CssClass="outbtndiv-button" />&nbsp;&nbsp;
+									<asp:Button ID="btnResetforCorpus" runat="server" Text="Reset"
+										OnClientClick="Check_Uncheck_All()" CssClass="outbtndiv-button" />
+								</div>
+
 								<div id="divforCorpusResult" runat="server" visible="false">
 
 									<div id="tab">
-										<h3 class="up" id="two1" onclick="setContentTab('two',1,3)">Summary by Level</h3>
+										<h3 class="up" id="two1" onclick="setContentTab('two',1,3)">Summary by Level
+										</h3>
 										<div class="block" id="con_two_1">
 											<asp:Table ID="tbforLevel" runat="server"></asp:Table>
 										</div>
@@ -296,7 +339,7 @@
 												menu.className = i == curr ? "up" : "";
 												if (i == curr) {
 													cont.style.display = "block";
-													cont.className="block";
+													cont.className = "block";
 												} else {
 													cont.style.display = "none";
 												}
@@ -321,6 +364,7 @@
 
 								<%-- 输入文档 --%>
 								<div id="inputDiv" runat="server">
+                                    <%-- 选择文本来源 --%>
 									<div id="divtxtFrom">
 										<asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList">
 											<asp:ListItem Value="0" Selected="true">Fill Text by Yourself </asp:ListItem>
@@ -328,6 +372,7 @@
 										</asp:RadioButtonList>
                                         <asp:HiddenField ID="hdftxtFrom" Value="0" runat="server" />
 									</div>
+                                    <%-- 文本来源于个人输入 --%>
 									<div id="divfromshuru" class="wbdiv" runat="server">
 										<table class="wbtable">
 											<tr>
@@ -359,6 +404,7 @@
                                             </tr>
 										</table>
 									</div>
+                                    <%-- 文本来源于语料库 --%>
 									<div id="divFromCorpus" runat="server" class="wbdiv">
                                         <input type="text" class="input-text" value="" id="txtKeyWordsforWordlist" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
                                         <asp:Button ID="btnQueryforWordlist" runat="server" Text=" 检 索 " CssClass="outbtndiv-button" />
