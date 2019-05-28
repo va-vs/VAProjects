@@ -13,6 +13,80 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
     public class Common
     {
+        #region 句子中检索单词
+        /// <summary>
+        /// 返回包含三列的数据表（left,match,right）
+        /// </summary>
+        /// <param name="findWord">要查询的单词</param>
+        /// <param name="strContent">文本内容</param>
+        /// <param name="position">单词的匹配位置；-1：左匹配，0：中间匹配，1：匹配</param>
+        /// <param name="wordsCount">显示的其他单词的个数</param>
+        /// <returns>DataTable</returns>
+        public static DataTable  FindWord(string findWord, string strContent, int position, int wordsCount)
+        {
+            string ignore = "[\r\n\t\"]";//需要替换的符号
+            strContent = Regex.Replace(strContent, ignore, " ");
+            strContent = Regex.Replace(strContent, "\\s{2,}", " ");
+            //s{2,} 中的s表示空格，数字2表示两个或以上的空格
+            DataTable dtResults = new DataTable();
+            dtResults.Columns.Add("left", typeof(string));
+            dtResults.Columns.Add("match", typeof(string));
+            dtResults.Columns.Add("right", typeof(string));
+            List<List<string>> results = new List<List<string>>();
+            List<string> words = ParseWords(strContent);
+            int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
+            int leftIndex;
+            int rightIndex;
+            int start;
+            string resultWord;//前面或后面的单词
+            DataRow dr = null;
+            while (wordIndex > -1)
+            {
+                resultWord = "";
+                dr = dtResults.Rows.Add ();
+                if (position >= 0)//右匹配，找左边的单词
+                {
+                    leftIndex = wordIndex - wordsCount;
+                    if (leftIndex < 0) leftIndex = 0;
+                    start = leftIndex;
+                    while (start < wordIndex)
+                    {
+                        resultWord += " " + words[start];
+                        start += 1;
+                    }
+                    resultWord = resultWord.Trim();
+                }
+                else
+                    resultWord = "";
+                dr["left"]=resultWord ;
+
+                dr["match"]=findWord ;
+                //处理中间
+                if (position > 0)
+                    resultWord = "";
+                else
+                {
+                    rightIndex = wordIndex + wordsCount;
+                    if (rightIndex >= words.Count) rightIndex = words.Count - 1;
+                    start = wordIndex + 1;
+                    while (start <= rightIndex)
+                    {
+                        resultWord += " " + words[start];
+                        start += 1;
+                    }
+                    resultWord = resultWord.Trim();
+
+                }
+                words.Add(resultWord);
+                //三部分的数组
+                dr["right"]=words ;
+              
+                wordIndex = words.FindIndex(wordIndex + wordsCount, word => word == findWord);
+            }
+
+            return dtResults ;
+        }
+        #endregion
         #region 处理句子与单词
         /// <summary>
         /// 获取文本中的句子
@@ -22,7 +96,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         public static Dictionary<int, List<string>> ParseSentences(string strContent)
         {
             string ignore = "[\r\n\t\"]";//需要替换的符号
-            strContent = Regex.Replace(strContent, ignore, "");
+            strContent = Regex.Replace(strContent, ignore, " ");
             Regex rx = new Regex(@"(\S.+?[.!?])(?=\s+|$)");
             MatchCollection matchs = rx.Matches(strContent);
             Dictionary<int, List<string>> sentences = new Dictionary<int, List<string>>();
