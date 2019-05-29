@@ -470,7 +470,7 @@
                                                     </th>
                                                     <td colspan="3">
                                                         <asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList">
-                                                            <asp:ListItem Value="0" Selected="true">教学大纲</asp:ListItem>
+                                                            <asp:ListItem Value="0" Selected="true">CECR</asp:ListItem>
                                                             <asp:ListItem Value="1" Enabled="false">GSL</asp:ListItem>
                                                             <asp:ListItem Value="2" Enabled="false">AWL</asp:ListItem>
                                                             <asp:ListItem Value="3" Enabled="false">EVP</asp:ListItem>
