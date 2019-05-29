@@ -419,19 +419,19 @@
                                                 点击下面数据行，可以处理该行语料文本，点击后面的处理所有按钮，将处理筛选出的所有语料&nbsp;&nbsp;
                                                 <asp:Button ID="btnLemmaAll" runat="server" Text="处理所有" />
                                             <br />
-                                            <asp:GridView ID="gvCorpusforWordList" runat="server" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="50" PagerSettings-Mode="NumericFirstLast">
+                                            <asp:GridView ID="gvCorpusforWordList" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
                                                 <AlternatingRowStyle BackColor="White" />
                                                 <Columns>
                                                     <asp:TemplateField HeaderText="Title">
                                                         <ItemTemplate>
-                                                            <div style="padding:5px">
+                                                            <div style="padding:2px">
                                                                 <asp:Label ID="lbTitle" runat="server" Text='<%# Bind("Title")%>'></asp:Label>
                                                             </div>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Text">
                                                         <ItemTemplate>
-                                                            <div style="padding:5px">
+                                                            <div style="padding:2px">
                                                                 <asp:Label ID="lbText" runat="server" Text='<%# Bind("OriginalText")%>'></asp:Label>
                                                             </div>
                                                         </ItemTemplate>

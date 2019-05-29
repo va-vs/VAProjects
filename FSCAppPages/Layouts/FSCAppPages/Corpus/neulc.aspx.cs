@@ -43,6 +43,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCorpusforWordList.RowDataBound += GvCorpusforWordList_RowDataBound;
             gvCorpusforWordList.PageIndexChanging += GvCorpusforWordList_PageIndexChanging; 
             btnLemmaAll.Click += BtnLemmaAll_Click;
+            clearBtn.Click += clearBtn_OnClick;
             //string WordsFile = GetDbPath() + "words/AllWords.txt";
             //CiLib = WordBLL.cibiaoku(WordsFile);
 
@@ -64,25 +65,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
 
         }
-        //分页事件
-        private void GvCorpusforWordList_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            gvCorpusforWordList.PageIndex = e.NewPageIndex;
-            Requery();
-        }
-        //重新绑定数据视图
-        private void Requery()
-        {
-            DataTable dt = (DataTable)ViewState["dtCorpusSource"];
-            gvCorpusforWordList.DataSource = dt.DefaultView;
-            gvCorpusforWordList.DataBind();
-        }
+
+         
+
         #endregion
         #region 公用方法        /// <summary>
-        /// 页面提醒
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="p"></param>
+                             /// 页面提醒
+                             /// </summary>
+                             /// <param name="info"></param>
+                             /// <param name="p"></param>
         private static void PageAlert(string info, Page p)
         {
             string script = string.Format("<script>alert('{0}')</script>", info);
@@ -704,7 +695,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #region WordList事件
         private void BtnLemmaAll_Click(object sender, EventArgs e)
         {
-            DataTable dtCorpusforWordList = (DataTable)ViewState["dtCorpusforWordList"];
+            DataTable dtCorpusforWordList = (DataTable)ViewState["dtCorpusSource"];
             StringBuilder sb = new StringBuilder();
 
             foreach (DataRow dr in dtCorpusforWordList.Rows)
@@ -723,8 +714,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     Label lbText = (Label)(e.Row.FindControl("lbText"));
                     string strContext = lbText.Text;
+                    string ignore = "[\r\n\t\"]";//需要替换的符号
+                    strContext = Regex.Replace(strContext, ignore, "");
                     string js = string.Format("fillTextfromRow(\"{0}\");", strContext);
                     e.Row.Attributes.Add("onclick", js);
+
                     string[] paraWords = strContext.Split(' ');
                     int wordDisp = 10;
                     if (paraWords.Length < wordDisp)
@@ -746,7 +740,19 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
             }
         }
-
+        //分页事件
+        private void GvCorpusforWordList_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvCorpusforWordList.PageIndex = e.NewPageIndex;
+            Requery();
+        }
+        //重新绑定数据视图,分页时和加载时调用
+        private void Requery()
+        {
+            DataTable dt = (DataTable)ViewState["dtCorpusSource"];
+            gvCorpusforWordList.DataSource = dt.DefaultView;
+            gvCorpusforWordList.DataBind();
+        }
 
         /// <summary>
         /// 返回按钮
@@ -908,7 +914,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         protected void lemmanew_Click(object sender, EventArgs e)
         {
-            lemmanew.Enabled = false;
+            //lemmanew.Enabled = false;
             #region 变量定义与表单校验
             string txtStr = "";//正文文本
                                //检验文档正文是否输入完成
