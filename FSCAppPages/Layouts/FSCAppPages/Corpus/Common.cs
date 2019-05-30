@@ -19,78 +19,109 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// </summary>
         /// <param name="findWord">要查询的单词</param>
         /// <param name="strContent">文本内容</param>
-        /// <param name="wordPostion">单词在词组的匹配位置；-1：左匹配，0：中间匹配，1：匹配</param>
-        /// <param name="phraseLength">返回包含单词的词组的长度</param>
-        /// <param name="position">词组的匹配位置；-1：左匹配，0：中间匹配，1：匹配</param>
-        /// <param name="wordsCount">显示的其他单词的个数</param>
+        /// <param name="findLeftWordsCount">找词组，要匹配单词的左侧单词个数</param>
+        /// <param name="findRightWordsCount">找词组，要匹配单词的右侧单词个数</param>
+        /// <param name="leftWordsCount">要返回的词组左边单词个数</param>
+        /// <param name="rightWordsCount">要返回的词组右边单词个数</param>
         /// <returns>DataTable</returns>
-        public static DataTable FindPhrase(string findWord, int wordPostion,int phraseLength,int phraseCount, string strContent, int position, int wordsCount)
+        public static DataTable FindPhrase(string findWord, string strContent, int findLeftWordsCount, int findRightWordsCount, int leftWordsCount, int rightWordsCount)
         {
             string ignore = "[\r\n\t\"]";//需要替换的符号
             strContent = Regex.Replace(strContent, ignore, " ");
             strContent = Regex.Replace(strContent, "\\s{2,}", " ");
             //s{2,} 中的s表示空格，数字2表示两个或以上的空格
+
+
+            List<string> words = ParseWords(strContent);//先解析单词
+
+            string phrase = GetPhrase(words, findWord, findLeftWordsCount, findRightWordsCount);//要构造的短语
+            //在段落中查询短语
+            Regex rx = new Regex(@"(" + phrase + ")");// (@"(e\S*$)");//(a|e|s)
+
+            MatchCollection matchs = rx.Matches(strContent);
+            Dictionary<int, List<string>> findPhrase = new Dictionary<int, List<string>>();
+            string leftContent;
+            string rightContent;
             DataTable dtResults = new DataTable();
-            dtResults.Columns.Add("left", typeof(string));
+             dtResults.Columns.Add("left", typeof(string));
             dtResults.Columns.Add("match", typeof(string));
             dtResults.Columns.Add("right", typeof(string));
-            List<List<string>> results = new List<List<string>>();
-            List<string> words = ParseWords(strContent);
-            int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
-            int leftIndex;
-            int rightIndex;
-            int start;
-            string resultWord;//前面或后面的单词
-            DataRow dr = null;
-            while (wordIndex > -1)
+            DataRow drNew;
+            List<string> leftWords;
+            List<string> rightWords;
+            string leftStr;
+            string rightStr;
+            int iStart;
+            foreach (Match match in matchs)
             {
-                resultWord = "";
-                dr = dtResults.Rows.Add();
-                if (position >= 0)//右匹配，找左边的单词
+                int i = match.Index;//词组的索引
+                leftStr = "";
+                rightStr = "";
+                drNew = dtResults.Rows.Add();
+                if (leftWordsCount>0 && i > 0)
                 {
-                    leftIndex = wordIndex - wordsCount;
-                    if (leftIndex < 0) leftIndex = 0;
-                    start = leftIndex;
-                    while (start < wordIndex)
+                    leftContent = strContent.Substring(0, i);
+                    leftWords = ParseWords(leftContent);
+                    iStart = leftWords.Count  - leftWordsCount;
+                    if (iStart < 0) iStart = 0;
+                    while (iStart <= leftWords.Count - 1)
                     {
-                        resultWord += " " + words[start];
-                        start += 1;
+                        leftStr =leftStr+ leftWords[iStart] + " ";
+                        iStart += 1;
                     }
-                    resultWord = resultWord.Trim();
-                }
-                else
-                    resultWord = "";
-                dr["left"] = resultWord;
-
-                dr["match"] = findWord;
-                //处理中间
-                if (position > 0)
-                    resultWord = "";
-                else
-                {
-                    rightIndex = wordIndex + wordsCount;
-                    if (rightIndex >= words.Count) rightIndex = words.Count - 1;
-                    start = wordIndex + 1;
-                    while (start <= rightIndex)
-                    {
-                        resultWord += " " + words[start];
-                        start += 1;
-                    }
-                    resultWord = resultWord.Trim();
+                    leftStr = leftStr.Trim();
+                    if (leftStr.Length > 0)
+                        drNew["left"] = leftStr; 
 
                 }
-                words.Add(resultWord);
-                //三部分的数组
-                dr["right"] = words;
+                if (rightWordsCount>0 && i + phrase.Length + 1 < strContent.Length)
+                {
+                    rightContent = strContent.Substring(i + phrase.Length + 1);
+                    rightWords = ParseWords(rightContent);
+                    iStart = 0;
+                    while ( iStart <rightWords.Count  )
+                    {
+                        rightStr =rightStr+ rightStr[iStart] + " ";
+                        iStart += 1;
+                        if (iStart == rightWordsCount) break;
+                    }
+                    rightStr = rightStr.Trim();
+                    if (rightStr.Length > 0)
+                        drNew["right"] = rightStr; 
 
-                wordIndex = words.FindIndex(wordIndex + wordsCount, word => word == findWord);
+                }
+                drNew["match"] = phrase; 
+
             }
-
-            return dtResults;
+           
         }
         #endregion
 
         #region 句子中检索单词
+        /// <summary>
+        /// 通过要查找的单词获取短语字符串
+        /// </summary>
+        /// <param name="words">划分好的单词</param>
+        /// <param name="findWord">要查询的单词</param>
+        /// <param name="leftWords">左边的单词个数</param>
+        /// <param name="rightWords">右边的单词个数</param>
+        /// <returns></returns>
+        public static string GetPhrase(List<string> words,string findWord,int leftWords,int rightWords)
+        {
+            string phrase="";
+             int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
+            int leftIndex = wordIndex - leftWords;
+            int rightIndex = wordIndex + rightWords;
+            if (leftIndex < 0) leftIndex = 0;
+            if (rightIndex > words.Count - 1) rightIndex = words.Count - 1;
+            while (leftIndex <=rightIndex )
+            {
+
+                phrase = phrase+words[leftIndex] + " "; 
+            }
+            return phrase.Trim();
+
+        }
         /// <summary>
         /// 返回包含三列的数据表（left,match,right）
         /// </summary>
@@ -154,9 +185,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     resultWord = resultWord.Trim();
 
                 }
-                words.Add(resultWord);
                 //三部分的数组
-                dr["right"]=words ;
+                dr["right"]=resultWord ;
               
                 wordIndex = words.FindIndex(wordIndex + wordsCount, word => word == findWord);
             }
