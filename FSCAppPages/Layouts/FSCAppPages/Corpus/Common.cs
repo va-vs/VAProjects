@@ -106,7 +106,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="leftWords">左边的单词个数</param>
         /// <param name="rightWords">右边的单词个数</param>
         /// <returns></returns>
-        public static string GetPhrase(List<string> words,string findWord,int leftWords,int rightWords)
+        private  static string GetPhrase(List<string> words,string findWord,int leftWords,int rightWords)
         {
             string phrase="";
              int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
@@ -123,6 +123,40 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
         /// <summary>
+        /// 对满足条件的语料库进行计算
+        /// </summary>
+        /// <param name="dtCorpus">包含单词的语料库</param>
+        /// <param name="findWord">要查找的单词</param>
+        /// <param name="leftWords">左边的单词</param>
+        /// <param name="rightWords"></param>
+        /// <returns></returns>
+        public static DataTable GetWordsFromCorpus(DataTable dtCorpus,string findWord,int leftWords,int rightWords)
+        {
+            DataTable dtResults = new DataTable();
+            dtResults.Columns.Add("CorpusID", typeof(long ));
+            dtResults.Columns.Add("Title", typeof(string));
+            dtResults.Columns.Add("left", typeof(string));
+            dtResults.Columns.Add("match", typeof(string));
+            dtResults.Columns.Add("right", typeof(string));
+            DataTable findResults;
+            DataRow drNew;
+            foreach (DataRow dr in dtCorpus.Rows )
+            {
+                findResults = FindWord(findWord, dr["OriginalText"].ToString(), leftWords, rightWords);
+                foreach (DataRow drWord in findResults.Rows  )
+                {
+                    drNew = dtResults.Rows.Add();
+                    drNew["CorpusID"] = dr["CorpusID"];
+                    drNew["Title"] = dr["Title"];
+                    drNew["left"] = drWord["left"];
+                    drNew["match"] = drWord["match"];
+                    drNew["right"] = drWord["right"];
+                }
+            }
+
+            return dtResults;
+        }
+        /// <summary>
         /// 返回包含三列的数据表（left,match,right）
         /// </summary>
         /// <param name="findWord">要查询的单词</param>
@@ -130,7 +164,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="position">单词的匹配位置；-1：左匹配，0：中间匹配，1：匹配</param>
         /// <param name="wordsCount">显示的其他单词的个数</param>
         /// <returns>DataTable</returns>
-        public static DataTable  FindWord(string findWord, string strContent, int position, int wordsCount)
+        private  static DataTable  FindWord(string findWord, string strContent,int leftWords,int rightWords)
         {
             string ignore = "[\r\n\t\"]";//需要替换的符号
             strContent = Regex.Replace(strContent, ignore, " ");
@@ -151,10 +185,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             while (wordIndex > -1)
             {
                 resultWord = "";
-                dr = dtResults.Rows.Add ();
-                if (position >= 0)//右匹配，找左边的单词
+                dr = dtResults.NewRow();
+                if (leftWords > 0)//右匹配，找左边的单词
                 {
-                    leftIndex = wordIndex - wordsCount;
+                    leftIndex = wordIndex - leftWords;
                     if (leftIndex < 0) leftIndex = 0;
                     start = leftIndex;
                     while (start < wordIndex)
@@ -170,11 +204,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
                 dr["match"]=findWord ;
                 //处理中间
-                if (position > 0)
-                    resultWord = "";
-                else
+                if (rightWords>0)
                 {
-                    rightIndex = wordIndex + wordsCount;
+                    rightIndex = wordIndex + rightWords;
                     if (rightIndex >= words.Count) rightIndex = words.Count - 1;
                     start = wordIndex + 1;
                     while (start <= rightIndex)
@@ -187,8 +219,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
                 //三部分的数组
                 dr["right"]=resultWord ;
+                if (!dr.IsNull("left") || !dr.IsNull("right"))
+                    dtResults.Rows.Add(dr);
               
-                wordIndex = words.FindIndex(wordIndex + wordsCount, word => word == findWord);
+                wordIndex = words.FindIndex(wordIndex + rightWords+1, word => word == findWord);
             }
 
             return dtResults ;
