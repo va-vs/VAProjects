@@ -15,83 +15,96 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
     {
         #region 处理词组
         /// <summary>
-        /// 返回包含三列的数据表（left,match,right）
+        /// 返回包含五列的数据表（CorpusID,Title,left,match,right）
         /// </summary>
         /// <param name="findWord">要查询的单词</param>
-        /// <param name="strContent">文本内容</param>
+        /// <param name="dtCorpus">包含查找单词的数据表</param>
         /// <param name="findLeftWordsCount">找词组，要匹配单词的左侧单词个数</param>
         /// <param name="findRightWordsCount">找词组，要匹配单词的右侧单词个数</param>
         /// <param name="leftWordsCount">要返回的词组左边单词个数</param>
         /// <param name="rightWordsCount">要返回的词组右边单词个数</param>
         /// <returns>DataTable</returns>
-        public static DataTable FindPhrase(string findWord, string strContent, int findLeftWordsCount, int findRightWordsCount, int leftWordsCount, int rightWordsCount)
+        public static DataTable GetPhraseFromCorpus(string findWord, DataTable dtCorpus, int findLeftWordsCount, int findRightWordsCount, int leftWordsCount, int rightWordsCount)
         {
             string ignore = "[\r\n\t\"]";//需要替换的符号
-            strContent = Regex.Replace(strContent, ignore, " ");
-            strContent = Regex.Replace(strContent, "\\s{2,}", " ");
-            //s{2,} 中的s表示空格，数字2表示两个或以上的空格
-
-
-            List<string> words = ParseWords(strContent);//先解析单词
-
-            string phrase = GetPhrase(words, findWord, findLeftWordsCount, findRightWordsCount);//要构造的短语
-            //在段落中查询短语
-            Regex rx = new Regex(@"(" + phrase + ")");// (@"(e\S*$)");//(a|e|s)
-
-            MatchCollection matchs = rx.Matches(strContent);
-            Dictionary<int, List<string>> findPhrase = new Dictionary<int, List<string>>();
-            string leftContent;
-            string rightContent;
+            string strContent;
             DataTable dtResults = new DataTable();
-             dtResults.Columns.Add("left", typeof(string));
+            dtResults.Columns.Add("CorpusID", typeof(long));
+            dtResults.Columns.Add("Title", typeof(string));
+
+            dtResults.Columns.Add("left", typeof(string));
             dtResults.Columns.Add("match", typeof(string));
             dtResults.Columns.Add("right", typeof(string));
             DataRow drNew;
-            List<string> leftWords;
-            List<string> rightWords;
-            string leftStr;
-            string rightStr;
-            int iStart;
-            foreach (Match match in matchs)
+            foreach (DataRow dr in dtCorpus.Rows)
             {
-                int i = match.Index;//词组的索引
-                leftStr = "";
-                rightStr = "";
-                drNew = dtResults.Rows.Add();
-                if (leftWordsCount>0 && i > 0)
+                strContent = dr["OriginalText"].ToString();
+                strContent = Regex.Replace(strContent, ignore, " ");
+                strContent = Regex.Replace(strContent, "\\s{2,}", " ");
+                //s{2,} 中的s表示空格，数字2表示两个或以上的空格
+                List<string> words = ParseWords(strContent);//先解析单词
+
+                string phrase = GetPhrase(words, findWord, findLeftWordsCount, findRightWordsCount);//要构造的短语
+                if (phrase.Length == 0) continue;                                                                                  
+                //在段落中查询短语
+                Regex rx = new Regex(@"(" + phrase + ")");// (@"(e\S*$)");//(a|e|s)
+
+                MatchCollection matchs = rx.Matches(strContent);
+                Dictionary<int, List<string>> findPhrase = new Dictionary<int, List<string>>();
+                string leftContent;
+                string rightContent;
+               
+                List<string> leftWords;
+                List<string> rightWords;
+                string leftStr;
+                string rightStr;
+                int iStart;
+                foreach (Match match in matchs)
                 {
-                    leftContent = strContent.Substring(0, i);
-                    leftWords = ParseWords(leftContent);
-                    iStart = leftWords.Count  - leftWordsCount;
-                    if (iStart < 0) iStart = 0;
-                    while (iStart <= leftWords.Count - 1)
+                    int i = match.Index;//词组的索引
+                    leftStr = "";
+                    rightStr = "";
+                    if (leftWordsCount > 0 && i > 0)
                     {
-                        leftStr =leftStr+ leftWords[iStart] + " ";
-                        iStart += 1;
+                        leftContent = strContent.Substring(0, i);
+                        leftWords = ParseWords(leftContent);
+                        iStart = leftWords.Count - leftWordsCount;
+                        if (iStart < 0) iStart = 0;
+                        while (iStart <= leftWords.Count - 1)
+                        {
+                            leftStr = leftStr + leftWords[iStart] + " ";
+                            iStart += 1;
+                        }
+                        leftStr = leftStr.Trim();
+                        
+
                     }
-                    leftStr = leftStr.Trim();
-                    if (leftStr.Length > 0)
-                        drNew["left"] = leftStr; 
+                    if (rightWordsCount > 0 && i + phrase.Length + 1 < strContent.Length)
+                    {
+                        rightContent = strContent.Substring(i + phrase.Length + 1);
+                        rightWords = ParseWords(rightContent);
+                        iStart = 0;
+                        while (iStart < rightWords.Count)
+                        {
+                            rightStr = rightStr + rightStr[iStart] + " ";
+                            iStart += 1;
+                            if (iStart == rightWordsCount) break;
+                        }
+                        rightStr = rightStr.Trim();
+
+                    }
+                    if (rightStr.Length > 0 || leftStr.Length > 0)
+                    {
+                        drNew = dtResults.Rows.Add();
+                        drNew["CorpusID"] = dr["CorpusID"];
+                        drNew["Title"] = dr["Title"];
+                        drNew["left"] = leftStr;
+                        drNew["right"] = rightStr;
+                        drNew["match"] = phrase;
+
+                    }
 
                 }
-                if (rightWordsCount>0 && i + phrase.Length + 1 < strContent.Length)
-                {
-                    rightContent = strContent.Substring(i + phrase.Length + 1);
-                    rightWords = ParseWords(rightContent);
-                    iStart = 0;
-                    while ( iStart <rightWords.Count  )
-                    {
-                        rightStr =rightStr+ rightStr[iStart] + " ";
-                        iStart += 1;
-                        if (iStart == rightWordsCount) break;
-                    }
-                    rightStr = rightStr.Trim();
-                    if (rightStr.Length > 0)
-                        drNew["right"] = rightStr; 
-
-                }
-                drNew["match"] = phrase; 
-
             }
             return dtResults;
         }
@@ -123,7 +136,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
         /// <summary>
-        /// 对满足条件的语料库进行计算
+        /// 对满足条件的语料库进行计算,
+        /// 返回五列（CorpusID、Title、left、match、right）
         /// </summary>
         /// <param name="dtCorpus">包含单词的语料库</param>
         /// <param name="findWord">要查找的单词</param>
