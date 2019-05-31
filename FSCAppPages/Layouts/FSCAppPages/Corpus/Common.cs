@@ -93,7 +93,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 drNew["match"] = phrase; 
 
             }
-           
+            return dtResults;
         }
         #endregion
 
