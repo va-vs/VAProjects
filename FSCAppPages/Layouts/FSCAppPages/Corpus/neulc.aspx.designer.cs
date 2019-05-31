@@ -40,6 +40,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.View vwQuery;
         
         /// <summary>
+        /// divforQueryCorpus 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divforQueryCorpus;
+        
+        /// <summary>
         /// cblLevel 控件。
         /// </summary>
         /// <remarks>
@@ -74,15 +83,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSubmitforCorpus;
-        
-        /// <summary>
-        /// btnResetforCorpus 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnResetforCorpus;
         
         /// <summary>
         /// divforCorpusResult 控件。
@@ -121,6 +121,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Table tbforGenre;
         
         /// <summary>
+        /// btnBacktoQuery 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBacktoQuery;
+        
+        /// <summary>
         /// vwConcordance 控件。
         /// </summary>
         /// <remarks>
@@ -128,6 +137,24 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.View vwConcordance;
+        
+        /// <summary>
+        /// divConcordanceQuery 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divConcordanceQuery;
+        
+        /// <summary>
+        /// divConcordanceResult 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divConcordanceResult;
         
         /// <summary>
         /// vwCollocate 控件。
@@ -139,6 +166,24 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.View vwCollocate;
         
         /// <summary>
+        /// divCollocateQuery 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollocateQuery;
+        
+        /// <summary>
+        /// divCollocateResult 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollocateResult;
+        
+        /// <summary>
         /// vwWordList 控件。
         /// </summary>
         /// <remarks>
@@ -146,15 +191,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.View vwWordList;
-        
-        /// <summary>
-        /// inputDiv 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl inputDiv;
         
         /// <summary>
         /// rbltxtFrom 控件。
@@ -310,13 +346,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Button lemmanew;
         
         /// <summary>
-        /// outputDiv 控件。
+        /// divOutput 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl outputDiv;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divOutput;
         
         /// <summary>
         /// divContext 控件。

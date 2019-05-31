@@ -35,13 +35,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
 
             //WordList控件事件绑定
+            btnBacktoQuery.Click += BtnBacktoQuery_Click;
             lemmanew.Click += lemmanew_Click;
             btnBackLemma.Click += BtnBackLemma_Click;
             btnCloseLemma.Click += BtnCloseLemma_Click;
             rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
             btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
             gvCorpusforWordList.RowDataBound += GvCorpusforWordList_RowDataBound;
-            gvCorpusforWordList.PageIndexChanging += GvCorpusforWordList_PageIndexChanging; 
+            gvCorpusforWordList.PageIndexChanging += GvCorpusforWordList_PageIndexChanging;
             btnLemmaAll.Click += BtnLemmaAll_Click;
             clearBtn.Click += clearBtn_OnClick;
             //string WordsFile = GetDbPath() + "words/AllWords.txt";
@@ -54,26 +55,35 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 muNeulc.Items[0].Selected = true;
                 Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
 
+                mvNeulc.ActiveViewIndex = 0;
+
                 //WordList 变量与状态
+                rbltxtFrom.SelectedValue = "0";
+                hdftxtFrom.Value = "0";
                 divfromshuru.Visible = true;
                 divTexts.Visible = true;
                 divFromCorpus.Visible = false;
-                outputDiv.Visible = false;
-                mvNeulc.ActiveViewIndex = 0;
-                rbltxtFrom.SelectedValue = "0";
-                hdftxtFrom.Value = "0";
+                divOutput.Visible = false;
             }
 
         }
 
-         
+        private void BtnBacktoQuery_Click(object sender, EventArgs e)
+        {
+            divforQueryCorpus.Visible = true;
+            divforCorpusResult.Visible = false;
+        }
+
+
+
+
 
         #endregion
         #region 公用方法        /// <summary>
-                             /// 页面提醒
-                             /// </summary>
-                             /// <param name="info"></param>
-                             /// <param name="p"></param>
+        /// 页面提醒
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="p"></param>
         private static void PageAlert(string info, Page p)
         {
             string script = string.Format("<script>alert('{0}')</script>", info);
@@ -311,6 +321,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         QueryCorpus();
                     }
                     divforCorpusResult.Visible = true;
+                    divforQueryCorpus.Visible = false;
                     rbltxtFrom.Items[1].Enabled = true;//经过检索后，WordList中才可以使用关键词检索语料库文本做WordList
                 }
             }
@@ -512,7 +523,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string filterExpression = ViewState["filterExp"].ToString();
             DataSet dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
-            ViewState["dtCorpus"] = dsResult.Tables[0] ;
+            ViewState["dtCorpus"] = dsResult.Tables[0];
             DataTable dtResult = dsResult.Tables[0].Copy();
             BuildTable(dtResult, cblLevel, "LevelID", tbforLevel);
             BuildTable(dtResult, cblTopic, "TopicID", tbforTopic);
@@ -626,6 +637,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             cblLevel.DataTextField = "Title";
             cblLevel.DataValueField = "ItemID";
             cblLevel.DataBind();
+            divforCorpusResult.Visible = false;
+            divforQueryCorpus.Visible = true;
         }
 
         /// <summary>
@@ -732,10 +745,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         temp += paraWords[i] + " ";
                     }
                     lbText.Text = temp.TrimEnd() + "...";
+                    lbText.ToolTip = strContext;
                 }
 
                 //添加鼠标效果，当鼠标移动到行上时，变颜色
-                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.fontWeight='Bold',this.style.cursor='pointer';");
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
                 //当鼠标离开的时候 将背景颜色还原的以前的颜色
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
             }
@@ -754,17 +768,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCorpusforWordList.DataBind();
         }
 
-        /// <summary>
-        /// 返回按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void backBtn_OnClickBtn_OnClick(object sender, EventArgs e)
-        {
-            outputDiv.Visible = false;
-            inputDiv.Visible = true;
-        }
-
 
         /// <summary>
         /// 清空按钮
@@ -781,8 +784,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         protected void closeBtn_OnClick(object sender, EventArgs e)
         {
-            outputDiv.Visible = false;
-            inputDiv.Visible = true;
+            divOutput.Visible = false;
             txtcontent.Value = "";//清空正文文本
             for (int i = 0; i < rbVBS.Items.Count; i++)//清除词表选择
             {
@@ -792,9 +794,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
             }
             txt_Title.Value = "";//清空正文标题
-            lemmanew.Enabled = true;
-            outputDiv.Visible = false;
-            inputDiv.Visible = true;
+            divOutput.Visible = false;
         }        /// <summary>
         /// 筛选词汇等级选择
         /// </summary>
@@ -852,12 +852,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 hdftxtFrom.Value = "1";
                 divFromCorpus.Visible = true;
                 divCorpusforWordList.Visible = true;
-                ViewState["dtCorpusSource"] = ViewState["dtCorpus"]; 
+                ViewState["dtCorpusSource"] = ViewState["dtCorpus"];
                 Requery();
                 divfromshuru.Visible = false;
                 divTexts.Visible = true;
             }
             txtcontent.InnerText = "";
+            divOutput.Visible = false;
         }
 
         /// <summary>
@@ -873,8 +874,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 return;
             }
             string keyWords = txtKeyWordsforWordlist.Value.Trim();
-            string rowFilter= string.Format("Title like '%{0}%' or Source like '%{0}%' or OriginalText like '%{0}%' or CodedText like '%{0}%'", keyWords);
-            DataTable dtCorpusforWordList =FSCDLL.DAL.Corpus.GetCorpusByFilterString(rowFilter).Tables[0];// dv.ToTable();
+            string rowFilter = string.Format("Title like '%{0}%' or Source like '%{0}%' or OriginalText like '%{0}%' or CodedText like '%{0}%'", keyWords);
+            DataTable dtCorpusforWordList = FSCDLL.DAL.Corpus.GetCorpusByFilterString(rowFilter).Tables[0];// dv.ToTable();
             if (dtCorpusforWordList.Rows.Count > 0)
             {
                 divCorpusforWordList.Visible = true;
@@ -891,19 +892,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
 
         /// <summary>
-        /// 关闭文本彩色标记输出，返回到标记前界面
+        /// 从WordList界面返回，同时清空原有处理内容
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>        private void BtnCloseLemma_Click(object sender, EventArgs e)
         {
-            outputDiv.Visible = false;
-            inputDiv.Visible = true;
+            ReLemma(1);
         }
 
+        /// <summary>
+        /// 从WordList界面返回，不清空原有处理内容
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnBackLemma_Click(object sender, EventArgs e)
         {
-            outputDiv.Visible = false;
-            inputDiv.Visible = true;
+            ReLemma(0);
         }
 
 
@@ -914,15 +918,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         protected void lemmanew_Click(object sender, EventArgs e)
         {
-            //lemmanew.Enabled = false;
             #region 变量定义与表单校验
             string txtStr = "";//正文文本
-                               //检验文档正文是否输入完成
+            //检验文档正文是否输入完成
             if (string.IsNullOrEmpty(txtcontent.Value)) //处理的文本还未输入
             {
                 PageAlert("你还未输入或导入需要处理的文本,请确认后再试！", this);
                 txtcontent.Focus();
-                lemmanew.Enabled = true;
                 return;
             }
             else
@@ -938,27 +940,40 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     DateTime dtNow = DateTime.Now;
                     string nowStr = string.Format("{0:yyyyMMddHHmmssffff}", dtNow);//时间格式字符串：年月日时分秒4位毫秒
                     string titleStr;//标题
-                    if (string.IsNullOrEmpty(txt_Title.Value) || txt_Title.Value == "Type the title")//标题为空或者为文本框提示值,即未输入标题
+                    string authorName = userId.ToString();
+                    if (!string.IsNullOrEmpty(txt_Title.Value.Trim()) && txt_Author.Value.Trim() != "Type the Author's Name")
+                    {
+                        authorName = txt_Title.Value.Trim();
+                    }
+                    if (string.IsNullOrEmpty(txt_Title.Value.Trim()) || txt_Title.Value.Trim() == "Type the title")//标题为空或者为文本框提示值,即未输入标题
                     {
 
-                        titleStr = string.Format("{0}({1})", userId, nowStr);
+                        titleStr = string.Format("{0}({1})", nowStr, authorName);
                     }
                     else
                     {
-                        titleStr = txt_Title.Value;//标题
+                        titleStr = string.Format("{0}({1})", txt_Title.Value.Trim(), authorName);//标题
                     }
+
                     DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
                     DataRow drCorpus = dtCorpus.NewRow();
                     drCorpus["Title"] = titleStr;
                     drCorpus["OriginalText"] = txtcontent.Value;
                     drCorpus["Created"] = dtNow;
                     drCorpus["Author"] = userId;
+                    drCorpus["TopicID"] = splitStr + ddlTopics.SelectedValue + splitStr;
                     drCorpus["Flag"] = 3;
                     FSCDLL.DAL.Corpus.InsertCorpus(null, drCorpus);
-
-                    inputDiv.Visible = false;
                     #endregion  保存要处理的文本
+
+                    divfromshuru.Visible = false;//输入表单隐藏
                 }
+                else
+                {
+                    divFromCorpus.Visible = false;
+                }
+                divTexts.Visible = false;//文本框隐藏
+                divOutput.Visible = true;//输出结果显示
             }
             #endregion 变量定义与表单校验
 
@@ -966,6 +981,42 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #endregion
 
         #region WordList方法
+
+        /// <summary>
+        /// 返回WordList处理前界面
+        /// </summary>
+        /// <param name="isClear">是否清空</param>
+        private void ReLemma(int isClear)
+        {
+            string txtFrom = hdftxtFrom.Value;
+            if (txtFrom == "0")//本次处理的是用户输入的文本，则仍返回用户输入界面
+            {
+                divfromshuru.Visible = true;//输入表单显示
+                divTexts.Visible = true;//主文本框显示
+                divFromCorpus.Visible = false;//从语料库选择文本界面隐藏
+                if (isClear == 1)
+                {
+                    txt_Author.Value = "";
+                    txt_Title.Value = "";
+                    txtcontent.Value = "";
+                    ddlTopics.SelectedIndex = 0;
+                    rbVBS.ClearSelection();
+                }
+            }
+            else
+            {
+                divFromCorpus.Visible = true;
+                divTexts.Visible = true;
+                if (isClear == 1)
+                {
+                    txtKeyWordsforWordlist.Value = "";
+                    rbVBS.ClearSelection();
+                }
+            }
+            divContext.InnerHtml = "等待处理结果中...";
+            dlChart.InnerHtml = "等待处理结果中...";
+            divOutput.Visible = false;//输出结果隐藏
+        }
 
         private void AbstinencyRadioListOption(ref RadioButtonList rbtList)
         {
@@ -1025,7 +1076,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
                     dlChart.InnerHtml = sb.ToString();
                     divContext.InnerHtml = GetCopusContext(showWordsList).ToString();
-                    outputDiv.Visible = true;
                 }
                 #endregion 4 WordList和结果输出
             }

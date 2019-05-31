@@ -9,7 +9,7 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="admin.aspx.cs" Inherits="FSCAppPages.Layouts.FSCAppPages.Corpus.admin" DynamicMasterPageFile="~masterurl/default.master" %>
 
 <asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
-    <link rel="stylesheet" href="../css/stylelc.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets//css/stylelc.css" type="text/css" charset="utf-8" />
 
     <script type="text/javascript">
         var currentRowId = 0;
