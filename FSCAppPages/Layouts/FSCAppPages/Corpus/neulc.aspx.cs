@@ -45,8 +45,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCorpusforWordList.PageIndexChanging += GvCorpusforWordList_PageIndexChanging;
             btnLemmaAll.Click += BtnLemmaAll_Click;
             clearBtn.Click += clearBtn_OnClick;
-            //string WordsFile = GetDbPath() + "words/AllWords.txt";
-            //CiLib = WordBLL.cibiaoku(WordsFile);
+            btnSubmitConcordance.Click += BtnSubmitConcordance_Click;
+            btnSubmitCollocate.Click += BtnSubmitCollocate_Click;
 
             if (!IsPostBack)
             {
@@ -67,16 +67,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
 
         }
-
-        private void BtnBacktoQuery_Click(object sender, EventArgs e)
-        {
-            divforQueryCorpus.Visible = true;
-            divforCorpusResult.Visible = false;
-        }
-
-
-
-
 
         #endregion
         #region 公用方法        /// <summary>
@@ -274,6 +264,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
         }
 
+
         #endregion
 
         #region 顶部工具栏方法
@@ -282,9 +273,19 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         #endregion
 
-        #region 2 Corpus
+        #region 2 Corpus：从整个语料数据库中按条件检索匹配的部分子语料库库
 
-        #region Corpus事件        /// <summary>
+        #region Corpus事件
+        /// <summary>
+        /// 重新检索语料库（大库筛小库）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnBacktoQuery_Click(object sender, EventArgs e)
+        {
+            divforQueryCorpus.Visible = true;
+            divforCorpusResult.Visible = false;
+        }        /// <summary>
         /// 检索大库，生成关键小库
         /// </summary>
         /// <param name="sender"></param>
@@ -332,7 +333,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
         }
 
-        #endregion
+        #endregion Corpus事件
 
         #region Corpus方法
         private DataTable BuildDTSummary(DataTable dtCorpus, string fkid, CheckBoxList cbl)
@@ -663,33 +664,146 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             divforCorpusResult.Visible = false;
         }
 
-        #endregion
 
         #endregion
 
-        #region 3 Concordance
+        #endregion 2 Corpus：从整个语料数据库中按条件检索匹配的部分子语料库库
 
-        #region Concordance事件
+        #region 3 Concordance：检索语料库中与关键字的匹配的语料列表
 
-        #endregion
+        #region Concordance事件
+        /// <summary>
+        /// 提交检索Concordance
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSubmitConcordance_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtKeyConcordance.Value.Trim()))
+                {
+                    lbErr.Text = "你还未输入要检索的关键词";
+                    txtKeyConcordance.Focus();
+                    return;
+                }
+                else
+                {
+                    string keyConc = txtKeyConcordance.Value.Trim();
+                    DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
+                    DataView dv = dtCorpus.DefaultView;
+                    dv.RowFilter = string.Format("OriginalText like '%{0}%'", keyConc);
+                    DataTable dtResult = dv.ToTable();
+                    if (dtResult.Rows.Count > 0)
+                    {
+                        int iCount = int.Parse(txtCDChars.Value.Trim());
+
+                        int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
+                        DataTable dtConcordance = Common.GetWordsFromCorpus(dtResult, keyConc, lAndr[0], lAndr[1]);
+                        gvConcordance.DataSource = dtConcordance;
+                        gvConcordance.DataBind();
+                    }
+                    else
+                    {
+                        lbErr.Text = "语料库中没有与你检索的关键词相匹配的语料，请换个关键词再试！";
+                        txtKeyConcordance.Focus();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                lbErr.Text = ex.ToString();
+            }
+        }
+
+
+
+
+        #endregion Concordance事件
 
         #region Concordance方法
 
-        #endregion
+        private int[] GetLeftandRight(DropDownList ddl, int iCount)
+        {
+            int[] lAndr = new int[] { iCount, iCount };
+            string sme = ddl.SelectedValue;
+            if (sme == "0")//在句首Start，则右边加单词
+            {
+                lAndr[1] = iCount;
+            }
+            else if (sme == "2")//End,则左边加单词
+            {
+                lAndr[0] = iCount;
+            }
+            else
+            {
+                lAndr[0] = iCount;
+                lAndr[1] = iCount;
+            }
+            return lAndr;
+        }
 
         #endregion
 
-        #region 4 Collocate
+        #endregion 3 Concordance：检索语料库中与关键字的匹配的语料列表
+
+        #region 4 Collocate：检索语料库中与关键字相关联的搭配
 
         #region Collocate事件
 
-        #endregion
+        /// <summary>
+        /// 提交检索Collocate
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnSubmitCollocate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtKeyCollocate.Value.Trim()))
+                {
+                    lbErr.Text = "你还未输入要检索的关键词";
+                    txtKeyCollocate.Focus();
+                    return;
+                }
+                else
+                {
+                    string keyColl = txtKeyCollocate.Value.Trim();
+                    DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
+                    DataView dv = dtCorpus.DefaultView;
+                    dv.RowFilter = string.Format("OriginalText like '%{0}%'", keyColl);
+                    DataTable dtResult = dv.ToTable();
+                    if (dtResult.Rows.Count > 0)
+                    {
+                        int iCount = int.Parse(txtCCChars.Value.Trim());
+
+                        int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
+                        DataTable dtConcordance = Common.GetWordsFromCorpus(dtResult, keyColl, lAndr[0], lAndr[1]);
+                        gvConcordance.DataSource = dtConcordance;
+                        gvConcordance.DataBind();
+                    }
+                    else
+                    {
+                        lbErr.Text = "语料库中没有与你检索的关键词相匹配的语料，请换个关键词再试！";
+                        txtKeyConcordance.Focus();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                lbErr.Text = ex.ToString();
+            }
+        }
+
+        #endregion Collocate事件
 
         #region Collocate方法
 
         #endregion
 
-        #endregion
+        #endregion 4 Collocate：检索语料库中与关键字相关联的搭配
 
         #region 5 Cluster
 
@@ -703,7 +817,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         #endregion
 
-        #region 6 WordList
+        #region 6 WordList：将语料库或者用户输入文本按照词汇登记表标记文本中各个级别单词的分布
 
         #region WordList事件
         private void BtnLemmaAll_Click(object sender, EventArgs e)
@@ -1091,6 +1205,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         #endregion WordList方法
 
-        #endregion
+        #endregion 6 WordList：将语料库或者用户输入文本按照词汇登记表标记文本中各个级别单词的分布
     }
 }

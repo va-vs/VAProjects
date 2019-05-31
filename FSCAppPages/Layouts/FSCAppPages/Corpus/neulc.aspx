@@ -63,25 +63,61 @@
             margin:5px;
             text-align:left;
         }
-        .flexbox_a{
+        .flexbox_text{
+            height:20px;
+            text-align:center;
+        }
+        .flexbox_asub{
+            height:16px;
+            width:16px;
             text-align: center;
             color:black;
             text-decoration:none;
-            border:1px solid #B4CDCD;
+            border:1px solid #808080;
             background-color:#f0f0f0;
-            text-align:center;
-            height:20px;
-            width:30px;
-            padding:2px;
-            border-radius: 40%;
-            -moz-border-radius: 40%;
-            -webkit-border-radius: 40%;
+            border-radius: 50%;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            vertical-align:central;
+            padding-left:6px;
+            padding-right:6px;
+            padding-bottom:2px;
+            font-weight:bold;
         }
+        .flexbox_asub:visited {text-decoration:none;}
+        .flexbox_asub:hover{
+            cursor:pointer;
+            text-decoration:none;
+            background-color:#808080;
+            color:#ffffff;
+        }
+        .flexbox_asub:active {color:#ba2636;}
+        .flexbox_a{
+            height:16px;
+            width:16px;
+            text-align: center;
+            color:black;
+            text-decoration:none;
+            border:1px solid #808080;
+            background-color:#f0f0f0;
+            border-radius: 50%;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            vertical-align:central;
+            padding-left:5px;
+            padding-right:5px;
+            padding-bottom:2px;
+            font-weight:bold;
+        }
+        .flexbox_a:visited {text-decoration:none;}
         .flexbox_a:hover{
             cursor:pointer;
             text-decoration:none;
             background-color:#808080;
             color:#ffffff;
+        }
+         .flexbox_a:active{
+            text-decoration:none;
         }
     </style>
 
@@ -405,94 +441,116 @@
                     </div>
                 </asp:View>
 
-                   <%-- Concordance --%>
+                <%-- Concordance --%>
                 <asp:View ID="vwConcordance" runat="server">
-                    <div id="divConcordanceQuery" runat="server">
-                        <h4>Select Corpus you need according to:
-                        </h4>
-                        <div class="flexbox_div">
-                            Search for&nbsp;
-                            <input type="text" id="keyConcordance" size="55" placeholder="Type a query keyWord here">
-                        </div>
+                    <div id="divConcordanceQuery" runat="server" class="qfld">
+                        <fieldset>
+                            <legend>Select Corpus you need according to:</legend>
+                            <div class="flexbox_div">
+                                Search for&nbsp;
+                            <input type="text" id="txtKeyConcordance" size="60" placeholder="Type a query keyWord here" runat="server" class="input-text" />
+                            </div>
 
-                        <div class="flexbox_div">
-                            Search for matches&nbsp;
-                            <select id="sentencePos">
-                                <option>at the start of</option>
-                                <option selected="true">anywhere in</option>
-                                <option>at the end of</option>
-                            </select>&nbsp;
+                            <div class="flexbox_div">
+                                Search for matches&nbsp;
+                                <asp:DropDownList ID="ddlSentencePos" runat="server">
+                                    <asp:ListItem Enabled="False" Value="0">at the start of</asp:ListItem>
+                                    <asp:ListItem Selected="True" Value="1">anywhere in</asp:ListItem>
+                                    <asp:ListItem Enabled="False" Value="2">at the end of</asp:ListItem>
+                                </asp:DropDownList>&nbsp;
                             a sentence
-                        </div>
-                        <div class="flexbox_div">
-                            Display each match at&nbsp;
-                            <select id="matchPos">
-                                <option>start</option>
-                                <option selected="true">middle</option>
-                                <option>end</option>
-                            </select>
-                            &nbsp;of a context of&nbsp;
-                            <a href="#" onclick='sub("chars",1,5)' class="flexbox_a"> - </a>
-                            <input type="text" id="chars" name="contextsize" size="4" value="10">
-                            <a href="#" onclick='add("chars",1,50)'  class="flexbox_a"> + </a>&nbsp;
-                            <select id="cSize"><option>characters</option><option selected="true">words</option><option>sentences</option></select>
-                        </div>
-                        <div class="flexbox_div">
-                            Display up to&nbsp;
-                            <a href="#" onclick='sub("terminate",10,10)' class="flexbox_a"> - </a>
-                            <input type="text" id="terminate" name="terminate" size="4" value="100">
-                             <a href="#" onclick='add("terminate",10,100)' class="flexbox_a"> + </a>
-                            &nbsp;matches with&nbsp;
-                            <a href="#" onclick='sub("rpp",5,10)' class="flexbox_a"> - </a>
-                            <input type="text" id="rpp" size="4" value="20" title="Type a new value or use the buttons to change the value.">
-                            <a href="#" onclick='add("rpp",5,50)' class="flexbox_a"> + </a>&nbsp;
+                            </div>
+                            <div class="flexbox_div">
+                                Display each match at&nbsp;
+                                <asp:DropDownList ID="ddlMatchPos" runat="server">
+                                    <asp:ListItem Value="0">start</asp:ListItem>
+                                    <asp:ListItem Selected="True" Value="1">middle</asp:ListItem>
+                                    <asp:ListItem Value="2">end</asp:ListItem>
+                                </asp:DropDownList>&nbsp;
+                                of a context of&nbsp;
+                                <a href="#" onclick='sub("<%=txtCDChars.ClientID%>",1,5)' class="flexbox_asub">-</a>
+                                <input type="text" id="txtCDChars" name="contextsize" size="4" value="10" runat="server" class="flexbox_text" />
+                                <a href="#" onclick='add("<%=txtCDChars.ClientID%>",1,50)' class="flexbox_a">+</a>&nbsp;
+                                <asp:DropDownList ID="ddlCDCharacters" runat="server">
+                                    <asp:ListItem Enabled="False" Value="0">characters</asp:ListItem>
+                                    <asp:ListItem Selected="True" Value="1">words</asp:ListItem>
+                                    <asp:ListItem Enabled="False" Value="2">sentences</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                            <div class="flexbox_div">
+                                Display up to&nbsp;
+                            <a href="#" onclick='sub("<%=txtLimit.ClientID%>",10,10)' class="flexbox_asub">-</a>
+                                <input type="text" id="txtLimit" name="terminate" size="4" value="100" class="flexbox_text" runat="server" />
+                                <a href="#" onclick='add("<%=txtLimit.ClientID%>",10,100)' class="flexbox_a">+</a>
+                                &nbsp;matches with&nbsp;
+                            <a href="#" onclick='sub("<%=txtRpp.ClientID%>",5,10)' class="flexbox_asub">-</a>
+                                <input type="text" id="txtRpp" size="4" value="20" title="Type a new value or click the - + buttons to change the value." class="flexbox_text" runat="server" />
+                                <a href="#" onclick='add("<%=txtRpp.ClientID%>",5,50)' class="flexbox_a">+</a>&nbsp;
                             per page
-                        </div>
-                        <div class="flexbox_div">
-                            <input type="checkbox" id="count">
-                            <label for="count">Show total number of matches </label>
-                        </div>
-                        <div class="flexbox_div">
-                            <input type="button" id="submitConc" value="Search">
-                        </div>
-
+                            </div>
+                            <div class="flexbox_div">
+                                <asp:CheckBox ID="isShowTotalCount" runat="server" Text="Show total number of matches" />
+                            </div>
+                            <div class="flexbox_div">
+                                <asp:Button ID="btnSubmitConcordance" runat="server" Text="Search" CssClass="outbtndiv-button" />
+                            </div>
+                        </fieldset>
                     </div>
                     <div id="divConcordanceResult" runat="server">
-
+                        <asp:GridView ID="gvConcordance" runat="server"></asp:GridView>
                     </div>
                 </asp:View>
 
                 <%-- Collocate --%>
                 <asp:View ID="vwCollocate" runat="server">
-                    <div id="divCollocateQuery" runat="server">
-                        <div class="flexbox_div">
-                            Search for collocates of&nbsp;
-                            <input type="text" id="collocq" size="60" placeholder="Type a query KeyWord here">
-                        </div>
-                        <div class="flexbox_div">
-                            Display collocates found up to &nbsp;
-                            <a href="#" onclick='sub("clField",1,0)' class="flexbox_a"> - </a>
-                            <input type="text" id="clField" size="3" value="0">
-                            <a href="#" onclick='add("clField",1,3)' class="flexbox_a"> + </a>
-                            &nbsp;word(s) to the left and&nbsp;
-                            <a href="#" onclick='sub("crField",1,0)' class="flexbox_a"> - </a>
-                            <input type="text" id="crField" size="3" value="1">
-                            <a href="#" onclick='add("crField",1,3)' class="flexbox_a"> + </a>
-                            &nbsp;word(s) to the right&nbsp;
-                        </div>
-                        <div class="flexbox_div" style="display:none">
-                            Collocate Part of Speech:&nbsp;
-                            <input type="button" id="PosButton" class="shortbutton it-peb" value="PoS Editor">
-                        </div>
-                        <div class="flexbox_div">
-                            <input type="button" id="submitColloc" value="Search" class="shortbutton">
-                        </div>
+                    <div id="divCollocateQuery" runat="server" class="qfld">
+                        <fieldset>
+                            <legend>Search Corpus you need according to:</legend>
+                            <div class="flexbox_div">
+                                Search for collocates of&nbsp;
+                            <input type="text" id="txtKeyCollocate" size="60" placeholder="Type a query KeyWord here" runat="server" class="input-text"/>
+                            </div>
+                            <div class="flexbox_div">
+                                Display collocates found up to &nbsp;
+                            <a href="#" onclick='sub("<%=clField.ClientID%>",1,0)' class="flexbox_asub">-</a>
+                                <input type="text" id="clField" size="3" value="0" class="flexbox_text" runat="server" />
+                                <a href="#" onclick='add("<%=clField.ClientID%>",1,3)' class="flexbox_a">+</a>
+                                &nbsp;word(s) to the left and&nbsp;
+                            <a href="#" onclick='sub("<%=crField.ClientID%>",1,0)' class="flexbox_asub">-</a>
+                                <input type="text" id="crField" size="3" value="1" class="flexbox_text" runat="server" />
+                                <a href="#" onclick='add("<%=crField.ClientID%>",1,3)' class="flexbox_a">+</a>
+                                &nbsp;word(s) to the right&nbsp;
+                            </div>
+                            <div class="flexbox_div">
+                                Display each collocates at&nbsp;
+                                <asp:DropDownList ID="ddlCollocatesPos" runat="server">
+                                    <asp:ListItem Value="0">start</asp:ListItem>
+                                    <asp:ListItem Selected="True" Value="1">middle</asp:ListItem>
+                                    <asp:ListItem Value="2">end</asp:ListItem>
+                                </asp:DropDownList>&nbsp;
+                                of a context of&nbsp;
+                                <a href="#" onclick='sub("<%=txtCCChars.ClientID%>",1,5)' class="flexbox_asub">-</a>
+                                <input type="text" id="txtCCChars" name="contextsize" size="4" value="10" runat="server" class="flexbox_text" />
+                                <a href="#" onclick='add("<%=txtCCChars.ClientID%>",1,50)' class="flexbox_a">+</a>&nbsp;
+                                <asp:DropDownList ID="ddlCCCharacters" runat="server">
+                                    <asp:ListItem Enabled="False" Value="0">characters</asp:ListItem>
+                                    <asp:ListItem Selected="True" Value="1">words</asp:ListItem>
+                                    <asp:ListItem Enabled="False" Value="2">sentences</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                            <div class="flexbox_div" style="display: none">
+                                Collocate Part of Speech:&nbsp;
+                            <input type="button" id="PosButton" class="shortbutton it-peb" value="PoS Editor" />
+                            </div>
+                            <div class="flexbox_div">
+                                <asp:Button ID="btnSubmitCollocate" runat="server" Text="Search" CssClass="outbtndiv-button" />
+                            </div>
+                        </fieldset>
                     </div>
                     <div id="divCollocateResult" runat="server">
-
+                        <asp:GridView ID="gvCollocate" runat="server"></asp:GridView>
                     </div>
                 </asp:View>
-
 
                 <%-- WordList --%>
                 <asp:View ID="vwWordList" runat="server">
