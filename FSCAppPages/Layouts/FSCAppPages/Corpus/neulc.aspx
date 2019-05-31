@@ -512,13 +512,13 @@
                             </div>
                             <div class="flexbox_div">
                                 Display collocates found up to &nbsp;
-                            <a href="#" onclick='sub("<%=clField.ClientID%>",1,0)' class="flexbox_asub">-</a>
-                                <input type="text" id="clField" size="3" value="0" class="flexbox_text" runat="server" />
-                                <a href="#" onclick='add("<%=clField.ClientID%>",1,3)' class="flexbox_a">+</a>
+                            <a href="#" onclick='sub("<%=txtcfLeft.ClientID%>",1,0)' class="flexbox_asub">-</a>
+                                <input type="text" id="txtcfLeft" size="3" value="0" class="flexbox_text" runat="server" />
+                                <a href="#" onclick='add("<%=txtcfLeft.ClientID%>",1,3)' class="flexbox_a">+</a>
                                 &nbsp;word(s) to the left and&nbsp;
-                            <a href="#" onclick='sub("<%=crField.ClientID%>",1,0)' class="flexbox_asub">-</a>
-                                <input type="text" id="crField" size="3" value="1" class="flexbox_text" runat="server" />
-                                <a href="#" onclick='add("<%=crField.ClientID%>",1,3)' class="flexbox_a">+</a>
+                            <a href="#" onclick='sub("<%=txtcfRight.ClientID%>",1,0)' class="flexbox_asub">-</a>
+                                <input type="text" id="txtcfRight" size="3" value="1" class="flexbox_text" runat="server" />
+                                <a href="#" onclick='add("<%=txtcfRight.ClientID%>",1,3)' class="flexbox_a">+</a>
                                 &nbsp;word(s) to the right&nbsp;
                             </div>
                             <div class="flexbox_div">

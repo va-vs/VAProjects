@@ -274,22 +274,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtKeyCollocate;
         
         /// <summary>
-        /// clField 控件。
+        /// txtcfLeft 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText clField;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtcfLeft;
         
         /// <summary>
-        /// crField 控件。
+        /// txtcfRight 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText crField;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtcfRight;
         
         /// <summary>
         /// ddlCollocatesPos 控件。

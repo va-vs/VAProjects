@@ -779,9 +779,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         int iCount = int.Parse(txtCCChars.Value.Trim());
 
                         int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
-                        DataTable dtConcordance = Common.GetWordsFromCorpus(dtResult, keyColl, lAndr[0], lAndr[1]);
-                        gvConcordance.DataSource = dtConcordance;
-                        gvConcordance.DataBind();
+                        int mleft = int.Parse(txtcfLeft.Value.Trim());
+                        int mright = int.Parse(txtcfRight.Value.Trim());
+                        DataTable dtConcordance = Common.GetPhraseFromCorpus(keyColl, dtResult, mleft, mright, lAndr[0], lAndr[1]);
+                        gvCollocate.DataSource = dtConcordance;
+                        gvCollocate.DataBind();
                     }
                     else
                     {
