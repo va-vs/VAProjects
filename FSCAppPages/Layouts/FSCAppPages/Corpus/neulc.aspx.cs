@@ -679,8 +679,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnSubmitConcordance_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (string.IsNullOrEmpty(txtKeyConcordance.Value.Trim()))
                 {
                     lbErr.Text = "你还未输入要检索的关键词";
@@ -710,11 +710,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     }
 
                 }
-            }
-            catch (Exception ex)
-            {
-                lbErr.Text = ex.ToString();
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    lbErr.Text = ex.ToString();
+            //}
         }
 
 
@@ -759,8 +759,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnSubmitCollocate_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (string.IsNullOrEmpty(txtKeyCollocate.Value.Trim()))
                 {
                     lbErr.Text = "你还未输入要检索的关键词";
@@ -792,11 +792,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     }
 
                 }
-            }
-            catch (Exception ex)
-            {
-                lbErr.Text = ex.ToString();
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    lbErr.Text = ex.ToString();
+            //}
         }
 
         #endregion Collocate事件
