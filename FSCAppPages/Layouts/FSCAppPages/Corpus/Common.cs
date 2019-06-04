@@ -15,6 +15,38 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
     {
         #region 处理词组
         /// <summary>
+        /// 对查询的词组汇总计算
+        /// 返回表的字段（match、totalTimes、phraseTimes）
+        /// </summary>
+        /// <param name="dtSearchResult">查询的结果</param>
+        /// <returns></returns>
+        public static DataTable CaculatePhrase(DataTable dtSearchResult)
+        {
+            DataTable dtResults = new DataTable();
+            dtResults.Columns.Add("match", typeof(string));
+            dtResults.Columns.Add("totalTimes", typeof(int));
+            dtResults.Columns.Add("phraseTimes", typeof(int));
+            DataTable dtMatchs= dtSearchResult.DefaultView.ToTable(true, "match");
+            DataRow drNew;
+            DataSet dsTmp = new DataSet();
+ 
+            string match;
+            DataRow[] drs; 
+            foreach (DataRow drTmp in dtMatchs.Rows )
+            {
+                dsTmp = new DataSet();
+                drNew = dtResults.Rows.Add();
+                match=drTmp["match"].ToString ();
+                drNew["match"] = match;
+                drNew["totalTimes"] =dtSearchResult.Compute("count(match)", "match='" + match + "'");
+                drs = dtSearchResult.Select("match='"+match +"'");
+                dsTmp.Merge(drs);
+                drNew["phraseTimes"] = dsTmp.Tables[0].DefaultView.ToTable(true, "CorpusID").Rows.Count;
+
+            }
+            return dtResults;
+        } 
+        /// <summary>
         /// 返回包含五列的数据表（CorpusID,Title,left,match,right）
         /// </summary>
         /// <param name="findWord">要查询的单词</param>
@@ -86,7 +118,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         iStart = 0;
                         while (iStart < rightWords.Count)
                         {
-                            rightStr = rightStr + rightStr[iStart] + " ";
+                            rightStr = rightStr + rightWords[iStart] + " ";
                             iStart += 1;
                             if (iStart == rightWordsCount) break;
                         }
@@ -107,6 +139,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
             }
             return dtResults;
+            //DataTable dtTotals = CaculatePhrase(dtResults);
+            //return dtTotals;
         }
         #endregion
 
@@ -122,15 +156,18 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         private  static string GetPhrase(List<string> words,string findWord,int leftWords,int rightWords)
         {
             string phrase="";
+            if (leftWords == 0 && rightWords == 0) return phrase;
              int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
+            if (wordIndex < 0  ) return phrase;
             int leftIndex = wordIndex - leftWords;
             int rightIndex = wordIndex + rightWords;
             if (leftIndex < 0) leftIndex = 0;
             if (rightIndex > words.Count - 1) rightIndex = words.Count - 1;
+            if (leftIndex == rightIndex) return phrase;
             while (leftIndex <=rightIndex )
             {
-
-                phrase = phrase+words[leftIndex] + " "; 
+                phrase = phrase+words[leftIndex] + " ";
+                leftIndex += 1;
             }
             return phrase.Trim();
 
@@ -198,10 +235,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             DataRow dr = null;
             while (wordIndex > -1)
             {
-                resultWord = "";
                 dr = dtResults.NewRow();
                 if (leftWords > 0)//右匹配，找左边的单词
                 {
+                    resultWord = "";
                     leftIndex = wordIndex - leftWords;
                     if (leftIndex < 0) leftIndex = 0;
                     start = leftIndex;
@@ -214,12 +251,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
                 else
                     resultWord = "";
-                dr["left"]=resultWord ;
+                dr["left"] = resultWord;
 
-                dr["match"]=findWord ;
+                dr["match"] = findWord;
                 //处理中间
-                if (rightWords>0)
+                if (rightWords > 0)
                 {
+                    resultWord = "";
                     rightIndex = wordIndex + rightWords;
                     if (rightIndex >= words.Count) rightIndex = words.Count - 1;
                     start = wordIndex + 1;
@@ -232,13 +270,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
                 }
                 //三部分的数组
-                dr["right"]=resultWord ;
+                dr["right"] = resultWord;
                 if (!dr.IsNull("left") || !dr.IsNull("right"))
                     dtResults.Rows.Add(dr);
-              
-                wordIndex = words.FindIndex(wordIndex + rightWords+1, word => word == findWord);
-            }
 
+                if (wordIndex + rightWords + 1 >= words.Count)
+                    break;
+                wordIndex = words.FindIndex(wordIndex + rightWords + 1, word => word == findWord);
+            }
             return dtResults ;
         }
         #endregion
