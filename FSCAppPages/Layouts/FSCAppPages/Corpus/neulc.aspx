@@ -333,6 +333,7 @@
                     <asp:MenuItem Text="Collocate" Value="2"></asp:MenuItem>
                     <asp:MenuItem Text="WordList" Value="3"></asp:MenuItem>
                     <asp:MenuItem Text="Cluster" Value="4"></asp:MenuItem>
+                    <asp:MenuItem Text="Compare" Value="4"></asp:MenuItem>
                 </Items>
                 <StaticSelectedStyle Font-Bold="true" HorizontalPadding="10" VerticalPadding="4"  ForeColor="red" />
                 <StaticMenuItemStyle HorizontalPadding="10" VerticalPadding="4" />

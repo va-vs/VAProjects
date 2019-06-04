@@ -681,35 +681,34 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             //try
             //{
-                if (string.IsNullOrEmpty(txtKeyConcordance.Value.Trim()))
+            if (string.IsNullOrEmpty(txtKeyConcordance.Value.Trim()))
+            {
+                lbErr.Text = "你还未输入要检索的关键词";
+                txtKeyConcordance.Focus();
+                return;
+            }
+            else
+            {
+                string keyConc = txtKeyConcordance.Value.Trim();
+                string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%'", keyConc);
+                DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
+
+                if (dtCorpus.Rows.Count > 0)
                 {
-                    lbErr.Text = "你还未输入要检索的关键词";
-                    txtKeyConcordance.Focus();
-                    return;
+                    int iCount = int.Parse(txtCDChars.Value.Trim());
+
+                    int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
+                    DataTable dtConcordance = Common.GetWordsFromCorpus(dtCorpus, keyConc, lAndr[0], lAndr[1]);
+                    gvConcordance.DataSource = dtConcordance;
+                    gvConcordance.DataBind();
                 }
                 else
                 {
-                    string keyConc = txtKeyConcordance.Value.Trim();
-                    DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
-                    DataView dv = dtCorpus.DefaultView;
-                    dv.RowFilter = string.Format("OriginalText like '%{0}%'", keyConc);
-                    DataTable dtResult = dv.ToTable();
-                    if (dtResult.Rows.Count > 0)
-                    {
-                        int iCount = int.Parse(txtCDChars.Value.Trim());
-
-                        int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
-                        DataTable dtConcordance = Common.GetWordsFromCorpus(dtResult, keyConc, lAndr[0], lAndr[1]);
-                        gvConcordance.DataSource = dtConcordance;
-                        gvConcordance.DataBind();
-                    }
-                    else
-                    {
-                        lbErr.Text = "语料库中没有与你检索的关键词相匹配的语料，请换个关键词再试！";
-                        txtKeyConcordance.Focus();
-                    }
-
+                    lbErr.Text = "语料库中没有与你检索的关键词相匹配的语料，请换个关键词再试！";
+                    txtKeyConcordance.Focus();
                 }
+
+            }
             //}
             //catch (Exception ex)
             //{
@@ -761,37 +760,35 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             //try
             //{
-                if (string.IsNullOrEmpty(txtKeyCollocate.Value.Trim()))
+            if (string.IsNullOrEmpty(txtKeyCollocate.Value.Trim()))
+            {
+                lbErr.Text = "你还未输入要检索的关键词";
+                txtKeyCollocate.Focus();
+                return;
+            }
+            else
+            {
+                string keyColl = txtKeyCollocate.Value.Trim();
+                string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%'", keyColl);
+                DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
+                if (dtCorpus.Rows.Count > 0)
                 {
-                    lbErr.Text = "你还未输入要检索的关键词";
-                    txtKeyCollocate.Focus();
-                    return;
+                    int iCount = int.Parse(txtCCChars.Value.Trim());
+
+                    int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
+                    int mleft = int.Parse(txtcfLeft.Value.Trim());
+                    int mright = int.Parse(txtcfRight.Value.Trim());
+                    DataTable dtConcordance = Common.GetPhraseFromCorpus(keyColl, dtCorpus, mleft, mright, lAndr[0], lAndr[1]);
+                    gvCollocate.DataSource = dtConcordance;
+                    gvCollocate.DataBind();
                 }
                 else
                 {
-                    string keyColl = txtKeyCollocate.Value.Trim();
-                    DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
-                    DataView dv = dtCorpus.DefaultView;
-                    dv.RowFilter = string.Format("OriginalText like '%{0}%'", keyColl);
-                    DataTable dtResult = dv.ToTable();
-                    if (dtResult.Rows.Count > 0)
-                    {
-                        int iCount = int.Parse(txtCCChars.Value.Trim());
-
-                        int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
-                        int mleft = int.Parse(txtcfLeft.Value.Trim());
-                        int mright = int.Parse(txtcfRight.Value.Trim());
-                        DataTable dtConcordance = Common.GetPhraseFromCorpus(keyColl, dtResult, mleft, mright, lAndr[0], lAndr[1]);
-                        gvCollocate.DataSource = dtConcordance;
-                        gvCollocate.DataBind();
-                    }
-                    else
-                    {
-                        lbErr.Text = "语料库中没有与你检索的关键词相匹配的语料，请换个关键词再试！";
-                        txtKeyConcordance.Focus();
-                    }
-
+                    lbErr.Text = "语料库中没有与你检索的关键词相匹配的语料，请换个关键词再试！";
+                    txtKeyConcordance.Focus();
                 }
+
+            }
             //}
             //catch (Exception ex)
             //{
@@ -803,7 +800,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         #region Collocate方法
 
-        #endregion
+        #endregion Collocate方法
 
         #endregion 4 Collocate：检索语料库中与关键字相关联的搭配
 
@@ -990,7 +987,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 return;
             }
             string keyWords = txtKeyWordsforWordlist.Value.Trim();
-            string rowFilter = string.Format("Title like '%{0}%' or Source like '%{0}%' or OriginalText like '%{0}%' or CodedText like '%{0}%'", keyWords);
+            string rowFilter = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%'", keyWords);
+
             DataTable dtCorpusforWordList = FSCDLL.DAL.Corpus.GetCorpusByFilterString(rowFilter).Tables[0];// dv.ToTable();
             if (dtCorpusforWordList.Rows.Count > 0)
             {
