@@ -333,7 +333,7 @@
                     <asp:MenuItem Text="Collocate" Value="2"></asp:MenuItem>
                     <asp:MenuItem Text="WordList" Value="3"></asp:MenuItem>
                     <asp:MenuItem Text="Cluster" Value="4"></asp:MenuItem>
-                    <asp:MenuItem Text="Compare" Value="4"></asp:MenuItem>
+                    <asp:MenuItem Text="Compare" Value="5"></asp:MenuItem>
                 </Items>
                 <StaticSelectedStyle Font-Bold="true" HorizontalPadding="10" VerticalPadding="4"  ForeColor="red" />
                 <StaticMenuItemStyle HorizontalPadding="10" VerticalPadding="4" />
@@ -548,7 +548,7 @@
                             </div>
                         </fieldset>
                     </div>
-                    <div id="divCollocateResult" runat="server">
+                    <div id="divCollocateResult" runat="server"  class="qfld">
                         <asp:GridView ID="gvCollocate" runat="server"></asp:GridView>
                     </div>
                 </asp:View>
@@ -739,6 +739,34 @@
                 <%-- Cluster --%>
                 <asp:View ID="vwCluster" runat="server">
                     <h2>Cluster</h2>
+                </asp:View>
+
+                <%-- Compare Frequencies --%>
+                <asp:View ID="vwCompare" runat="server">
+                    <div id="divQueryforCompare" runat="server" class="qfld">
+                        <div class="flexbox_div">
+                            <span>Compared in</span>
+                            <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal">
+                                <asp:ListItem Value="All">All corpora</asp:ListItem>
+                                <asp:ListItem Value="Some">Only selected corpra</asp:ListItem>
+                            </asp:RadioButtonList>
+                        </div>
+                        <div class="flexbox_div">
+                        <input type="text" id="txtfreqField1"  size="80" placeholder="Type the 1st KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span>
+                        </div>
+                        <div class="flexbox_div">
+                        <input type="text" id="txtfreqField2"  size="80" placeholder="Type the 2nd KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span>
+                        </div>
+                        <div class="flexbox_div">
+                        <input type="text" id="txtfreqField3"  size="80" placeholder="Type the 3nd KeyWord for comparison here,This is not required" runat="server" class="input-text"/>
+                        </div>
+                        <div class="flexbox_div">
+                        <asp:Button ID="btnCompared" runat="server" Text="Sumbit" />
+                        </div>
+                   </div>
+                    <div id="divforCompareResult" runat="server" visible="false" class="qfld">
+
+                    </div>
                 </asp:View>
             </asp:MultiView>
         </div>

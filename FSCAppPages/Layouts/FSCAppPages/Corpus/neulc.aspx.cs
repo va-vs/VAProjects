@@ -13,6 +13,7 @@ using Microsoft.SharePoint;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Specialized;
 
 namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
@@ -30,13 +31,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            //导航按钮点击事件
             muNeulc.MenuItemClick += muNeulc_MenuItemClick;
 
+            //Concordance提交按钮点击事件
             btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
 
             //WordList控件事件绑定
             btnBacktoQuery.Click += BtnBacktoQuery_Click;
-            lemmanew.Click += lemmanew_Click;
+            lemmanew.Click += lemmanew_Click;//WordList提交按钮点击事件
             btnBackLemma.Click += BtnBackLemma_Click;
             btnCloseLemma.Click += BtnCloseLemma_Click;
             rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
@@ -45,9 +48,17 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCorpusforWordList.PageIndexChanging += GvCorpusforWordList_PageIndexChanging;
             btnLemmaAll.Click += BtnLemmaAll_Click;
             clearBtn.Click += clearBtn_OnClick;
+
+            //Concordance提交按钮点击事件
             btnSubmitConcordance.Click += BtnSubmitConcordance_Click;
+
+            //Collocate提交按钮点击事件
             btnSubmitCollocate.Click += BtnSubmitCollocate_Click;
 
+            //Compare提交按钮点击事件
+            btnCompared.Click += BtnCompared_Click;
+
+            //页面加载
             if (!IsPostBack)
             {
                 InitQueryControls();
@@ -68,12 +79,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
 
+
+
+
+
         #endregion
         #region 公用方法        /// <summary>
-        /// 页面提醒
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="p"></param>
+                             /// 页面提醒
+                             /// </summary>
+                             /// <param name="info"></param>
+                             /// <param name="p"></param>
         private static void PageAlert(string info, Page p)
         {
             string script = string.Format("<script>alert('{0}')</script>", info);
@@ -249,6 +264,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                             mvNeulc.ActiveViewIndex = 4;
                             break;
                         }
+                    case "5"://Cluster
+                        {
+                            mvNeulc.ActiveViewIndex = 5;
+                            break;
+                        }
                     default://Corpus
                         mvNeulc.ActiveViewIndex = 0;
                         InitQueryControls();
@@ -311,16 +331,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
                         {
                             ViewState["filterExp"] = newQueryStr;
-                            ViewState["dtCorpus"] = null;//清空检索
-                            QueryCorpus();//检索语料库
                         }
                     }
                     else//尚未检索过
                     {
                         ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
-                        ViewState["dtCorpus"] = null;//清空检索
-                        QueryCorpus();
                     }
+                    QueryCorpus();//检索语料库
                     divforCorpusResult.Visible = true;
                     divforQueryCorpus.Visible = false;
                     rbltxtFrom.Items[1].Enabled = true;//经过检索后，WordList中才可以使用关键词检索语料库文本做WordList
@@ -524,7 +541,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string filterExpression = ViewState["filterExp"].ToString();
             DataSet dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
-            ViewState["dtCorpus"] = dsResult.Tables[0];
             DataTable dtResult = dsResult.Tables[0].Copy();
             BuildTable(dtResult, cblLevel, "LevelID", tbforLevel);
             BuildTable(dtResult, cblTopic, "TopicID", tbforTopic);
@@ -600,6 +616,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
             }
             string[] strResults = new string[] { strResult, strQuery };
+
             return strResults;
         }        /// <summary>
         /// 初始化检索控件控件
@@ -821,7 +838,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #region WordList事件
         private void BtnLemmaAll_Click(object sender, EventArgs e)
         {
-            DataTable dtCorpusforWordList = (DataTable)ViewState["dtCorpusSource"];
+            string filterStr = ViewState["filterExp"].ToString();
+            DataTable dtCorpusforWordList = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
             StringBuilder sb = new StringBuilder();
 
             foreach (DataRow dr in dtCorpusforWordList.Rows)
@@ -876,7 +894,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         //重新绑定数据视图,分页时和加载时调用
         private void Requery()
         {
-            DataTable dt = (DataTable)ViewState["dtCorpusSource"];
+            string filterStr = ViewState["filterExp"].ToString();
+            DataTable dt = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
             gvCorpusforWordList.DataSource = dt.DefaultView;
             gvCorpusforWordList.DataBind();
         }
@@ -965,7 +984,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 hdftxtFrom.Value = "1";
                 divFromCorpus.Visible = true;
                 divCorpusforWordList.Visible = true;
-                ViewState["dtCorpusSource"] = ViewState["dtCorpus"];
                 Requery();
                 divfromshuru.Visible = false;
                 divTexts.Visible = true;
@@ -988,13 +1006,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             string keyWords = txtKeyWordsforWordlist.Value.Trim();
             string rowFilter = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%'", keyWords);
-
+            if (ViewState["filterExp"] != null)
+            {
+                rowFilter = string.Format("{0} And {1}", rowFilter, ViewState["filterExp"]);
+            }
             DataTable dtCorpusforWordList = FSCDLL.DAL.Corpus.GetCorpusByFilterString(rowFilter).Tables[0];// dv.ToTable();
             if (dtCorpusforWordList.Rows.Count > 0)
             {
                 divCorpusforWordList.Visible = true;
-                ViewState["dtCorpusforWordList"] = dtCorpusforWordList;
-                ViewState["dtCorpusSource"] = dtCorpusforWordList;
                 gvCorpusforWordList.DataSource = dtCorpusforWordList;
                 gvCorpusforWordList.DataBind();
             }
@@ -1203,8 +1222,59 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             return txtPath;
         }
 
+
+
+
         #endregion WordList方法
 
         #endregion 6 WordList：将语料库或者用户输入文本按照词汇登记表标记文本中各个级别单词的分布
+
+        #region 7 Compare:比较两到三个关键词的使用频率
+        #region Compare事件
+        /// <summary>
+        /// 比较输入的多个关键词
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCompared_Click(object sender, EventArgs e)
+        {
+
+            if (string.IsNullOrEmpty(txtfreqField1.Value.Trim()) || string.IsNullOrEmpty(txtfreqField2.Value.Trim()))
+            {
+                lbErr.Text = "请至少在前两个文本框中输入比较词!";
+                return;
+            }
+            else
+            {
+                string filterStr = ViewState["filterExp"].ToString();
+                if (rblforCompare.SelectedValue == "All" || string.IsNullOrEmpty(filterStr))
+                {
+                    string corpus = GetCorpusByUrl();
+                    filterStr = "Source = " + corpus;
+                }
+                string key1 = txtfreqField1.Value;
+                string filterStr1 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", key1, filterStr);
+                string key2 = txtfreqField2.Value;
+                string filterStr2 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", key2, filterStr);
+                DataTable dt1 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr1).Tables[0];
+                DataTable dt2 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr2).Tables[0];
+            }
+
+        }
+
+        private string GetCorpusByUrl()
+        {
+            string urlp = "NEULC";
+            if (Request.QueryString["cp"] != null)
+            {
+                urlp = Request.QueryString["cp"];
+            }
+            return urlp;
+        }
+        #endregion Compare事件
+        #region Compare方法
+
+        #endregion
+        #endregion
     }
 }
