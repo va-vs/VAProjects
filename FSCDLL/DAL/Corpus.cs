@@ -37,7 +37,17 @@ namespace FSCDLL.DAL
         /// <returns></returns>
         public static DataSet GetCopusExtendByTypes(string types)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCopusExtendByTypes",types );
+            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusExtendByTypes",types );
+            return ds;
+        }
+        /// <summary>
+        /// 获取学术语料库中期刊来源
+        /// </summary>
+        /// <param name="majorID">四位专业编号</param>
+        /// <returns></returns>
+        public static DataSet GetCorpusJournalByMajor(string majorID)
+        {
+            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusJournalByMajor", majorID);
             return ds;
         }
         #endregion
