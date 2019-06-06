@@ -75,11 +75,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             //Compare提交按钮点击事件
             btnCompared.Click += BtnCompared_Click;
             InitMenu();
+
+            string cpName = GetCorpusByUrl();
             //页面加载
             if (!IsPostBack)
             {
-                InitQueryControls();
-                ClearQueryControls();
+                InitQueryControls(cpName);
+                ClearQueryControls(cpName);
                 muNeulc.Items[0].Selected = true;
                 Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
 
@@ -378,8 +380,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnSubmitforCorpus_Click(object sender, EventArgs e)
         {
-
-            string[] strResult = GetSelectQuery();
+            string cpNam = GetCorpusByUrl();
+            string[] strResult = GetSelectQuery(cpNam);
             string result0 = strResult[0];
             if (result0 != "1;1;1")//不是所有的筛选项都被筛选了
             {
@@ -402,7 +404,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
                 }
-                QueryCorpus();//检索语料库
+                QueryCorpus(cpNam);//检索语料库
                 divforCorpusResult.Visible = true;
                 divNEULC.Visible = false;
                 rbltxtFrom.Items[1].Enabled = true;//经过检索后，WordList中才可以使用关键词检索语料库文本做WordList
@@ -593,7 +595,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }        /// <summary>
         /// 根据条件筛选大库，生成关键小库的数据集
         /// </summary>
-        private void QueryCorpus()
+        private void QueryCorpus(string cpName)
         {
             string filterExpression = ViewState["filterExp"].ToString();
             DataSet dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
@@ -794,21 +796,45 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <summary>
         /// 未检索语料时先清空原有的控件
         /// </summary>
-        private void ClearQueryControls()
+        private void ClearQueryControls(string cpName)
         {
-            foreach (ListItem itm in cblTopic.Items)
+            if (cpName == "neulc")
             {
-                itm.Selected = false;
-            }
+                divNEULC.Visible = true;
 
-            foreach (ListItem itm in cblGenre.Items)
-            {
-                itm.Selected = false;
-            }
+                foreach (ListItem itm in cblTopic.Items)
+                {
+                    itm.Selected = false;
+                }
 
-            foreach (ListItem itm in cblLevel.Items)
+                foreach (ListItem itm in cblGenre.Items)
+                {
+                    itm.Selected = false;
+                }
+
+                foreach (ListItem itm in cblLevel.Items)
+                {
+                    itm.Selected = false;
+                }
+            }
+            else
             {
-                itm.Selected = false;
+                divNEUAC.Visible = true;
+
+                foreach (ListItem itm in cblYears.Items)
+                {
+                    itm.Selected = false;
+                }
+
+                foreach (ListItem itm in cblMajors.Items)
+                {
+                    itm.Selected = false;
+                }
+
+                foreach (ListItem itm in cblJournals.Items)
+                {
+                    itm.Selected = false;
+                }
             }
             divforCorpusResult.Visible = false;
         }
