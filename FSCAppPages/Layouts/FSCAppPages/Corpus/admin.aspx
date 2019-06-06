@@ -76,7 +76,7 @@
                         <div style="padding: 5px; text-align: right;">
                             <asp:Button ID="btnAdd" runat="server" Text="Add Corpora" ToolTip="Add a New Corpora" />
                         </div>
-                        <div id="divQuery">
+                        <div id="divQuery" runat="server">
                             <table class="myform">
                                 <tr>
                                     <th style="text-align: right;">KeyWord：
@@ -112,6 +112,44 @@
 
                                                                         <input type="button" value=" Close " class="addbtn" onclick="javascript: window.location.href = 'neulc.aspx'" />
 
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="divQueryAC" runat="server">
+                             <table class="myform">
+                                <tr>
+                                    <th style="text-align: right;">KeyWord：
+                                    </th>
+                                    <td>
+                                        <asp:TextBox ID="txtKeyWordAc" runat="server" Width="300"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: right;">Year：
+                                    </th>
+                                    <td>
+                                        <asp:DropDownList ID="ddlQueryYear" runat="server" RepeatColumns="5" RepeatDirection="Horizontal"></asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: right;">Major：
+                                    </th>
+                                    <td>
+                                        <asp:DropDownList ID="ddlQueryMajor" runat="server" RepeatColumns="5" RepeatDirection="Horizontal"></asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: right;">Journal：
+                                    </th>
+                                    <td>
+                                        <asp:DropDownList ID="ddlQueryJournal" runat="server" RepeatColumns="5" RepeatDirection="Horizontal"></asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:right; margin-right: 20px;">
+                                        <asp:Button ID="btnQueryAc" runat="server" Text="Find matching Corpus" />&nbsp;&nbsp;
+                                    <input type="button" value=" Close " class="addbtn" onclick="javascript: window.location.href = 'neulc.aspx'" />
                                     </td>
                                 </tr>
                             </table>
@@ -248,6 +286,64 @@
                                     </div>
                                 </td>
                             </tr>
+                        </table>
+                    </div>
+                    <div id="divEditCorporaAc" runat="server">
+                        <table class="myform" style="width: 100%">
+                            <tr>
+                                <th>Year:
+                                </th>
+                                <td>
+                                    <asp:DropDownList ID="ddlYear" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="5" ToolTip="Choose one of the Year that the Corpora belongs to"></asp:DropDownList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Major:
+                                </th>
+                                <td>
+                                    <asp:DropDownList ID="ddlMajor" runat="server" RepeatColumns="5" RepeatLayout="Table" RepeatDirection="Horizontal" ToolTip="Choose one of the Majors that the Corpora belongs to"></asp:DropDownList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Journal:
+                                </th>
+                                <td>
+                                    <asp:DropDownList ID="ddlJournal" RepeatDirection="Horizontal" RepeatLayout="Flow" runat="server" RepeatColumns="5" ToolTip="Choose one Journal that the Corpora Author belongs to"></asp:DropDownList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Title:
+                                </th>
+                                <td>
+                                    <asp:TextBox ID="txtTitleAc" runat="server" Width="500px" ToolTip="Fill in this Blank with the title of the Corpora"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Source:
+                                </th>
+                                <td>
+                                    <asp:TextBox ID="txtSourceAc" runat="server" Width="500px" ToolTip="Fill in this Blank with the source of the Corpora"></asp:TextBox>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th style="vertical-align: top;">Context:
+                                </th>
+                                <td>
+                                    <asp:TextBox ID="txtOriginalTextAc" runat="server" TextMode="MultiLine" Rows="15" Width="500px" ToolTip="FIll in this blank with source context!"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: center;">
+                                    <div style="padding: 10px;">
+                                        &nbsp;&nbsp;
+                                                                        <asp:Button ID="btnSubmitAc" runat="server" Text="Submit" />&nbsp;&nbsp;
+                                                                        <asp:Button ID="btnCancelAc" runat="server" Text="Cancel" />&nbsp;&nbsp;
+                                                                        <input type="button" value=" Close " class="addbtn" onclick="javascript: window.location.href = 'neulc.aspx'" />
+                                    </div>
+                                </td>
+                            </tr>
+                           
                         </table>
                     </div>
                 </td>

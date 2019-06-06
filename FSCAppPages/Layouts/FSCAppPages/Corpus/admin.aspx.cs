@@ -18,16 +18,58 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             if (!Page.IsPostBack)
             {
-                InitControls();
+                if (CorpusSource == "LC")
+                {
+                    divQuery.Visible = true;
+                    divQueryAC.Visible = false;
+                    InitControls();
+                }
+                else
+                {
+                    divQuery.Visible = false;
+                    divQueryAC.Visible = true;
+                    InitControlsAC();
+                }
+                txtSource.Text = CorpusSource;
+                txtSourceAc.Text = CorpusSource;
+                txtSourceAc.ReadOnly = true;
+                txtSource.ReadOnly = true;
                 divEditCorpora.Visible = false;
+                divEditCorporaAc.Visible = false;
             }
+            ddlQueryMajor.SelectedIndexChanged += DdlQueryMajor_SelectedIndexChanged;
+            ddlQueryMajor.AutoPostBack = true;
+            ddlMajor.AutoPostBack = true;
+            ddlMajor.SelectedIndexChanged += DdlQueryMajor_SelectedIndexChanged;
             btnAdd.Click += BtnAdd_Click;
             btnQuery.Click += BtnQuery_Click;
             btnSubmit.Click += BtnSubmit_Click;
             btnCancel.Click += BtnCancel_Click;
+            btnQueryAc.Click += BtnQuery_Click;
+            btnSubmitAc.Click += BtnSubmit_Click;
+            btnCancelAc.Click += BtnCancel_Click;
+
             gvCorpus.RowCommand += GvCorpus_RowCommand;
             gvCorpus.RowDataBound += GvCorpus_RowDataBound;
             gvCorpus.PageIndexChanging += GvCorpus_PageIndexChanging;
+        }
+
+        /// <summary>
+        /// 专业改变事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DdlQueryMajor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindJournal(((DropDownList)sender).SelectedValue);
+        }
+
+        private string CorpusSource
+        {
+            get
+            {
+                return Request.QueryString["Source"]==null?"LC":Request.QueryString["Source"].ToString(); 
+            }
         }
 
         private void GvCorpus_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -64,19 +106,28 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     if (hId.Value.Length > 0)
                     {
                         lblLevel = gRow.FindControl("lbLevel") as Label;
-                        lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Level", split);
+                        if (CorpusSource == "LC")
+                            lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Level", split);
+                        else
+                            lblLevel.Text = hId.Value;
                     }
                     hId = gRow.FindControl("hdfGenreId") as HiddenField;
                     if (hId.Value.Length > 0)
                     {
                         lblLevel = gRow.FindControl("lbGenre") as Label;
-                        lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Genre", split);
+                        if (CorpusSource == "LC")
+                            lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Genre", split);
+                        else
+                            lblLevel.Text = hId.Value;
                     }
                     hId = gRow.FindControl("hdfTopicId") as HiddenField;
                     if (hId.Value.Length > 0)
                     {
                         lblLevel = gRow.FindControl("lbTopic") as Label;
-                        lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Topic", split);
+                        if (CorpusSource == "LC")
+                            lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Topic", split);
+                        else
+                            lblLevel.Text = hId.Value;
                     }
                 }
             }
@@ -145,19 +196,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             string filterExpression = GetSelectQuery();
             DataSet dsResult;
-            if (ViewState["filterExp"] == null || ViewState["filterExp"].ToString() != filterExpression)
-            {
-                ViewState["filterExp"] = filterExpression;
-                dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
-                ViewState["dtResult"] = dsResult;
-            }
-            else
-                dsResult =(DataSet ) ViewState["dtResult"];
-
+            dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
             gvCorpus.DataSource = dsResult.Tables[0].DefaultView;
             gvCorpus.DataBind();
-
-
         }
         //查询
         private void BtnQuery_Click(object sender, EventArgs e)
@@ -169,7 +210,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         //添加一条新的语料
         private void BtnAdd_Click(object sender, EventArgs e)
         {
-            divEditCorpora.Visible = true;
+            if (CorpusSource == "LC")
+            {
+                divEditCorpora.Visible = true;
+                divEditCorporaAc.Visible = false;
+            }
+            else
+            {
+                divEditCorporaAc.Visible = true;
+                divEditCorpora.Visible = false;
+            }
             divList.Visible = false;
             ViewState["Edit"] = "0";
         }
@@ -178,24 +228,35 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         //添加新的语料时先清空原有的控件
         private void ClearControls()
         {
-            foreach (ListItem itm in cblLevel.Items)
+            if (CorpusSource == "LC")
             {
-                itm.Selected = false;
-            }
+                foreach (ListItem itm in cblLevel.Items)
+                {
+                    itm.Selected = false;
+                }
 
-            foreach (ListItem itm in cblGenre.Items)
+                foreach (ListItem itm in cblGenre.Items)
+                {
+                    itm.Selected = false;
+                }
+
+                foreach (ListItem itm in cblTopics.Items)
+                {
+                    itm.Selected = false;
+                }
+
+                txtTitle.Text = "";
+                txtOriginalText.Text = "";
+                txtSource.Text = "";
+                txtKeyWord.Text = "";
+            }
+            else
             {
-                itm.Selected = false;
+                txtTitleAc.Text = "";
+                txtOriginalTextAc.Text = "";
+                txtKeyWordAc.Text = "";
+                txtSourceAc.Text = "";
             }
-
-            foreach (ListItem itm in cblTopics.Items)
-            {
-                itm.Selected = false;
-            }
-
-            txtTitle.Text = "";
-            txtOriginalText.Text = "";
-            txtSource.Text = "";
         }
         //数据分隔符，用来分隔外键的ID值
         private const string split = ";";
@@ -208,10 +269,70 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             txtTitle.Text = drCorpus["Title"].ToString();
             txtSource.Text = drCorpus["Source"].ToString();
             txtOriginalText.Text = drCorpus["OriginalText"].ToString();
+            if (CorpusSource == "LC")
+            {
+                Common.SetCBListChecked(cblTopics, drCorpus["TopicID"].ToString(), split);
+                Common.SetCBListChecked(cblLevel, drCorpus["LevelID"].ToString(), split);
+                Common.SetCBListChecked(cblGenre, drCorpus["GenreID"].ToString(), split);
+            }
+            else//AC
+            {
+                ddlYear.SelectedValue = drCorpus["LevelID"].ToString();
+                ddlMajor.SelectedValue = drCorpus["TopicID"].ToString();
+                ddlJournal.SelectedValue = drCorpus["GenreID"].ToString();
+            }
+        }
+        private void InitControlsAC()
+        {
+            DataSet ds = FSCDLL.DAL.Corpus.GetCorpusYearsOfAC();
+            ddlQueryYear.DataSource = ds.Tables[0].DefaultView;
+            ddlQueryYear.DataTextField = "YEAR";
+            ddlQueryYear.DataValueField = "YEAR";
+            ddlQueryYear.DataBind();
+            ddlYear.DataSource=ds.Tables[0].DefaultView;
+            ddlYear.DataTextField = "YEAR";
+            ddlYear.DataValueField = "YEAR";
+            ddlYear.DataBind();
 
-            Common.SetCBListChecked(cblTopics, drCorpus["TopicID"].ToString(), split);
-            Common.SetCBListChecked(cblLevel, drCorpus["LevelID"].ToString(), split);
-            Common.SetCBListChecked(cblGenre, drCorpus["GenreID"].ToString(), split);
+
+            ds = FSCDLL.DAL.Corpus.GetCorpusMajor();
+            ddlQueryMajor.DataSource = ds.Tables[0].DefaultView;
+            ddlQueryMajor.DataTextField = "Title";
+            ddlQueryMajor.DataValueField = "TitleCN";
+            ddlQueryMajor.DataBind();
+            ddlQueryMajor.Items[0].Selected=true  ;
+            ddlMajor .DataSource = ds.Tables[0].DefaultView;
+            ddlMajor.DataTextField = "Title";
+            ddlMajor.DataValueField = "TitleCN";
+            ddlMajor.DataBind();
+            ddlMajor.Items[0].Selected = true;
+
+            Unit width=new Unit( txtKeyWordAc.Width.Value +12)   ;
+            ddlQueryYear.Width = width;
+            ddlQueryMajor.Width = width;
+            ddlQueryJournal.Width = width;
+
+            ddlYear.Width = width;
+            ddlMajor.Width = width;
+            ddlJournal.Width = width;
+            BindJournal(ddlQueryMajor.SelectedValue );
+            BindJournal(ddlMajor.SelectedValue);
+        }
+        /// <summary>
+        /// 下拉框联动，根据专业绑定期刊
+        /// </summary>
+        /// <param name="majorID">专业编号</param>
+        private void　BindJournal(string majorID)
+        {
+            DataSet ds = FSCDLL.DAL.Corpus.GetCorpusJournalByMajor(majorID);
+            ddlQueryJournal.DataSource = ds.Tables[0].DefaultView;
+            ddlQueryJournal.DataTextField = "Title";
+            ddlQueryJournal.DataValueField = "TitleCN";
+            ddlQueryJournal.DataBind();
+            ddlJournal.DataSource = ds.Tables[0].DefaultView;
+            ddlJournal.DataTextField = "Title";
+            ddlJournal.DataValueField = "TitleCN";
+            ddlJournal.DataBind();
         }
         /// <summary>
         /// 初始化控件
@@ -289,18 +410,18 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     dr["Flag"] = 1;
                 }
             }
-            string ids = Common.GetCBListChecked(cblTopics, split);
             dr["Title"] = txtTitle.Text;
+            dr["OriginalText"] = txtOriginalText.Text;
+            string ids = Common.GetCBListChecked(cblTopics, split);
             dr["TopicID"] = ids;
             ids = Common.GetCBListChecked(cblGenre, split);
             dr["GenreID"] = ids;
             ids = Common.GetCBListChecked(cblLevel, split);
             dr["LevelID"] = ids;
-            dr["OriginalText"] = txtOriginalText.Text;
             //赋码未添加
             //dr["CodedText"] ="";
             if (corpusID == 0)
-                FSCDLL.DAL.Corpus.InsertCorpus(null, dr);
+                FSCDLL.DAL.Corpus.InsertCorpus(null, dr,CorpusSource);
             else
             {
                 FSCDLL.DAL.Corpus.UpdateCorpus(null, dr);
@@ -316,36 +437,45 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             //此处进行查询，关键词、Level、topic、genre
             string strQuery = "";
-            if (cblLevel.SelectedIndex >= 0)
-                strQuery = Common.GetQueryString(cblLevel, "LevelID", split);
             string strSql = "";
-            if (cblGenre.SelectedIndex >= 0)
-                strSql = Common.GetQueryString(cblGenre, "GenreID", split);
-            if (strQuery == "")
-                strQuery = strSql;
-            else
+
+            if (CorpusSource == "LC")
             {
-                if (strQuery.IndexOf("and") > 0)
-                    strQuery = strQuery + " and (" + strSql + ")";
+                if (cblLevel.SelectedIndex >= 0)
+                    strQuery = Common.GetQueryString(cblLevel, "LevelID", split);
+                if (cblGenre.SelectedIndex >= 0)
+                    strSql = Common.GetQueryString(cblGenre, "GenreID", split);
+                if (strQuery == "")
+                    strQuery = strSql;
                 else
                 {
-                    strQuery = "(" + strQuery + ") and (" + strSql + ")";
+                    if (strQuery.IndexOf("and") > 0)
+                        strQuery = strQuery + " and (" + strSql + ")";
+                    else
+                    {
+                        strQuery = "(" + strQuery + ") and (" + strSql + ")";
+                    }
+                }
+                strSql = "";
+                if (cblTopics.SelectedIndex >= 0)
+                    strSql = Common.GetQueryString(cblTopics, "TopicID", split);
+                if (strQuery == "")
+                    strQuery = strSql;
+                else
+                {
+                    if (strQuery.IndexOf("and") > 0)
+                        strQuery = strQuery + " and (" + strSql + ")";
+                    else
+                    {
+                        strQuery = "(" + strQuery + ") and (" + strSql + ")";
+                    }
                 }
             }
-            strSql = "";
-            if (cblTopics.SelectedIndex >= 0)
-                strSql = Common.GetQueryString(cblTopics, "TopicID", split);
-            if (strQuery == "")
-                strQuery = strSql;
-            else
+            else//AC
             {
-                if (strQuery.IndexOf("and") > 0)
-                    strQuery = strQuery + " and (" + strSql + ")";
-                else
-                {
-                    strQuery = "(" + strQuery + ") and (" + strSql + ")";
-                }
-            }            //关键词
+                strQuery =string.Format( "TopicID='{0}' and GenreID='{1}' and LevelID='{2}'",ddlMajor.SelectedValue,ddlJournal.SelectedValue,ddlYear.SelectedValue );
+            }
+            //关键词
             if (txtKeyWord.Text.Length > 0)
             {
                 strSql = "Title like '%" + txtKeyWord.Text + "%'or Source like '%" + txtKeyWord.Text + "%' or OriginalText like '%" + txtKeyWord.Text + "%' or CodedText like '%" + txtKeyWord.Text + "%'";
