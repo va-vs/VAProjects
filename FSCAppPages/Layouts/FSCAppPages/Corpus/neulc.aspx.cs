@@ -9,7 +9,6 @@ using System.Text;
 using lemmatizerDLL;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI.DataVisualization;
 using System.Web.UI.DataVisualization.Charting;
 
 namespace FSCAppPages.Layouts.FSCAppPages.Corpus
@@ -17,9 +16,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
     public partial class neulc : LayoutsPageBase
     {
         #region 0 公用
-        //public ArrayList CiLib;
-        //数据分隔符，用来分隔外键的ID值
-        private const string splitStr = ";";
+
         #region 公用事件
         /// <summary>
         /// 页面加载
@@ -36,9 +33,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             //WordList控件事件绑定
             btnBacktoQuery.Click += BtnBacktoQuery_Click;
-            lemmanew.Click += lemmanew_Click;//WordList提交按钮点击事件
+            btnSubmitForLemma.Click += BtnSubmitForLemma_Click;//WordList提交按钮点击事件
             btnBackLemma.Click += BtnBackLemma_Click;
-            btnCloseLemma.Click += BtnCloseLemma_Click;
+
             rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
             btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
             gvCorpusforWordList.RowDataBound += GvCorpusforWordList_RowDataBound;
@@ -53,11 +50,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvConcordance.RowDataBound += GvConcordance_RowDataBound;
             gvConcordance.PageIndexChanging += GvConcordance_PageIndexChanging;
             gvConcordance.RowCommand += GvConcordance_RowCommand;
-
-            //gvConcComputed.RowDataBound += GvConcComputed_RowDataBound;
-            //gvConcComputed.PageIndexChanging += GvConcComputed_PageIndexChanging;
-            //gvConcComputed.RowCommand += GvConcComputed_RowCommand;
-            //btnCloseConc.Click += BtnCloseConc_Click;
 
             //Collocate 内的控件事件绑定
             btnSubmitCollocate.Click += BtnSubmitCollocate_Click;
@@ -74,12 +66,18 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             //Compare提交按钮点击事件
             btnCompared.Click += BtnCompared_Click;
+            btnBackToCompare.Click += BtnBackToCompare_Click;
+
+            //词汇表选择
+            rbVBS.SelectedIndexChanged += RbVBS_SelectedIndexChanged;
+
             InitMenu();
 
-            string cpName = GetCorpusByUrl();
+            ShowCPByUrl();
             //页面加载
             if (!IsPostBack)
             {
+                string cpName = GetCorpusByUrl();
                 InitQueryControls(cpName);
                 ClearQueryControls(cpName);
                 muNeulc.Items[0].Selected = true;
@@ -93,22 +91,27 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 divfromshuru.Visible = true;
                 divTexts.Visible = true;
                 divFromCorpus.Visible = false;
-                divOutput.Visible = false;
             }
 
         }
 
+        private void RbVBS_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string libName = rbVBS.SelectedValue;
+            string txtToLemma = ViewState["LemmaContext"].ToString();
+            TextLemma(txtToLemma, libName);
+        }
 
         #endregion
         #region 公用方法
         private string GetCorpusByUrl()
         {
-            string urlp = "neulc";
+            string cpName = "NEULC";
             if (Request.QueryString["cp"] != null)
             {
-                urlp = Request.QueryString["cp"].Trim().ToLower();
+                cpName = Request.QueryString["cp"].Trim().ToUpper() == "NEUAC" ? "NEUAC" : "NEULC";
             }
-            return urlp;
+            return cpName;
         }
         /// <summary>
         /// 将表格数据绑定到GridView控件
@@ -130,7 +133,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string script = string.Format("<script>alert('{0}')</script>", info);
             p.ClientScript.RegisterStartupScript(p.GetType(), "", script);
-        }        
+        }
 
         #endregion 公用方法
 
@@ -232,11 +235,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 ViewState["filterExp"] = null;
                 switch (muNeulc.SelectedValue)
                 {
-                    case "NEUAC"://NEUAC
-                        {
-                            mvNeulc.ActiveViewIndex = 1;
-                            break;
-                        }
                     case "Concordance"://Concordance
                         {
                             mvNeulc.ActiveViewIndex = 1;
@@ -313,7 +311,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnBacktoQuery_Click(object sender, EventArgs e)
         {
-            divNEULC.Visible = true;
+            ShowCPByUrl();
             divforCorpusResult.Visible = false;
         }        /// <summary>
         /// 检索大库，生成关键小库
@@ -354,9 +352,28 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
 
+
+
         #endregion Corpus事件
 
         #region Corpus方法
+        /// <summary>
+        /// 根据Url传递的Corpus参数名称来决定使用哪一个Corpus
+        /// </summary>
+        private void ShowCPByUrl()
+        {
+            string cpName = GetCorpusByUrl();
+            if (cpName == "NEULC")
+            {
+                divNEULC.Visible = true;
+                divNEUAC.Visible = false;
+            }
+            else
+            {
+                divNEUAC.Visible = true;
+                divNEULC.Visible = false;
+            }
+        }
         private DataTable BuildDTSummary(DataTable dtCorpus, string fkid, CheckBoxList cbl, List<string> listFKs)
         {
             #region 构造汇总表
@@ -552,139 +569,92 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <returns></returns>
         private string[] GetSelectQuery(string cpName)
         {
+            string splitStr = "";
+            if (cpName == "NEULC")
+            {
+                splitStr = ";";
+            }
             string strQuery = "";
             string strResult = "";
-
-            if (cpName == "neulc")
+            if (cblLevel.SelectedIndex >= 0)
             {
-                //三个筛选条件：Level、topic、genre
-                if (cblLevel.SelectedIndex >= 0)
-                {
-                    strQuery = Common.GetQueryString(cblLevel, "LevelID", splitStr);
-                    strResult = "1;";
-                }
-                else
-                {
-                    strResult = "0;";
-                }
-                string strSql = "";
-                if (cblGenre.SelectedIndex >= 0)
-                {
-                    strSql = Common.GetQueryString(cblGenre, "GenreID", splitStr);
-                    strResult += "1;";
-                }
-                else
-                {
-                    strResult += "0;";
-                }
-
-                if (strQuery == "")
-                {
-                    strQuery = strSql;
-                }
-                else
-                {
-                    if (strQuery.IndexOf("and") > 0)
-                    {
-                        strQuery = string.Format("{0} and ({1})", strQuery, strSql);
-                    }
-                    else
-                    {
-                        strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
-                    }
-                }
-                strSql = "";
-                if (cblTopic.SelectedIndex >= 0)
-                {
-                    strSql = Common.GetQueryString(cblTopic, "TopicID", splitStr);
-                    strResult += "1";
-                }
-                else
-                {
-                    strResult += "0";
-                }
-
-                if (strQuery == "")
-                {
-                    strQuery = strSql;
-                }
-                else
-                {
-                    if (strQuery.IndexOf("and") > 0)
-                    {
-                        strQuery = string.Format("{0} and ({1})", strQuery, strSql);
-                    }
-                    else
-                    {
-                        strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
-                    }
-                }
+                strQuery = Common.GetQueryString(cblLevel, "LevelID", splitStr);
+                strResult = "1;";
             }
             else
             {
-                //三个筛选条件：Year、Major、Journal
-                if (cblYears.SelectedIndex >= 0)
-                {
-                    strQuery = Common.GetQueryString(cblYears, "YearID", splitStr);
-                    strResult = "1;";
-                }
-                else
-                {
-                    strResult = "0;";
-                }
-                string strSql = "";
-                if (cblGenre.SelectedIndex >= 0)
-                {
-                    strSql = Common.GetQueryString(cblGenre, "GenreID", splitStr);
-                    strResult += "1;";
-                }
-                else
-                {
-                    strResult += "0;";
-                }
+                strResult = "0;";
+            }
+            string strSql = "";
+            if (cblGenre.SelectedIndex >= 0)
+            {
+                strSql = Common.GetQueryString(cblGenre, "GenreID", splitStr);
+                strResult += "1;";
+            }
+            else
+            {
+                strResult += "0;";
+            }
 
-                if (strQuery == "")
+            if (strQuery == "")
+            {
+                strQuery = strSql;
+            }
+            else
+            {
+                if (strQuery.IndexOf("and") > 0)
                 {
-                    strQuery = strSql;
+                    strQuery = string.Format("{0} and ({1})", strQuery, strSql);
                 }
                 else
                 {
-                    if (strQuery.IndexOf("and") > 0)
-                    {
-                        strQuery = string.Format("{0} and ({1})", strQuery, strSql);
-                    }
-                    else
-                    {
-                        strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
-                    }
-                }
-                strSql = "";
-                if (cblTopic.SelectedIndex >= 0)
-                {
-                    strSql = Common.GetQueryString(cblTopic, "TopicID", splitStr);
-                    strResult += "1";
-                }
-                else
-                {
-                    strResult += "0";
-                }
-
-                if (strQuery == "")
-                {
-                    strQuery = strSql;
-                }
-                else
-                {
-                    if (strQuery.IndexOf("and") > 0)
-                    {
-                        strQuery = string.Format("{0} and ({1})", strQuery, strSql);
-                    }
-                    else
-                    {
-                        strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
-                    }
+                    strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
                 }
             }
+            strSql = "";
+            if (cblTopic.SelectedIndex >= 0)
+            {
+                strSql = Common.GetQueryString(cblTopic, "TopicID", splitStr);
+                strResult += "1";
+            }
+            else
+            {
+                strResult += "0";
+            }
+
+            if (strQuery == "")
+            {
+                strQuery = strSql;
+            }
+            else
+            {
+                if (strQuery.IndexOf("and") > 0)
+                {
+                    strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                }
+                else
+                {
+                    strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                }
+            }
+
+
+            if (strQuery == "")
+            {
+                strQuery = string.Format("Source = '{0}'", cpName);
+            }
+            else
+            {
+                if (strQuery.IndexOf("and") > 0)
+                {
+                    strQuery = string.Format("{0} and (Source = '{1}')", strQuery, cpName);
+                }
+                else
+                {
+                    strQuery = string.Format("({0}) and (Source = '{1}')", strQuery, cpName);
+                }
+            }
+
             string[] strResults = new string[] { strResult, strQuery };
             return strResults;
         }        /// <summary>
@@ -716,14 +686,37 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 types = "Level";
                 DataSet dsLevel = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
                 CBLBindCorpusExt(dsLevel, cblLevel);
-                divforCorpusResult.Visible = false;
-                divNEULC.Visible = true;
+
             }
             else
             {
                 divNEULC.Visible = false;
                 divNEUAC.Visible = true;
+                //年份
+                BindACYear();
+
+                //专业
+                DataSet dsMajor = FSCDLL.DAL.Corpus.GetCopusExtendByTypes("Major");
+                CBLBindCorpusExt(dsMajor, cblMajor);
+                //期刊与专业联动，需要在专业选定时才绑定
             }
+
+            divforCorpusResult.Visible = false;
+        }
+
+
+        /// <summary>
+        /// 绑定NEUAC中年份多选控件
+        /// </summary>
+        private void BindACYear()
+        {
+            DataSet dsYears = FSCDLL.DAL.Corpus.GetCorpusYearsOfAC();
+            DataTable dtYears = dsYears.Tables[0];
+            cblYear.Items.Clear();
+            cblYear.DataSource = dtYears;
+            cblYear.DataTextField = "YEAR";
+            cblYear.DataValueField = "YEAR";
+            cblYear.DataBind();
         }
 
         private void CBLBindCorpusExt(DataSet ds, CheckBoxList cblExt)
@@ -740,7 +733,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// </summary>
         private void ClearQueryControls(string cpName)
         {
-            if (cpName == "neulc")
+            if (cpName == "NEULC")
             {
                 divNEULC.Visible = true;
 
@@ -763,17 +756,17 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 divNEUAC.Visible = true;
 
-                foreach (ListItem itm in cblYears.Items)
+                foreach (ListItem itm in cblYear.Items)
                 {
                     itm.Selected = false;
                 }
 
-                foreach (ListItem itm in cblMajors.Items)
+                foreach (ListItem itm in cblMajor.Items)
                 {
                     itm.Selected = false;
                 }
 
-                foreach (ListItem itm in cblJournals.Items)
+                foreach (ListItem itm in cblJournal.Items)
                 {
                     itm.Selected = false;
                 }
@@ -782,7 +775,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
 
 
-        #endregion
+        #endregion NEUAC的三个筛选条件：Year、Major、Journal
 
         #endregion 2 Corpus：从整个语料数据库中按条件检索匹配的部分子语料库库
 
@@ -805,7 +798,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             else
             {
                 string keyConc = txtKeyConcordance.Value.Trim();
-                string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%'", keyConc);
+                string cpName = GetCorpusByUrl();
+                string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' and Source = '{1}'", keyConc, cpName);
                 DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
 
                 if (dtCorpus.Rows.Count > 0)
@@ -823,7 +817,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     {
                         lbConcCount.Text = "";
                     }
+                    string dispCount = txtLimit.Value;
+                    if (dispCount != "0")//指定输出的行数
+                    {
+                        dtConcordance = dtConcordance.AsEnumerable().Take(int.Parse(dispCount)).CopyToDataTable<DataRow>();
+                    }
                     GVBind(gvConcordance, dtConcordance);
+                    string pageSize = txtRpp.Value;
+                    gvConcordance.PageSize =int.Parse(pageSize);
                     ViewState["dtConcordance"] = dtConcordance;
                     divConcordanceQuery.Visible = false;
                     divConcordanceResult.Visible = true;
@@ -839,46 +840,28 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
         }
 
-        private void GvConcComputed_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            string strMatch = e.CommandArgument.ToString();
-            DataTable dtConcordance = (DataTable)ViewState["dtConcordance"];
-            DataView dv = dtConcordance.DefaultView;
-            dv.RowFilter = string.Format("match = '{0}'", e.CommandArgument);
-            DataTable dtFilter = dv.ToTable();
-            ViewState["dtConcFilter"] = dtFilter;
-            gvConcComputed.Visible = false;
-            gvConcordance.Visible = true;
-            btnCloseConc.Visible = true;
-            GVBind(gvConcordance, dtFilter);
-        }
-
-
-        private void GvConcComputed_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            gvConcComputed.PageIndex = e.NewPageIndex;
-            DataTable dtConcComputed = (DataTable)ViewState["dtConcComputed"];
-            GVBind(gvConcComputed, dtConcComputed);
-        }
-
-        private void GvConcComputed_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                //添加鼠标效果，当鼠标移动到行上时，变颜色
-                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
-                //当鼠标离开的时候 将背景颜色还原的以前的颜色
-                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
-            }
-        }
-
-
 
         private void GvConcordance_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            throw new NotImplementedException();
-        }
+            string cpId = e.CommandArgument.ToString();
+            DataTable dt = FSCDLL.DAL.Corpus.GetCorporaByID(long.Parse(cpId)).Tables[0];
+            if (dt != null)
+            {
+                DataRow dr = dt.Rows[0];
+                string txtStr = FSCDLL.DAL.SystemDataExtension.GetString(dr, "OriginalText");
+                ViewState["LemmaContext"] = txtStr;
+                mvNeulc.ActiveViewIndex = 6;
+                hdfvwIndex.Value = "1";
+                TextLemma(txtStr, "CECR");//缺省第一次采用CECR词汇表计算
+            }
+            else
+            {
+                mvNeulc.ActiveViewIndex = 1;
+                hdfvwIndex.Value = "0";
+                lbErr.Text = "语料库中不存在该条语料或已删除！";
+            }
 
+        }
 
 
         private void GvConcordance_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -904,19 +887,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void BtnReConc_Click(object sender, EventArgs e)
         {
-            //btnCloseConc.Visible = true;
             divConcordanceQuery.Visible = true;
             divConcordanceResult.Visible = false;
             btnReConc.Visible = false;
-        }
-
-
-        private void BtnCloseConc_Click(object sender, EventArgs e)
-        {
-            //gvConcComputed.Visible = true;
-            //gvConcordance.Visible = false;
-            //btnCloseConc.Visible = false;
-            //btnReConc.Visible = true;
         }
 
         #endregion Concordance事件
@@ -967,7 +940,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             else
             {
                 string keyColl = txtKeyCollocate.Value.Trim();
-                string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%'", keyColl);
+                string cpName = GetCorpusByUrl();
+                string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' and Source ='{1}'", keyColl, cpName);
                 DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
                 if (dtCorpus.Rows.Count > 0)
                 {
@@ -999,7 +973,23 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void GvCollocate_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            throw new NotImplementedException();
+            string cpId = e.CommandArgument.ToString();
+            DataTable dt = FSCDLL.DAL.Corpus.GetCorporaByID(long.Parse(cpId)).Tables[0];
+            if (dt != null)
+            {
+                DataRow dr = dt.Rows[0];
+                string txtStr = FSCDLL.DAL.SystemDataExtension.GetString(dr, "OriginalText");
+                ViewState["LemmaContext"] = txtStr;
+                mvNeulc.ActiveViewIndex = 6;
+                hdfvwIndex.Value = "2";
+                TextLemma(txtStr, "CECR");//缺省第一次采用CECR词汇表计算
+            }
+            else
+            {
+                mvNeulc.ActiveViewIndex = 2;
+                hdfvwIndex.Value = "0";
+                lbErr.Text = "语料库中不存在该条语料或已删除！";
+            }
         }
 
         private void GvCollComputed_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -1172,7 +1162,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         protected void closeBtn_OnClick(object sender, EventArgs e)
         {
-            divOutput.Visible = false;
             txtcontent.Value = "";//清空正文文本
             for (int i = 0; i < rbVBS.Items.Count; i++)//清除词表选择
             {
@@ -1182,7 +1171,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
             }
             txt_Title.Value = "";//清空正文标题
-            divOutput.Visible = false;
         }        /// <summary>
         /// 筛选词汇等级选择
         /// </summary>
@@ -1245,7 +1233,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 divTexts.Visible = true;
             }
             txtcontent.InnerText = "";
-            divOutput.Visible = false;
         }
 
         /// <summary>
@@ -1280,22 +1267,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
 
         /// <summary>
-        /// 从WordList界面返回，同时清空原有处理内容
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>        private void BtnCloseLemma_Click(object sender, EventArgs e)
-        {
-            ReLemma(1);
-        }
-
-        /// <summary>
-        /// 从WordList界面返回，不清空原有处理内容
+        /// 从Lemma结果界面返回，不清空原有处理内容
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void BtnBackLemma_Click(object sender, EventArgs e)
         {
-            ReLemma(0);
+            if (hdfvwIndex.Value != null)
+            {
+                mvNeulc.ActiveViewIndex = int.Parse(hdfvwIndex.Value);
+            }
+            else
+            {
+                mvNeulc.ActiveViewIndex = 0;
+            }
         }
 
 
@@ -1304,21 +1289,18 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void lemmanew_Click(object sender, EventArgs e)
+        protected void BtnSubmitForLemma_Click(object sender, EventArgs e)
         {
-            #region 变量定义与表单校验
             string txtStr = "";//正文文本
             //检验文档正文是否输入完成
             if (string.IsNullOrEmpty(txtcontent.Value)) //处理的文本还未输入
             {
-                PageAlert("你还未输入或导入需要处理的文本,请确认后再试！", this);
+                lbErr.Text = "你还未输入或导入需要处理的文本,请确认后再试！";
                 txtcontent.Focus();
-                return;
             }
             else
             {
                 txtStr = txtcontent.Value;
-                TextLemma(txtStr);
                 string txtfrom = hdftxtFrom.Value;
                 if (txtfrom == "0")//用户输入的文本处理
                 {
@@ -1346,24 +1328,26 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
                     DataRow drCorpus = dtCorpus.NewRow();
                     drCorpus["Title"] = titleStr;
-                    drCorpus["OriginalText"] = txtcontent.Value;
+                    drCorpus["OriginalText"] = txtStr;
                     drCorpus["Created"] = dtNow;
                     drCorpus["Author"] = userId;
+                    string cpName = GetCorpusByUrl();
+                    string splitStr = "";
+                    if (cpName == "NEULC")
+                    {
+                        splitStr = ";";
+                    }
                     drCorpus["TopicID"] = splitStr + ddlTopics.SelectedValue + splitStr;
                     drCorpus["Flag"] = 3;
                     FSCDLL.DAL.Corpus.InsertCorpus(null, drCorpus);
                     #endregion  保存要处理的文本
 
-                    divfromshuru.Visible = false;//输入表单隐藏
+                    ViewState["LemmaContext"] = txtStr;
+                    mvNeulc.ActiveViewIndex = 6;
+                    hdfvwIndex.Value = "3";
+                    TextLemma(txtStr, "CECR");//缺省第一次采用CECR词汇表计算
                 }
-                else
-                {
-                    divFromCorpus.Visible = false;
-                }
-                divTexts.Visible = false;//文本框隐藏
-                divOutput.Visible = true;//输出结果显示
             }
-            #endregion 变量定义与表单校验
 
         }
         #endregion
@@ -1403,7 +1387,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             divContext.InnerHtml = "等待处理结果中...";
             dlChart.InnerHtml = "等待处理结果中...";
-            divOutput.Visible = false;//输出结果隐藏
         }
 
         private void AbstinencyRadioListOption(ref RadioButtonList rbtList)
@@ -1418,7 +1401,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
 
-        private void TextLemma(string txtStr)
+        /// <summary>
+        /// 对语料或用户文本执行级别标记输出
+        /// </summary>
+        /// <param name="txtStr">要处理的文本</param>
+        private void TextLemma(string txtStr, string libName)
         {
             #region 0 先过滤掉网址等干扰文本
             string regEx = @"((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&%_\./-~-]*)?";
@@ -1434,8 +1421,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             List<List<string>> txtlist = TextInput.ArticleToList(txtStr, ignoreWordsFile, ordinalWordsFile, symbolFile);//文本转化为字符串数组,将需要处理的单词存到数组中
             if (txtlist.Count == 0)//文本中不包含有英文单词
             {
-                PageAlert("文本中不包含需要处理的英文单词！", this);
-                txtcontent.Focus();
+                lbErr.Text = "语料中不包含英文单词，无法处理！";
+                return;
             }
             #endregion 1 过滤文本判断是否包含有英文单词
             else
@@ -1445,8 +1432,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 #endregion 2 参照词库选择
 
                 #region 3 单词还原
-                string fileName = dbPath + "words/AllWords.txt";//包含原型与变型以及对应等级的词汇表
-                Dictionary<int, object> allwordsList = WordBLL.SearchWordsWithTxt(txtlist, fileName, 0);//对词汇列表进行比对还原和级别确认，输出三个数据集：1、文本词汇对应级别，2、超纲词汇对应词频，3、处理过的单词原型对应级别
+                string libFile = string.Format("{0}words/{1}.txt", dbPath, libName);//包含原型与变型以及对应等级的词汇表
+                Dictionary<int, object> allwordsList = WordBLL.SearchWordsWithTxt(txtlist, libFile, 0);//对词汇列表进行比对还原和级别确认，输出三个数据集：1、文本词汇对应级别，2、超纲词汇对应词频，3、处理过的单词原型对应级别
                 #endregion 3 单词还原
 
                 #region 4 WordList和结果输出
@@ -1500,41 +1487,81 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             else
             {
-                string cTitle = "";
-                string filterStr = ViewState["filterExp"].ToString();
-                if (rblforCompare.SelectedValue == "All" || string.IsNullOrEmpty(filterStr))
+                string keyWord1 = txtfreqField1.Value.Trim();
+                string keyWord2 = txtfreqField2.Value.Trim();
+                if (keyWord1 == keyWord2)
                 {
-                    string corpus = GetCorpusByUrl();
-                    filterStr = "Source = " + corpus;
+                    lbErr.Text = "两个相同的关键词不可比较！";
+                    return;
                 }
-                DataTable dtComputed = InitComputedTable();
-                string keyWord = txtfreqField1.Value.Trim();
-                cTitle += string.Format("\"{0}\"", keyWord);
-                string filterStr1 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord, filterStr);
-                DataTable dt1 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr1).Tables[0];
-                GetComputedDate(ref dtComputed, dt1, keyWord);
+                string cTitle = "";
+                string filterStr = "";
+                if (rblforCompare.SelectedValue == "All" || ViewState["filterExp"] == null)
+                {
+                    string cpName = GetCorpusByUrl();
+                    filterStr = string.Format("Source = '{0}'", cpName);
+                }
+                else
+                {
+                    filterStr = ViewState["filterExp"].ToString();
+                }
 
-                keyWord = txtfreqField2.Value.Trim();
-                cTitle += string.Format(",\"{0}\"", keyWord);
-                string filterStr2 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord, filterStr);
+                DataTable dtComputed = InitComputedTable();
+
+                cTitle += string.Format("\"{0}\"", keyWord1);
+                string filterStr1 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And ({1})", keyWord1, filterStr);
+                DataTable dt1 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr1).Tables[0];
+                GetComputedDate(ref dtComputed, dt1, keyWord1);
+
+
+                cTitle += string.Format(",\"{0}\"", keyWord2);
+                string filterStr2 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord2, filterStr);
                 DataTable dt2 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr2).Tables[0];
-                GetComputedDate(ref dtComputed, dt2, keyWord);
+                GetComputedDate(ref dtComputed, dt2, keyWord2);
 
                 if (string.IsNullOrEmpty(txtfreqField3.Value.Trim()))
                 {
-                    keyWord = txtfreqField2.Value.Trim();
-                    cTitle += string.Format(",\"{0}\"", keyWord);
-                    string filterStr3 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord, filterStr);
-                    DataTable dt3 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr3).Tables[0];
-                    GetComputedDate(ref dtComputed, dt3, keyWord);
+                    string keyWord3 = txtfreqField3.Value.Trim();
+                    if (keyWord3 == keyWord1 || keyWord3 == keyWord2)
+                    {
+                        lbErr.Text = "第三个关键词与前两个关键词某一个相同，不参与比较!";
+                    }
+                    else
+                    {
+                        cTitle += string.Format(",\"{0}\"", keyWord3);
+                        string filterStr3 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord3, filterStr);
+                        DataTable dt3 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr3).Tables[0];
+                        GetComputedDate(ref dtComputed, dt3, keyWord3);
+                    }
                 }
-                ChartBind(dtComputed, cTitle + "使用次数与分布语篇数", SeriesChartType.RangeBar);
+                divQueryforCompare.Visible = false;
+                divforCompareResult.Visible = true;
+                ChartBind(dtComputed, cTitle + "使用次数与分布语篇数", SeriesChartType.Column);
+                //InitChart(chartForCompare, cTitle + "使用次数与分布语篇数", SeriesChartType.Column, dtComputed);
             }
 
         }
 
 
+        private void BtnBackToCompare_Click(object sender, EventArgs e)
+        {
+            chartForCompare.Series.Clear();
+            divQueryforCompare.Visible = true;
+            divforCompareResult.Visible = false;
+        }
 
+
+
+
+        #endregion Compare事件
+        #region Compare方法
+
+        /// <summary>
+        /// 根据用户选择的关键字，计算每个关键词出现的次数和出现该关键词的语料数
+        /// </summary>
+        /// <param name="dtComputed"></param>
+        /// <param name="dtSource"></param>
+        /// <param name="wd"></param>
         private void GetComputedDate(ref DataTable dtComputed, DataTable dtSource, string wd)
         {
             DataRow dr = dtComputed.NewRow();
@@ -1546,8 +1573,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
 
 
-        #endregion Compare事件
-        #region Compare方法
         /// <summary>
         /// Chart初始化
         /// </summary>
@@ -1575,6 +1600,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     MarkerStyle = MarkerStyle.Circle,
                     ToolTip = dr[0].ToString() + " #VAL \r\n #AXISLABEL",
                     XValueType = ChartValueType.String,
+                    Legend = dr[0].ToString(),
                     Label = "#VAL"
                 };
 
@@ -1632,13 +1658,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             chartForCompare.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.FromArgb(64, 64, 64, 64);
 
             //3D设置
-            chartForCompare.ChartAreas[0].Area3DStyle.Enable3D = true;
+            //chartForCompare.ChartAreas[0].Area3DStyle.Enable3D = true;
 
 
             chartForCompare.DataBind();
         }
 
-        #endregion
+        #endregion Compare方法
         #endregion
     }
 }

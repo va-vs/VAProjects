@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FSCDLL.DAL
 {
-   public class Corpus
+    public class Corpus
     {
         #region 读取
         /// <summary>
@@ -20,6 +20,18 @@ namespace FSCDLL.DAL
             DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "FSC_GetCorpus");
             return ds;
         }
+
+        /// <summary>
+        /// 查询指定ID的语料
+        /// </summary>
+        /// <param name="corporaId"></param>
+        /// <returns></returns>
+        public static DataSet GetCorporaByID(long corporaId)
+        {
+            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorporaByID", corporaId);
+            return ds;
+        }
+
         /// <summary>
         /// 获取所有学术语料库的年份，YEAE
         /// </summary>
@@ -36,8 +48,8 @@ namespace FSCDLL.DAL
         /// <returns></returns>
         public static DataSet GetCorpusByFilterString(string filterExpression)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusBySql",filterExpression);
-             return ds;
+            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusBySql", filterExpression);
+            return ds;
         }
         /// <summary>
         /// 获取语法表中的常量表数据
@@ -46,7 +58,7 @@ namespace FSCDLL.DAL
         /// <returns></returns>
         public static DataSet GetCopusExtendByTypes(string types)
         {
-            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusExtendByTypes",types );
+            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusExtendByTypes", types);
             return ds;
         }
         /// <summary>
@@ -56,7 +68,7 @@ namespace FSCDLL.DAL
         /// <returns></returns>
         public static DataSet GetCorpusMajor()
         {
-            DataSet ds = DAL.Corpus.GetCopusExtendByTypes ("Major");
+            DataSet ds = DAL.Corpus.GetCopusExtendByTypes("Major");
             return ds;
         }
         /// <summary>
@@ -102,6 +114,8 @@ namespace FSCDLL.DAL
             else
                 return ((long)DAL.SqlHelper.ExecuteNonQueryTypedParamsOutput(trans, "FSC_InsertCorpus", dr)[0].Value);
         }
+
+
         #endregion
 
     }
