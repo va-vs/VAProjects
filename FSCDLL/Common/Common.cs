@@ -151,17 +151,17 @@ namespace FSCDLL.Common
                     }
                 }
             }
-            else if (objA is TimeSpan )
+            else if (objA is TimeSpan)
             {
-                if (((TimeSpan )objA).TotalMinutes==((TimeSpan )objB).TotalMinutes)
+                if (((TimeSpan)objA).TotalMinutes == ((TimeSpan)objB).TotalMinutes)
                 {
                     flag = true;
                 }
             }
             else
             {
-                string strA = objA.ToString ();
-                string strB =  objB.ToString ();
+                string strA = objA.ToString();
+                string strB = objB.ToString();
                 if (strA == strB)
                 {
                     flag = true;
@@ -180,7 +180,7 @@ namespace FSCDLL.Common
         /// <param name="titleName">标题</param>
         /// <param name="addBlankLine">是否在首行加空行</param>
         /// <returns></returns>
-        public static DataTable GetDataTableByLevel(DataTable dtAllTasks, string titleName, string parentIDName, bool addBlankLine )
+        public static DataTable GetDataTableByLevel(DataTable dtAllTasks, string titleName, string parentIDName, bool addBlankLine)
         {
             DataTable dtTasks = dtAllTasks.Copy();
             dtTasks.Columns[titleName].ColumnName = "Title";//列统一命名
@@ -210,7 +210,7 @@ namespace FSCDLL.Common
         /// <param name="dt">表格</param>
         /// <param name="level">级别</param>
         /// <param name="drParent">父级的行</param>
-        private static void WriteDataTable(ref DataTable dt, DataRow  drParent, int level)
+        private static void WriteDataTable(ref DataTable dt, DataRow drParent, int level)
         {
             //DataRow dr = dt.NewRow();
             //dr["ID"] = drParent[0];
@@ -243,7 +243,7 @@ namespace FSCDLL.Common
         /// <param name="DTName">合并后新的表名</param>
         /// <param name="colName">公共的列名,此列在表中是唯一值列</param>
         /// <returns>合并后的新表dt3</returns>
-        private static DataTable UniteDataTable(DataTable dt1, DataTable dt2,string colName, string DTName)
+        private static DataTable UniteDataTable(DataTable dt1, DataTable dt2, string colName, string DTName)
         {
             DataTable dt3 = dt1.Clone();
             int cc1 = dt1.Columns.Count;
@@ -252,7 +252,7 @@ namespace FSCDLL.Common
             //第一步：结构合并，列拼接
             for (int i = 0; i < cc2; i++)
             {
-                if (colName!=dt2.Columns[i].ColumnName)
+                if (colName != dt2.Columns[i].ColumnName)
                     dt3.Columns.Add(dt2.Columns[i].ColumnName);
             }
             object[] obj = new object[dt3.Columns.Count];
@@ -290,11 +290,11 @@ namespace FSCDLL.Common
                     dr3 = dt3.NewRow();
                     dt3.Rows.Add(dr3);
                 }
-                for (int i = 0; i <rc2; i++)
+                for (int i = 0; i < rc2; i++)
                 {
                     for (int j = 0; j < cc2; j++)
                     {
-                        dt3.Rows[i][j +cc1] = dt2.Rows[i][j].ToString();
+                        dt3.Rows[i][j + cc1] = dt2.Rows[i][j].ToString();
                     }
                 }
             }
@@ -377,5 +377,56 @@ namespace FSCDLL.Common
                 return false;
         }
         #endregion
+
+        /// <summary>
+        /// 去掉文件名中的特殊符号
+        /// </summary>
+        /// <param name="fileName">原有文件名称</param>
+        /// <returns></returns>
+        private string GetSimpleFileName(string fileName)
+        {
+            string retDate = Regex.Replace(fileName, @"[.#：]", "").TrimEnd('-');
+            return retDate;
+
+        }        /// <summary>
+        /// 文本中单词个数统计
+        /// </summary>
+        /// <param name="text">要计算的文本</param>
+        private int getWordSum(string text)
+        {
+            string textbasic = text;
+            char[] basictemp = text.ToCharArray();
+            int chfrom = Convert.ToInt32("4e00", 16);    //范围（0x4e00～0x9fff）转换成int（chfrom～chend）
+            int chend = Convert.ToInt32("9fff", 16);
+            foreach (char c in basictemp)
+            {
+                if (' ' != c)
+                {
+                    string temp = c.ToString();
+                    int firstcode = char.ConvertToUtf32(temp, 0);
+                    if (firstcode >= chfrom && firstcode <= chend)
+                    {
+                        textbasic = textbasic.Replace(c, ' ');
+                    }
+                }
+            }
+
+            char[] ch = new char[] { ' ', ',', '?', '!', '(', ')', '\n' };
+            string[] stemp = textbasic.Split(ch, StringSplitOptions.RemoveEmptyEntries);
+
+            return stemp.Length;
+        }
+        /// <summary>
+        /// 计算两个时间变量的时间差
+        /// </summary>
+        /// <param name="startTime">开始时间</param>
+        /// <param name="endTime">结束时间</param>
+        /// <returns>时间差，格式：{0}天{1}时{2}分{3}秒{4}毫秒</returns>
+        private static string TimeSpend(DateTime startTime, DateTime endTime)
+        {
+            TimeSpan ts = endTime - startTime;
+            string rtime = string.Format("{0}天{1}时{2}分{3}秒{4}毫秒", ts.Days, ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
+            return rtime;
+        }
     }
 }

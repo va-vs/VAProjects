@@ -99,23 +99,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
 
 
-
-
-
-
-
-
-
-
-
         #endregion
         #region 公用方法
         private string GetCorpusByUrl()
         {
-            string urlp = "NEULC";
+            string urlp = "neulc";
             if (Request.QueryString["cp"] != null)
             {
-                urlp = Request.QueryString["cp"];
+                urlp = Request.QueryString["cp"].Trim().ToLower();
             }
             return urlp;
         }
@@ -139,56 +130,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string script = string.Format("<script>alert('{0}')</script>", info);
             p.ClientScript.RegisterStartupScript(p.GetType(), "", script);
-        }        /// <summary>
-        /// 去掉文件名中的特殊符号
-        /// </summary>
-        /// <param name="fileName">原有文件名称</param>
-        /// <returns></returns>
-        private string GetSimpleFileName(string fileName)
-        {
-            string retDate = Regex.Replace(fileName, @"[.#：]", "").TrimEnd('-');
-            return retDate;
-
-        }        /// <summary>
-        /// 文本中单词个数统计
-        /// </summary>
-        /// <param name="text">要计算的文本</param>
-        private int getWordSum(string text)
-        {
-            string textbasic = text;
-            char[] basictemp = text.ToCharArray();
-            int chfrom = Convert.ToInt32("4e00", 16);    //范围（0x4e00～0x9fff）转换成int（chfrom～chend）
-            int chend = Convert.ToInt32("9fff", 16);
-            foreach (char c in basictemp)
-            {
-                if (' ' != c)
-                {
-                    string temp = c.ToString();
-                    int firstcode = char.ConvertToUtf32(temp, 0);
-                    if (firstcode >= chfrom && firstcode <= chend)
-                    {
-                        textbasic = textbasic.Replace(c, ' ');
-                    }
-                }
-            }
-
-            char[] ch = new char[] { ' ', ',', '?', '!', '(', ')', '\n' };
-            string[] stemp = textbasic.Split(ch, StringSplitOptions.RemoveEmptyEntries);
-
-            return stemp.Length;
-        }
-        /// <summary>
-        /// 计算两个时间变量的时间差
-        /// </summary>
-        /// <param name="startTime">开始时间</param>
-        /// <param name="endTime">结束时间</param>
-        /// <returns>时间差，格式：{0}天{1}时{2}分{3}秒{4}毫秒</returns>
-        private static string TimeSpend(DateTime startTime, DateTime endTime)
-        {
-            TimeSpan ts = endTime - startTime;
-            string rtime = string.Format("{0}天{1}时{2}分{3}秒{4}毫秒", ts.Days, ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds);
-            return rtime;
-        }
+        }        
 
         #endregion 公用方法
 
@@ -341,14 +283,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void InitMenu()
         {
-            string strCorpus = GetCorpusByUrl();
-            lbCorpus.Text = strCorpus;
-            if (strCorpus == "NEULC")
+            string cpName = GetCorpusByUrl();
+            lbCorpus.Text = cpName;
+            if (cpName == "NEULC")
             {
                 divNEULC.Visible = true;
                 divNEUAC.Visible = false;
-                InitQueryControls(strCorpus);
-                ClearQueryControls(strCorpus);
+                InitQueryControls(cpName);
+                ClearQueryControls(cpName);
             }
             else
             {
