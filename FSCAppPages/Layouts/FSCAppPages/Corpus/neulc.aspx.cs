@@ -4,16 +4,13 @@ using System.Web.UI.WebControls;
 using System.Drawing;
 using System.Data;
 using System.Web.UI;
-using System.Web;
 using System.Text.RegularExpressions;
-
 using System.Text;
 using lemmatizerDLL;
-using Microsoft.SharePoint;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Specialized;
+using System.Web.UI.DataVisualization;
+using System.Web.UI.DataVisualization.Charting;
 
 namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
@@ -49,15 +46,35 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             btnLemmaAll.Click += BtnLemmaAll_Click;
             clearBtn.Click += clearBtn_OnClick;
 
-            //Concordance提交按钮点击事件
+            //Concordance 内的控件事件绑定
             btnSubmitConcordance.Click += BtnSubmitConcordance_Click;
 
-            //Collocate提交按钮点击事件
+            btnReConc.Click += BtnReConc_Click;
+            gvConcordance.RowDataBound += GvConcordance_RowDataBound;
+            gvConcordance.PageIndexChanging += GvConcordance_PageIndexChanging;
+            gvConcordance.RowCommand += GvConcordance_RowCommand;
+
+            //gvConcComputed.RowDataBound += GvConcComputed_RowDataBound;
+            //gvConcComputed.PageIndexChanging += GvConcComputed_PageIndexChanging;
+            //gvConcComputed.RowCommand += GvConcComputed_RowCommand;
+            //btnCloseConc.Click += BtnCloseConc_Click;
+
+            //Collocate 内的控件事件绑定
             btnSubmitCollocate.Click += BtnSubmitCollocate_Click;
+
+            btnReColl.Click += BtnReColl_Click;
+            gvCollocate.RowDataBound += GvCollocate_RowDataBound;
+            gvCollocate.PageIndexChanging += GvCollocate_PageIndexChanging;
+            gvCollocate.RowCommand += GvCollocate_RowCommand;
+
+            gvCollComputed.RowCommand += GvCollComputed_RowCommand;
+            gvCollComputed.PageIndexChanging += GvCollComputed_PageIndexChanging;
+            gvCollComputed.RowDataBound += GvCollComputed_RowDataBound;
+            btnCloseColl.Click += BtnCloseColl_Click;
 
             //Compare提交按钮点击事件
             btnCompared.Click += BtnCompared_Click;
-
+            InitMenu();
             //页面加载
             if (!IsPostBack)
             {
@@ -83,12 +100,39 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
 
 
+
+
+
+
+
+
         #endregion
-        #region 公用方法        /// <summary>
-                             /// 页面提醒
-                             /// </summary>
-                             /// <param name="info"></param>
-                             /// <param name="p"></param>
+        #region 公用方法
+        private string GetCorpusByUrl()
+        {
+            string urlp = "NEULC";
+            if (Request.QueryString["cp"] != null)
+            {
+                urlp = Request.QueryString["cp"];
+            }
+            return urlp;
+        }
+        /// <summary>
+        /// 将表格数据绑定到GridView控件
+        /// </summary>
+        /// <param name="gv"></param>
+        /// <param name="dtSource"></param>
+        private void GVBind(GridView gv, DataTable dtSource)
+        {
+            gv.DataSource = dtSource;
+            gv.DataBind();
+        }
+
+        /// <summary>
+        /// 页面提醒
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="p"></param>
         private static void PageAlert(string info, Page p)
         {
             string script = string.Format("<script>alert('{0}')</script>", info);
@@ -244,35 +288,39 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 ViewState["filterExp"] = null;
                 switch (muNeulc.SelectedValue)
                 {
-                    case "1"://Concordance
+                    case "NEUAC"://NEUAC
                         {
                             mvNeulc.ActiveViewIndex = 1;
                             break;
                         }
-                    case "2"://Collocate
+                    case "Concordance"://Concordance
+                        {
+                            mvNeulc.ActiveViewIndex = 1;
+                            break;
+                        }
+                    case "Collocate"://Collocate
                         {
                             mvNeulc.ActiveViewIndex = 2;
                             break;
                         }
-                    case "3"://WordList
+                    case "WordList"://WordList
                         {
                             mvNeulc.ActiveViewIndex = 3;
                             break;
                         }
-                    case "4"://Cluster
+                    case "Cluster"://Cluster
                         {
                             mvNeulc.ActiveViewIndex = 4;
                             break;
                         }
-                    case "5"://Cluster
+                    case "Compare"://Compare
                         {
                             mvNeulc.ActiveViewIndex = 5;
                             break;
                         }
                     default://Corpus
                         mvNeulc.ActiveViewIndex = 0;
-                        InitQueryControls();
-                        ClearQueryControls();
+                        InitMenu();
                         break;
                 }
                 Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
@@ -289,6 +337,27 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         #region 顶部工具栏方法
 
+        private void InitMenu()
+        {
+            string strCorpus = GetCorpusByUrl();
+            if (strCorpus == "NEULC")
+            {
+                divNEULC.Visible = true;
+                divNEUAC.Visible = false;
+                //muNeulc.Items[0].Text = "NEULC";
+                lbCorpus.Text = "NEULC";
+                InitQueryControls();
+                ClearQueryControls();
+            }
+            else
+            {
+                //muNeulc.Items[0].Text = "NEUAC";
+                lbCorpus.Text = "NEUAC";
+                divNEULC.Visible = false;
+                divNEUAC.Visible = true;
+            }
+        }
+
         #endregion
 
         #endregion
@@ -303,7 +372,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnBacktoQuery_Click(object sender, EventArgs e)
         {
-            divforQueryCorpus.Visible = true;
+            divNEULC.Visible = true;
             divforCorpusResult.Visible = false;
         }        /// <summary>
         /// 检索大库，生成关键小库
@@ -339,7 +408,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     }
                     QueryCorpus();//检索语料库
                     divforCorpusResult.Visible = true;
-                    divforQueryCorpus.Visible = false;
+                    divNEULC.Visible = false;
                     rbltxtFrom.Items[1].Enabled = true;//经过检索后，WordList中才可以使用关键词检索语料库文本做WordList
                 }
             }
@@ -625,15 +694,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             //话题
             string types = "Topic";
-            DataSet ds = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            cblTopic.Items.Clear();
-            cblTopic.DataSource = ds.Tables[0].Copy();
-            cblTopic.DataTextField = "Title";
-            cblTopic.DataValueField = "ItemID";
-            cblTopic.DataBind();
+            DataSet dsTopic = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+            CBLBindCorpusExt(dsTopic, cblTopic);
 
             //同时绑定WordList中的话题下拉列表框
-            ddlTopics.DataSource = ds.Tables[0].Copy();
+            ddlTopics.DataSource = dsTopic.Tables[0].Copy();
             ddlTopics.DataTextField = "Title";
             ddlTopics.DataValueField = "ItemID";
             ddlTopics.DataBind();
@@ -641,22 +706,23 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             //文体
             types = "Genre";
             DataSet dsGenre = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            cblGenre.Items.Clear();
-            cblGenre.DataSource = dsGenre.Tables[0].Copy();
-            cblGenre.DataTextField = "Title";
-            cblGenre.DataValueField = "ItemID";
-            cblGenre.DataBind();
+            CBLBindCorpusExt(dsGenre, cblGenre);
 
             //年级
             types = "Level";
             DataSet dsLevel = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            cblLevel.Items.Clear();
-            cblLevel.DataSource = dsLevel.Tables[0].Copy();
-            cblLevel.DataTextField = "Title";
-            cblLevel.DataValueField = "ItemID";
-            cblLevel.DataBind();
+            CBLBindCorpusExt(dsLevel, cblLevel);
             divforCorpusResult.Visible = false;
-            divforQueryCorpus.Visible = true;
+            divNEULC.Visible = true;
+        }
+
+        private void CBLBindCorpusExt(DataSet ds, CheckBoxList cblExt)
+        {
+            cblExt.Items.Clear();
+            cblExt.DataSource = ds.Tables[0].Copy();
+            cblExt.DataTextField = "Title";
+            cblExt.DataValueField = "ItemID";
+            cblExt.DataBind();
         }
 
         /// <summary>
@@ -696,8 +762,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnSubmitConcordance_Click(object sender, EventArgs e)
         {
-            //try
-            //{
             if (string.IsNullOrEmpty(txtKeyConcordance.Value.Trim()))
             {
                 lbErr.Text = "你还未输入要检索的关键词";
@@ -716,8 +780,21 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
                     int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
                     DataTable dtConcordance = Common.GetWordsFromCorpus(dtCorpus, keyConc, lAndr[0], lAndr[1]);
-                    gvConcordance.DataSource = dtConcordance;
-                    gvConcordance.DataBind();
+                    if (isShowTotalCount.Checked)
+                    {
+                        int rCount = dtConcordance.Rows.Count;
+                        lbConcCount.Text = "Total Count in All Corpus is：" + rCount;
+                    }
+                    else
+                    {
+                        lbConcCount.Text = "";
+                    }
+                    GVBind(gvConcordance, dtConcordance);
+                    ViewState["dtConcordance"] = dtConcordance;
+                    divConcordanceQuery.Visible = false;
+                    divConcordanceResult.Visible = true;
+                    gvConcordance.Visible = true;
+                    btnReConc.Visible = true;
                 }
                 else
                 {
@@ -726,15 +803,87 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
 
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    lbErr.Text = ex.ToString();
-            //}
+        }
+
+        private void GvConcComputed_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            string strMatch = e.CommandArgument.ToString();
+            DataTable dtConcordance = (DataTable)ViewState["dtConcordance"];
+            DataView dv = dtConcordance.DefaultView;
+            dv.RowFilter = string.Format("match = '{0}'", e.CommandArgument);
+            DataTable dtFilter = dv.ToTable();
+            ViewState["dtConcFilter"] = dtFilter;
+            gvConcComputed.Visible = false;
+            gvConcordance.Visible = true;
+            btnCloseConc.Visible = true;
+            GVBind(gvConcordance, dtFilter);
+        }
+
+
+        private void GvConcComputed_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvConcComputed.PageIndex = e.NewPageIndex;
+            DataTable dtConcComputed = (DataTable)ViewState["dtConcComputed"];
+            GVBind(gvConcComputed, dtConcComputed);
+        }
+
+        private void GvConcComputed_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //添加鼠标效果，当鼠标移动到行上时，变颜色
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
+                //当鼠标离开的时候 将背景颜色还原的以前的颜色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
         }
 
 
 
+        private void GvConcordance_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        private void GvConcordance_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvConcordance.PageIndex = e.NewPageIndex;
+            DataTable dtConcordance = (DataTable)ViewState["dtConcordance"];
+            GVBind(gvConcordance, dtConcordance);
+        }
+
+
+        private void GvConcordance_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //添加鼠标效果，当鼠标移动到行上时，变颜色
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
+                //当鼠标离开的时候 将背景颜色还原的以前的颜色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
+        }
+
+
+
+        private void BtnReConc_Click(object sender, EventArgs e)
+        {
+            //btnCloseConc.Visible = true;
+            divConcordanceQuery.Visible = true;
+            divConcordanceResult.Visible = false;
+            btnReConc.Visible = false;
+        }
+
+
+        private void BtnCloseConc_Click(object sender, EventArgs e)
+        {
+            //gvConcComputed.Visible = true;
+            //gvConcordance.Visible = false;
+            //btnCloseConc.Visible = false;
+            //btnReConc.Visible = true;
+        }
 
         #endregion Concordance事件
 
@@ -742,7 +891,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private int[] GetLeftandRight(DropDownList ddl, int iCount)
         {
-            int[] lAndr = new int[] { iCount, iCount };
+            int[] lAndr = new int[] { 0, 0 };
             string sme = ddl.SelectedValue;
             if (sme == "0")//在句首Start，则右边加单词
             {
@@ -760,7 +909,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             return lAndr;
         }
 
-        #endregion
+        #endregion Concordance方法
 
         #endregion 3 Concordance：检索语料库中与关键字的匹配的语料列表
 
@@ -775,8 +924,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnSubmitCollocate_Click(object sender, EventArgs e)
         {
-            //try
-            //{
             if (string.IsNullOrEmpty(txtKeyCollocate.Value.Trim()))
             {
                 lbErr.Text = "你还未输入要检索的关键词";
@@ -792,25 +939,101 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     int iCount = int.Parse(txtCCChars.Value.Trim());
 
-                    int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
+                    int[] lAndr = GetLeftandRight(ddlCCCharacters, iCount);//iLeft & iRight
                     int mleft = int.Parse(txtcfLeft.Value.Trim());
                     int mright = int.Parse(txtcfRight.Value.Trim());
-                    DataTable dtConcordance = Common.GetPhraseFromCorpus(keyColl, dtCorpus, mleft, mright, lAndr[0], lAndr[1]);
-                    gvCollocate.DataSource = dtConcordance;
-                    gvCollocate.DataBind();
+                    DataTable dtCollocate = Common.GetPhraseFromCorpus(keyColl, dtCorpus, mleft, mright, lAndr[0], lAndr[1]);
+                    //查找所有和关键词相关的搭配的语料
+                    DataTable dtCollComputed = Common.CaculatePhrase(dtCollocate);
+                    ViewState["dtCollComputed"] = dtCollComputed;
+                    GVBind(gvCollComputed, dtCollComputed);
+                    ViewState["dtCollocate"] = dtCollocate;
+                    divCollocateQuery.Visible = false;
+                    divCollocateResult.Visible = true;
+                    gvCollocate.Visible = false;
+                    btnCloseColl.Visible = false;
+                    gvCollComputed.Visible = true;
                 }
                 else
                 {
                     lbErr.Text = "语料库中没有与你检索的关键词相匹配的语料，请换个关键词再试！";
-                    txtKeyConcordance.Focus();
+                    txtKeyCollocate.Focus();
                 }
 
             }
-            //}
-            //catch (Exception ex)
-            //{
-            //    lbErr.Text = ex.ToString();
-            //}
+        }
+
+        private void GvCollocate_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void GvCollComputed_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //添加鼠标效果，当鼠标移动到行上时，变颜色
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
+                //当鼠标离开的时候 将背景颜色还原的以前的颜色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
+        }
+
+        private void GvCollComputed_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvCollComputed.PageIndex = e.NewPageIndex;
+            DataTable dtCollComputed = (DataTable)ViewState["dtCollComputed"];
+            GVBind(gvCollComputed, dtCollComputed);
+        }
+
+        private void GvCollComputed_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            DataTable dtCollocate = (DataTable)ViewState["dtCollocate"];
+            DataView dv = dtCollocate.DefaultView;
+            dv.RowFilter = string.Format("match = '{0}'", e.CommandArgument);
+            DataTable dtFilter = dv.ToTable();
+            ViewState["dtCollFilter"] = dtFilter;
+            gvCollocate.Visible = true;
+            btnCloseColl.Visible = true;
+            gvCollComputed.Visible = false;
+            GVBind(gvCollocate, dtFilter);
+        }
+
+
+        private void GvCollocate_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvCollocate.PageIndex = e.NewPageIndex;
+            DataTable dtCollFilter = (DataTable)ViewState["dtCollFilter"];
+            GVBind(gvConcordance, dtCollFilter);
+        }
+
+
+
+        private void GvCollocate_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //添加鼠标效果，当鼠标移动到行上时，变颜色
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
+                //当鼠标离开的时候 将背景颜色还原的以前的颜色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
+        }
+
+        private void BtnReColl_Click(object sender, EventArgs e)
+        {
+            btnCloseColl.Visible = true;
+            divCollocateQuery.Visible = true;
+            divCollocateResult.Visible = false;
+            btnReColl.Visible = false;
+        }
+
+        private void BtnCloseColl_Click(object sender, EventArgs e)
+        {
+            gvCollComputed.Visible = true;
+            gvCollocate.Visible = false;
+            btnCloseColl.Visible = false;
+            btnReColl.Visible = true;
         }
 
         #endregion Collocate事件
@@ -896,8 +1119,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string filterStr = ViewState["filterExp"].ToString();
             DataTable dt = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
-            gvCorpusforWordList.DataSource = dt.DefaultView;
-            gvCorpusforWordList.DataBind();
+            GVBind(gvCorpusforWordList, dt);
         }
 
 
@@ -1014,8 +1236,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (dtCorpusforWordList.Rows.Count > 0)
             {
                 divCorpusforWordList.Visible = true;
-                gvCorpusforWordList.DataSource = dtCorpusforWordList;
-                gvCorpusforWordList.DataBind();
+                GVBind(gvCorpusforWordList, dtCorpusforWordList);
             }
             else
             {
@@ -1241,38 +1462,147 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             if (string.IsNullOrEmpty(txtfreqField1.Value.Trim()) || string.IsNullOrEmpty(txtfreqField2.Value.Trim()))
             {
-                lbErr.Text = "请至少在前两个文本框中输入比较词!";
-                return;
+                lbErr.Text = "请至少在前两个文本框中输入比较关键词!";
             }
             else
             {
+                string cTitle = "";
                 string filterStr = ViewState["filterExp"].ToString();
                 if (rblforCompare.SelectedValue == "All" || string.IsNullOrEmpty(filterStr))
                 {
                     string corpus = GetCorpusByUrl();
                     filterStr = "Source = " + corpus;
                 }
-                string key1 = txtfreqField1.Value;
-                string filterStr1 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", key1, filterStr);
-                string key2 = txtfreqField2.Value;
-                string filterStr2 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", key2, filterStr);
+                DataTable dtComputed = InitComputedTable();
+                string keyWord = txtfreqField1.Value.Trim();
+                cTitle += string.Format("\"{0}\"", keyWord);
+                string filterStr1 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord, filterStr);
                 DataTable dt1 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr1).Tables[0];
+                GetComputedDate(ref dtComputed, dt1, keyWord);
+
+                keyWord = txtfreqField2.Value.Trim();
+                cTitle += string.Format(",\"{0}\"", keyWord);
+                string filterStr2 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord, filterStr);
                 DataTable dt2 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr2).Tables[0];
+                GetComputedDate(ref dtComputed, dt2, keyWord);
+
+                if (string.IsNullOrEmpty(txtfreqField3.Value.Trim()))
+                {
+                    keyWord = txtfreqField2.Value.Trim();
+                    cTitle += string.Format(",\"{0}\"", keyWord);
+                    string filterStr3 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord, filterStr);
+                    DataTable dt3 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr3).Tables[0];
+                    GetComputedDate(ref dtComputed, dt3, keyWord);
+                }
+                ChartBind(dtComputed, cTitle + "使用次数与分布语篇数", SeriesChartType.RangeBar);
             }
 
         }
 
-        private string GetCorpusByUrl()
+
+
+        private void GetComputedDate(ref DataTable dtComputed, DataTable dtSource, string wd)
         {
-            string urlp = "NEULC";
-            if (Request.QueryString["cp"] != null)
-            {
-                urlp = Request.QueryString["cp"];
-            }
-            return urlp;
+            DataRow dr = dtComputed.NewRow();
+            dr[0] = wd;
+            dr[1] = dtSource.Rows.Count;
+            dr[2] = dtSource.DefaultView.ToTable(true, "CorpusID").Rows.Count;
+            dtComputed.Rows.Add(dr);
+
         }
+
+
         #endregion Compare事件
         #region Compare方法
+        /// <summary>
+        /// Chart初始化
+        /// </summary>
+        /// <param name="mychart">chart控件Id</param>
+        /// <param name="chartTitle">chart标题</param>
+        /// <param name="chartType">chart图像类型</param>
+        private void InitChart(Chart mychart, string chartTitle, SeriesChartType chartType, DataTable dtComputed)
+        {
+            //图表标题
+            mychart.Titles.Clear();
+            mychart.Titles.Add(chartTitle);
+            mychart.Titles[0].Text = chartTitle;
+            mychart.Titles[0].ForeColor = Color.Red;
+            //清除默认的series
+            mychart.Series.Clear();
+            for (int i = 0; i < dtComputed.Rows.Count; i++)
+            {
+                DataRow dr = dtComputed.Rows[i];
+                Series ss = new Series()
+                {
+                    ChartType = chartType,
+                    MarkerBorderWidth = 2,
+                    MarkerSize = 4,
+                    Name = dr[0].ToString(),
+                    MarkerStyle = MarkerStyle.Circle,
+                    ToolTip = dr[0].ToString() + " #VAL \r\n #AXISLABEL",
+                    XValueType = ChartValueType.String,
+                    Label = "#VAL"
+                };
+
+                if (ss.ChartType == SeriesChartType.Pie)
+                {
+                    ss.LabelToolTip = "#PERCENT{P}";
+                }
+                ss.ShadowColor = Color.Black;
+                ss.BorderColor = Color.Brown;
+                ss.LegendText = ss.Name;
+                mychart.Series.Add(ss);
+            }
+
+        }
+
+
+        //创建表
+        private DataTable InitComputedTable()
+        {
+            DataTable dt = new DataTable();
+            //添加列
+            dt.Columns.Add("Words");
+            dt.Columns.Add("WCount");
+            dt.Columns.Add("WFreq");
+            return dt;
+        }
+
+        private void ChartBind(DataTable dtComputed, string chartTitle, SeriesChartType cType)
+        {
+            InitChart(chartForCompare, chartTitle, cType, dtComputed);
+
+
+            //Color[] bgcolor = new Color[3] { Color.Red, Color.Blue, Color.Green };
+            //Color[] lnColor = new Color[3] { Color.FromArgb(50, 255, 0, 0), Color.FromArgb(50, 0, 0, 255), Color.FromArgb(50, 0, 255, 0) };
+
+            //数据绑定
+            for (int i = 0; i < dtComputed.Columns.Count - 1; i++)//在前台设置好Series的个数与yFields个数相同，并设定好每个Series的样式
+            {
+                string xField = dtComputed.Columns[0].ColumnName;
+                string yField = dtComputed.Columns[i + 1].ColumnName;
+                chartForCompare.Series[i].Points.DataBind(dtComputed.DefaultView, xField, yField, string.Format("LegendText={0},YValues={1},ToolTip={0}", xField, yField));
+                chartForCompare.Series[i].ToolTip = chartForCompare.Series[i].Name + " #VAL \r\n #AXISLABEL";
+                chartForCompare.Series[i].ChartType = cType;
+            }
+
+
+            //背景色设置
+            chartForCompare.ChartAreas[0].ShadowColor = Color.Transparent;
+            chartForCompare.ChartAreas[0].BackColor = Color.FromArgb(209, 237, 254);//该处设置为了由天蓝到白色的逐渐变化
+            chartForCompare.ChartAreas[0].BackGradientStyle = GradientStyle.TopBottom;
+            chartForCompare.ChartAreas[0].BackSecondaryColor = Color.White;
+
+            //中间X,Y线条的颜色设置
+            chartForCompare.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.FromArgb(64, 64, 64, 64);
+            chartForCompare.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.FromArgb(64, 64, 64, 64);
+
+            //3D设置
+            chartForCompare.ChartAreas[0].Area3DStyle.Enable3D = true;
+
+
+            chartForCompare.DataBind();
+        }
 
         #endregion
         #endregion

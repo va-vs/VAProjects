@@ -7,6 +7,8 @@
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="neulc.aspx.cs" Inherits="FSCAppPages.Layouts.FSCAppPages.Corpus.neulc" DynamicMasterPageFile="~masterurl/default.master" EnableEventValidation="false" %>
 
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
+
 <asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
 	<link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets/css/stylelc.css" type="text/css" charset="utf-8"  />
 	<link rel="stylesheet" href="../css/tab.css"  type="text/css" charset="utf-8" />
@@ -28,6 +30,28 @@
 			font-weight: bold;
 			font-size: 15px;
 		}
+        .qfld fieldset legend input{
+			margin-left:5em;
+		}
+        .qfld fieldset legend label{
+			font-weight:normal;
+		}
+        .qfld table{
+            width:100%;
+            margin:5px;
+            border:none;
+        }
+        .qfld table tr{
+            padding:5px;
+        }
+        .qfld table tr th{
+            padding:5px;
+            text-align:right;
+        }
+        .qfld table tr td{
+            padding:5px;
+            text-align:left;
+        }
 
 		.cb td {
 			width: 160px;
@@ -161,7 +185,7 @@
 				input[i].checked = false;
 			}
             document.getElementById("<%=divforCorpusResult.ClientID%>").style.display = "none";
-			document.getElementById("<%=divforQueryCorpus.ClientID%>").style.display = "block";
+			document.getElementById("<%=divNEULC.ClientID%>").style.display = "block";
 		}
 
 		function HighLightthis(val) {
@@ -300,11 +324,13 @@
         <div id="divNav" class="divBlock">
             <ul class="imgul">
                 <li>
-                    <a><span style="font-size: 18px; font-weight: bold;">NEULC</span></a>
+                    <a>
+                        <asp:Label ID="lbCorpus" runat="server" Text="NEULC" Font-Size="18" Font-Bold="true"></asp:Label>
+                    </a>
                 </li>
                 <li>
                     <a href="#">
-                        <img alt="About NEULC" src="../images/Info.png" width="20" height="20" /></a>
+                        <img alt="About this Corpus" src="../images/Info.png" width="20" height="20" /></a>
                 </li>
                 <li>
                     <a href="#">
@@ -328,12 +354,12 @@
         <div id="divMenu" class="divBlock">
             <asp:Menu ID="muNeulc" runat="server" Orientation="Horizontal" DynamicHorizontalOffset="2" StaticDisplayLevels="1" CssClass="mnuTopMenu" Width="801px" StaticSubMenuIndent="10px" DisappearAfter="600">
                 <Items>
-                    <asp:MenuItem Text="Corpus" Value="0"></asp:MenuItem>
-                    <asp:MenuItem Text="Concordance" Value="1"></asp:MenuItem>
-                    <asp:MenuItem Text="Collocate" Value="2"></asp:MenuItem>
-                    <asp:MenuItem Text="WordList" Value="3"></asp:MenuItem>
-                    <asp:MenuItem Text="Cluster" Value="4"></asp:MenuItem>
-                    <asp:MenuItem Text="Compare" Value="5"></asp:MenuItem>
+                    <asp:MenuItem Text="Corpus" Value="Corpus"></asp:MenuItem>
+                    <asp:MenuItem Text="Concordance" Value="Concordance"></asp:MenuItem>
+                    <asp:MenuItem Text="Collocate" Value="Collocate"></asp:MenuItem>
+                    <asp:MenuItem Text="WordList" Value="WordList"></asp:MenuItem>
+                    <asp:MenuItem Text="Cluster" Value="Cluster"></asp:MenuItem>
+                    <asp:MenuItem Text="Compare" Value="Compare"></asp:MenuItem>
                 </Items>
                 <StaticSelectedStyle Font-Bold="true" HorizontalPadding="10" VerticalPadding="4"  ForeColor="red" />
                 <StaticMenuItemStyle HorizontalPadding="10" VerticalPadding="4" />
@@ -348,9 +374,9 @@
         <div id="divViews" class="divBlock">
             <asp:MultiView ID="mvNeulc" runat="server">
                 <%-- 检索 --%>
-                <asp:View ID="vwQuery" runat="server">
+                <asp:View ID="vwCorpus" runat="server">
                     <%-- 语料库检索div --%>
-                    <div id="divforQueryCorpus" runat="server">
+                    <div id="divNEULC" runat="server">
                         <div class="qfld" style="font-size: 14px;">
                             Select Corpus you need according to:
                         </div>
@@ -363,8 +389,10 @@
                                 }
                             </script>
                             <fieldset id="fdsLevel">
-                                <legend>Level
-                                <input id="cbforLevel" type="checkbox" onchange='checkOrNot("<%=cblLevel.ClientID%>", this)' />
+                                <legend>
+                                    Level
+                                    <input id="cbforLevel" type="checkbox" onchange='checkOrNot("<%=cblLevel.ClientID%>", this)' />
+                                    <label for="cbforLevel" style="font-weight:normal">Select All Levels</label>
                                 </legend>
                                 <asp:CheckBoxList ID="cblLevel" runat="server" RepeatDirection="Horizontal"
                                     RepeatLayout="Flow" CssClass="cb" RepeatColumns="6">
@@ -376,7 +404,8 @@
                             </fieldset>
                             <fieldset>
                                 <legend>Genre
-                                <input id="cbforGenre" type="checkbox" onchange='checkOrNot("<%=cblGenre.ClientID%>", this)' />
+                                    <input id="cbforGenre" type="checkbox" onchange='checkOrNot("<%=cblGenre.ClientID%>", this)' />
+                                    <label for="cbforGenre" style="font-weight:normal">Select All Genres</label>
                                 </legend>
                                 <asp:CheckBoxList ID="cblGenre" runat="server" RepeatDirection="Horizontal"
                                     RepeatLayout="Flow" CssClass="cb" RepeatColumns="6">
@@ -388,7 +417,8 @@
                             </fieldset>
                             <fieldset>
                                 <legend>Topic
-                               <input id="cbforTopic" type="checkbox" onchange='checkOrNot("<%=cblTopic.ClientID%>", this)' />
+                                    <input id="cbforTopic" type="checkbox" onchange='checkOrNot("<%=cblTopic.ClientID%>", this)' />
+                                    <label for="cbforTopic" style="font-weight:normal">Select All Topics</label>
                                 </legend>
                                 <asp:CheckBoxList ID="cblTopic" runat="server" RepeatDirection="Horizontal"
                                     RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
@@ -405,19 +435,56 @@
                         </div>
                     </div>
 
+                    <div id="divNEUAC" class="qfld" runat="server">
+                            <fieldset>
+                                <legend>Year
+                                    <input id="cbforYears" type="checkbox" onchange='checkOrNot("<%=cblYears.ClientID%>", this)' />
+                                    <label for="cbforYears" style="font-weight:normal">Select All Years</label>
+                                </legend>
+                                <asp:CheckBoxList ID="cblYears" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
+                                    <asp:ListItem Value="1">1</asp:ListItem>
+                                    <asp:ListItem Value="2">2</asp:ListItem>
+                                </asp:CheckBoxList>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Major
+                                    <input id="cbforMajors" type="checkbox" onchange='checkOrNot("<%=cblMajors.ClientID%>", this)' />
+                                    <label for="cbforMajors" style="font-weight:normal">Select All Majors</label>
+                                </legend>
+                                <asp:CheckBoxList ID="cblMajors" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
+                                    <asp:ListItem Value="1">1</asp:ListItem>
+                                    <asp:ListItem Value="2">2</asp:ListItem>
+                                </asp:CheckBoxList>
+                            </fieldset>
+                            <fieldset id="fldJournals" runat="server">
+                                <legend>Journal
+                                    <input id="cbforJournals" type="checkbox" onchange='checkOrNot("<%=cblJournals.ClientID%>", this)'/><label for="cbforJournals" style="font-weight:normal">Select All Journals</label>
+                                </legend>
+                                <asp:CheckBoxList ID="cblJournals" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
+                                    <asp:ListItem Value="1">1</asp:ListItem>
+                                    <asp:ListItem Value="2">2</asp:ListItem>
+                                </asp:CheckBoxList>
+                            </fieldset>
+                        </div>
+
                     <%-- 检索过后的语料库数据统计与分析 --%>
                     <div id="divforCorpusResult" runat="server" visible="false">
                         <div id="tab">
-                            <h3 class="up" id="two1" onclick="setContentTab('two',1,3)">Summary by Level
+                            <h3 class="up" id="two1" onclick="setContentTab('two',1,3)">
+                                <asp:Label ID="lb1Summary" runat="server" Text="Summary by Level"></asp:Label>
                             </h3>
                             <div class="block" id="con_two_1">
                                 <asp:Table ID="tbforLevel" runat="server"></asp:Table>
                             </div>
-                            <h3 id="two2" onclick="setContentTab('two',2,3)">Summary by Topic</h3>
+                            <h3 id="two2" onclick="setContentTab('two',2,3)">
+                                <asp:Label ID="lb2Summary" runat="server" Text="Summary by Topic"></asp:Label>
+                            </h3>
                             <div id="con_two_2">
                                 <asp:Table ID="tbforTopic" runat="server"></asp:Table>
                             </div>
-                            <h3 id="two3" onclick="setContentTab('two',3,3)">Summary by Genre</h3>
+                            <h3 id="two3" onclick="setContentTab('two',3,3)">
+                                <asp:Label ID="lb3Summary" runat="server" Text="Summary by Genre"></asp:Label>
+                            </h3>
                             <div id="con_two_3">
                                 <asp:Table ID="tbforGenre" runat="server"></asp:Table>
                             </div>
@@ -441,7 +508,6 @@
                         </script>
                     </div>
                 </asp:View>
-
                 <%-- Concordance --%>
                 <asp:View ID="vwConcordance" runat="server">
                     <div id="divConcordanceQuery" runat="server" class="qfld">
@@ -498,7 +564,95 @@
                         </fieldset>
                     </div>
                     <div id="divConcordanceResult" runat="server">
-                        <asp:GridView ID="gvConcordance" runat="server"></asp:GridView>
+                        <asp:Button ID="btnReConc" runat="server" Text="<<< Go back to Search" Visible="false"/>
+                        <asp:Label ID="lbConcCount" runat="server" Text=""></asp:Label>
+                        <asp:GridView ID="gvConcComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" Visible="false">
+                            <Columns>
+                                <asp:TemplateField HeaderText="Match">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("match")%>' CommandArgument='<%# Bind("match")%>' ToolTip="View all the corpus contain this match "></asp:LinkButton>
+                                            </div>
+                                        </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="center" />
+                                    </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Total match count in Corpus">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("totalTimes")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                     <ItemStyle HorizontalAlign="center" />
+                                    </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Total corpora count that contain the match">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbCorpora" runat="server" Text='<%# Bind("phraseTimes")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="center" />
+                                    </asp:TemplateField>
+                            </Columns>
+                                <AlternatingRowStyle BackColor="White" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <RowStyle BackColor="#EFF3FB" />
+                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                        </asp:GridView>
+                        <asp:Button ID="btnCloseConc" runat="server" Text="Go back to Search Result" Visible="false"/>
+                        <asp:GridView ID="gvConcordance" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" >
+                                <AlternatingRowStyle BackColor="White" />
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Title">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:HiddenField ID="hdfCorpusID" runat="server" value='<%# Bind("CorpusID")%>'/>
+                                                <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                            </div>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Left">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbLeft" runat="server" Text='<%# Bind("left")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="right" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Match">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbMatch" runat="server" Text='<%# Bind("match")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="center" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Right">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbRight" runat="server" Text='<%# Bind("right")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="left" />
+                                    </asp:TemplateField>
+                                </Columns>
+                                <EditRowStyle BackColor="#2461BF" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <RowStyle BackColor="#EFF3FB" />
+                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                        </asp:GridView>
                     </div>
                 </asp:View>
 
@@ -549,7 +703,96 @@
                         </fieldset>
                     </div>
                     <div id="divCollocateResult" runat="server"  class="qfld">
-                        <asp:GridView ID="gvCollocate" runat="server"></asp:GridView>
+                        <asp:Button ID="btnReColl" runat="server" Text="Go back to Search" Visible="false"/>
+                        <asp:GridView ID="gvCollComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
+                            <Columns>
+                                <asp:TemplateField HeaderText="Match">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("match")%>' CommandArgument='<%# Bind("match")%>' ToolTip="View all the corpus contain this match "></asp:LinkButton>
+                                            </div>
+                                        </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="center" />
+                                    </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Total match count in Corpus">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("totalTimes")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                     <ItemStyle HorizontalAlign="center" />
+                                    </asp:TemplateField>
+
+                                <asp:TemplateField HeaderText="Total corpora count that contain the match">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbCorpora" runat="server" Text='<%# Bind("phraseTimes")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                    <ItemStyle HorizontalAlign="center" />
+                                    </asp:TemplateField>
+                            </Columns>
+                                <AlternatingRowStyle BackColor="White" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <RowStyle BackColor="#EFF3FB" />
+                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                        </asp:GridView>
+
+                        <asp:Button ID="btnCloseColl" runat="server" Text="Go back to Search Result" Visible="false"/>
+                        <asp:GridView ID="gvCollocate" runat="server"  AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" Visible="false">
+                                <AlternatingRowStyle BackColor="White" />
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Title">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:HiddenField ID="hdfCorpusID" runat="server" value='<%# Bind("CorpusID")%>'/>
+                                                <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                            </div>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Left">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbLeft" runat="server" Text='<%# Bind("left")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="right" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Match">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbMatch" runat="server" Text='<%# Bind("match")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="center" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Right">
+                                        <ItemTemplate>
+                                            <div style="padding: 2px">
+                                                <asp:Label ID="lbRight" runat="server" Text='<%# Bind("right")%>'></asp:Label>
+                                            </div>
+                                        </ItemTemplate>
+                                        <ItemStyle HorizontalAlign="left" />
+                                    </asp:TemplateField>
+                                </Columns>
+                                <EditRowStyle BackColor="#2461BF" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <RowStyle BackColor="#EFF3FB" />
+                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                <SortedDescendingHeaderStyle BackColor="#4870BE" />
+
+                        </asp:GridView>
                     </div>
                 </asp:View>
 
@@ -744,28 +987,44 @@
                 <%-- Compare Frequencies --%>
                 <asp:View ID="vwCompare" runat="server">
                     <div id="divQueryforCompare" runat="server" class="qfld">
-                        <div class="flexbox_div">
-                            <span>Compared in</span>
-                            <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal">
-                                <asp:ListItem Value="All">All corpora</asp:ListItem>
-                                <asp:ListItem Value="Some">Only selected corpra</asp:ListItem>
-                            </asp:RadioButtonList>
-                        </div>
-                        <div class="flexbox_div">
-                        <input type="text" id="txtfreqField1"  size="80" placeholder="Type the 1st KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span>
-                        </div>
-                        <div class="flexbox_div">
-                        <input type="text" id="txtfreqField2"  size="80" placeholder="Type the 2nd KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span>
-                        </div>
-                        <div class="flexbox_div">
-                        <input type="text" id="txtfreqField3"  size="80" placeholder="Type the 3nd KeyWord for comparison here,This is not required" runat="server" class="input-text"/>
-                        </div>
-                        <div class="flexbox_div">
-                        <asp:Button ID="btnCompared" runat="server" Text="Sumbit" />
-                        </div>
+                        <table>
+                        <tr>
+                            <th>Compared in: </th>
+                            <td>
+                                <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal">
+                                    <asp:ListItem Value="All" Selected="true">All corpora</asp:ListItem>
+                                    <asp:ListItem Value="Some">Only selected corpra</asp:ListItem>
+                                </asp:RadioButtonList>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>1st KeyWord: </th>
+                            <td><input type="text" id="txtfreqField1"  size="80" placeholder="Type the 1st KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span></td>
+                        </tr>
+                        <tr>
+                            <th>2nd KeyWord: </th>
+                            <td><input type="text" id="txtfreqField2"  size="80" placeholder="Type the 2nd KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span></td>
+                        </tr>
+                        <tr>
+                            <th>3rd KeyWord: </th>
+                            <td><input type="text" id="txtfreqField3"  size="80" placeholder="Type the 3rd KeyWord for comparison here,This is not required" runat="server" class="input-text"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <asp:Button ID="btnCompared" runat="server" Text="Sumbit" />
+                            </td>
+                        </tr>
+                            </table>
                    </div>
                     <div id="divforCompareResult" runat="server" visible="false" class="qfld">
-
+                        <asp:Chart ID="chartForCompare" runat="server">
+                            <Series>
+                                <asp:Series Name="Series1"></asp:Series>
+                            </Series>
+                            <ChartAreas>
+                                <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
+                            </ChartAreas>
+                        </asp:Chart>
                     </div>
                 </asp:View>
             </asp:MultiView>

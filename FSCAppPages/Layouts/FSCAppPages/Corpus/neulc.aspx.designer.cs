@@ -13,6 +13,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
     public partial class neulc {
         
         /// <summary>
+        /// lbCorpus 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbCorpus;
+        
+        /// <summary>
         /// muNeulc 控件。
         /// </summary>
         /// <remarks>
@@ -31,22 +40,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.MultiView mvNeulc;
         
         /// <summary>
-        /// vwQuery 控件。
+        /// vwCorpus 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View vwQuery;
+        protected global::System.Web.UI.WebControls.View vwCorpus;
         
         /// <summary>
-        /// divforQueryCorpus 控件。
+        /// divNEULC 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divforQueryCorpus;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNEULC;
         
         /// <summary>
         /// cblLevel 控件。
@@ -85,6 +94,51 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Button btnSubmitforCorpus;
         
         /// <summary>
+        /// divNEUAC 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNEUAC;
+        
+        /// <summary>
+        /// cblYears 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblYears;
+        
+        /// <summary>
+        /// cblMajors 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblMajors;
+        
+        /// <summary>
+        /// fldJournals 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl fldJournals;
+        
+        /// <summary>
+        /// cblJournals 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList cblJournals;
+        
+        /// <summary>
         /// divforCorpusResult 控件。
         /// </summary>
         /// <remarks>
@@ -92,6 +146,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divforCorpusResult;
+        
+        /// <summary>
+        /// lb1Summary 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb1Summary;
         
         /// <summary>
         /// tbforLevel 控件。
@@ -103,6 +166,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Table tbforLevel;
         
         /// <summary>
+        /// lb2Summary 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb2Summary;
+        
+        /// <summary>
         /// tbforTopic 控件。
         /// </summary>
         /// <remarks>
@@ -110,6 +182,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Table tbforTopic;
+        
+        /// <summary>
+        /// lb3Summary 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lb3Summary;
         
         /// <summary>
         /// tbforGenre 控件。
@@ -238,6 +319,42 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divConcordanceResult;
         
         /// <summary>
+        /// btnReConc 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnReConc;
+        
+        /// <summary>
+        /// lbConcCount 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbConcCount;
+        
+        /// <summary>
+        /// gvConcComputed 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvConcComputed;
+        
+        /// <summary>
+        /// btnCloseConc 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCloseConc;
+        
+        /// <summary>
         /// gvConcordance 控件。
         /// </summary>
         /// <remarks>
@@ -335,6 +452,33 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollocateResult;
+        
+        /// <summary>
+        /// btnReColl 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnReColl;
+        
+        /// <summary>
+        /// gvCollComputed 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvCollComputed;
+        
+        /// <summary>
+        /// btnCloseColl 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCloseColl;
         
         /// <summary>
         /// gvCollocate 控件。
@@ -632,6 +776,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divforCompareResult;
+        
+        /// <summary>
+        /// chartForCompare 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.DataVisualization.Charting.Chart chartForCompare;
         
         /// <summary>
         /// lbErr 控件。
