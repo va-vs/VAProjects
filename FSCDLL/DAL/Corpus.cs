@@ -21,6 +21,15 @@ namespace FSCDLL.DAL
             return ds;
         }
         /// <summary>
+        /// 获取所有学术语料库的年份，YEAE
+        /// </summary>
+        /// <returns></returns>
+        public static DataSet GetCorpusYearsOfAC()
+        {
+            DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusYearsOfAC");
+            return ds;
+        }
+        /// <summary>
         /// 通过查询条件获取所有语料库的内容
         /// </summary>
         /// <param name="filterExpression">由字符串组成的查询条件</param>
@@ -38,6 +47,16 @@ namespace FSCDLL.DAL
         public static DataSet GetCopusExtendByTypes(string types)
         {
             DataSet ds = SqlHelper.ExecuteDataset(DAL.DataProvider.ConnectionString, "GetCorpusExtendByTypes",types );
+            return ds;
+        }
+        /// <summary>
+        /// 获取学术语料库中的专业,绑定TitleCN,Title
+        /// </summary>
+        /// <param name="majorID">四位专业编号</param>
+        /// <returns></returns>
+        public static DataSet GetCorpusMajor()
+        {
+            DataSet ds = DAL.Corpus.GetCopusExtendByTypes ("Major");
             return ds;
         }
         /// <summary>
