@@ -340,19 +340,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         private void InitMenu()
         {
             string strCorpus = GetCorpusByUrl();
+            lbCorpus.Text = strCorpus;
             if (strCorpus == "NEULC")
             {
                 divNEULC.Visible = true;
                 divNEUAC.Visible = false;
-                //muNeulc.Items[0].Text = "NEULC";
-                lbCorpus.Text = "NEULC";
-                InitQueryControls();
-                ClearQueryControls();
+                InitQueryControls(strCorpus);
+                ClearQueryControls(strCorpus);
             }
             else
             {
-                //muNeulc.Items[0].Text = "NEUAC";
-                lbCorpus.Text = "NEUAC";
                 divNEULC.Visible = false;
                 divNEUAC.Visible = true;
             }
@@ -381,48 +378,42 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void BtnSubmitforCorpus_Click(object sender, EventArgs e)
         {
-            try
+
+            string[] strResult = GetSelectQuery();
+            string result0 = strResult[0];
+            if (result0 != "1;1;1")//不是所有的筛选项都被筛选了
             {
-                string[] strResult = GetSelectQuery();
-                string result0 = strResult[0];
-                if (result0 != "1;1;1")//不是所有的筛选项都被筛选了
-                {
-                    lbErr.Text = "Level、Genre、Topic中每项都至少要选择一个条目！";
-                    rbltxtFrom.Items[1].Enabled = false;
-                    return;
-                }
-                else
-                {
-                    string newQueryStr = strResult[1];
-                    if (ViewState["filterExp"] != null)//已有检索历史
-                    {
-                        string oldQueryStr = ViewState["filterExp"].ToString();
-                        if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
-                        {
-                            ViewState["filterExp"] = newQueryStr;
-                        }
-                    }
-                    else//尚未检索过
-                    {
-                        ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
-                    }
-                    QueryCorpus();//检索语料库
-                    divforCorpusResult.Visible = true;
-                    divNEULC.Visible = false;
-                    rbltxtFrom.Items[1].Enabled = true;//经过检索后，WordList中才可以使用关键词检索语料库文本做WordList
-                }
-            }
-            catch (Exception ex)
-            {
+                lbErr.Text = "Level、Genre、Topic中每项都至少要选择一个条目！";
                 rbltxtFrom.Items[1].Enabled = false;
-                lbErr.Text = ex.ToString();
+                return;
             }
+            else
+            {
+                string newQueryStr = strResult[1];
+                if (ViewState["filterExp"] != null)//已有检索历史
+                {
+                    string oldQueryStr = ViewState["filterExp"].ToString();
+                    if (oldQueryStr != newQueryStr)//检索条件改变了，才进行重新检索
+                    {
+                        ViewState["filterExp"] = newQueryStr;
+                    }
+                }
+                else//尚未检索过
+                {
+                    ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
+                }
+                QueryCorpus();//检索语料库
+                divforCorpusResult.Visible = true;
+                divNEULC.Visible = false;
+                rbltxtFrom.Items[1].Enabled = true;//经过检索后，WordList中才可以使用关键词检索语料库文本做WordList
+            }
+
         }
 
         #endregion Corpus事件
 
         #region Corpus方法
-        private DataTable BuildDTSummary(DataTable dtCorpus, string fkid, CheckBoxList cbl)
+        private DataTable BuildDTSummary(DataTable dtCorpus, string fkid, CheckBoxList cbl, List<string> listFKs)
         {
             #region 构造汇总表
             DataTable dtSummary = new DataTable();
@@ -435,7 +426,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtSummary.Columns.Add("wstandard");
             dtSummary.Columns.Add("pAvglength");
             dtSummary.Columns.Add("pstandard");
-            List<string> listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
+
             listFKs.Remove(fkid);
             foreach (string fk in listFKs)
             {
@@ -456,18 +447,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             drSummary[10] = listFKs[1].Replace("ID", "s");
             dtSummary.Rows.Add(drSummary);
             #endregion 构造汇总表
-
-            //DataTable dtWords = new DataTable("词汇表");
-            //DataColumn colID = new DataColumn()
-            //{
-            //    ColumnName = "ID",/*自增列名称*/
-            //    AutoIncrement = true /*设置是否为自增列*/,
-            //    AutoIncrementSeed = 1 /*设置自增初始值*/,
-            //    AutoIncrementStep = 1 /*设置每次子增值*/
-            //};
-            //dtWords.Columns.Add(colID);
-            //dtWords.Columns.Add("Words");
-            //dtWords.Columns.Add("Length");
 
             for (int i = 0; i < cbl.Items.Count; i++)
             {
@@ -567,9 +546,17 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             return dtSummary;
         }
 
-        private void BuildTable(DataTable dtCorpus, CheckBoxList cbl, string fkid, Table tbSummary)
+
+        /// <summary>
+        /// 显示检索结果表数据
+        /// </summary>
+        /// <param name="dtCorpus">语料库</param>
+        /// <param name="cbl"></param>
+        /// <param name="fkid"></param>
+        /// <param name="tbSummary"></param>
+        private void BuildTable(DataTable dtCorpus, CheckBoxList cbl, string fkid, Table tbSummary, List<string> listFKs)
         {
-            DataTable dtSummary = BuildDTSummary(dtCorpus, fkid, cbl);
+            DataTable dtSummary = BuildDTSummary(dtCorpus, fkid, cbl, listFKs);
             DataTable dtResult = Common.TranspositionDT(dtSummary);
             List<string> listValues = new List<string>();
             List<string> listTexts = new List<string>();
@@ -611,109 +598,188 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string filterExpression = ViewState["filterExp"].ToString();
             DataSet dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
             DataTable dtResult = dsResult.Tables[0].Copy();
-            BuildTable(dtResult, cblLevel, "LevelID", tbforLevel);
-            BuildTable(dtResult, cblTopic, "TopicID", tbforTopic);
-            BuildTable(dtResult, cblGenre, "GenreID", tbforGenre);
+            List<string> listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
+            BuildTable(dtResult, cblLevel, "LevelID", tbforLevel, listFKs);
+            BuildTable(dtResult, cblTopic, "TopicID", tbforTopic, listFKs);
+            BuildTable(dtResult, cblGenre, "GenreID", tbforGenre, listFKs);
         }        /// <summary>
         /// 构造检索字符串，用于检索大库
         /// </summary>
         /// <returns></returns>
-        private string[] GetSelectQuery()
+        private string[] GetSelectQuery(string cpName)
         {
-            //三个筛选条件：Level、topic、genre
             string strQuery = "";
             string strResult = "";
-            if (cblLevel.SelectedIndex >= 0)
-            {
-                strQuery = Common.GetQueryString(cblLevel, "LevelID", splitStr);
-                strResult = "1;";
-            }
-            else
-            {
-                strResult = "0;";
-            }
-            string strSql = "";
-            if (cblGenre.SelectedIndex >= 0)
-            {
-                strSql = Common.GetQueryString(cblGenre, "GenreID", splitStr);
-                strResult += "1;";
-            }
-            else
-            {
-                strResult += "0;";
-            }
 
-            if (strQuery == "")
+            if (cpName == "neulc")
             {
-                strQuery = strSql;
-            }
-            else
-            {
-                if (strQuery.IndexOf("and") > 0)
+                //三个筛选条件：Level、topic、genre
+                if (cblLevel.SelectedIndex >= 0)
                 {
-                    strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                    strQuery = Common.GetQueryString(cblLevel, "LevelID", splitStr);
+                    strResult = "1;";
                 }
                 else
                 {
-                    strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                    strResult = "0;";
                 }
-            }
-            strSql = "";
-            if (cblTopic.SelectedIndex >= 0)
-            {
-                strSql = Common.GetQueryString(cblTopic, "TopicID", splitStr);
-                strResult += "1";
-            }
-            else
-            {
-                strResult += "0";
-            }
-
-            if (strQuery == "")
-            {
-                strQuery = strSql;
-            }
-            else
-            {
-                if (strQuery.IndexOf("and") > 0)
+                string strSql = "";
+                if (cblGenre.SelectedIndex >= 0)
                 {
-                    strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                    strSql = Common.GetQueryString(cblGenre, "GenreID", splitStr);
+                    strResult += "1;";
                 }
                 else
                 {
-                    strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                    strResult += "0;";
+                }
+
+                if (strQuery == "")
+                {
+                    strQuery = strSql;
+                }
+                else
+                {
+                    if (strQuery.IndexOf("and") > 0)
+                    {
+                        strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                    }
+                    else
+                    {
+                        strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                    }
+                }
+                strSql = "";
+                if (cblTopic.SelectedIndex >= 0)
+                {
+                    strSql = Common.GetQueryString(cblTopic, "TopicID", splitStr);
+                    strResult += "1";
+                }
+                else
+                {
+                    strResult += "0";
+                }
+
+                if (strQuery == "")
+                {
+                    strQuery = strSql;
+                }
+                else
+                {
+                    if (strQuery.IndexOf("and") > 0)
+                    {
+                        strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                    }
+                    else
+                    {
+                        strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                    }
+                }
+            }
+            else
+            {
+                //三个筛选条件：Year、Major、Journal
+                if (cblYears.SelectedIndex >= 0)
+                {
+                    strQuery = Common.GetQueryString(cblYears, "YearID", splitStr);
+                    strResult = "1;";
+                }
+                else
+                {
+                    strResult = "0;";
+                }
+                string strSql = "";
+                if (cblGenre.SelectedIndex >= 0)
+                {
+                    strSql = Common.GetQueryString(cblGenre, "GenreID", splitStr);
+                    strResult += "1;";
+                }
+                else
+                {
+                    strResult += "0;";
+                }
+
+                if (strQuery == "")
+                {
+                    strQuery = strSql;
+                }
+                else
+                {
+                    if (strQuery.IndexOf("and") > 0)
+                    {
+                        strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                    }
+                    else
+                    {
+                        strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                    }
+                }
+                strSql = "";
+                if (cblTopic.SelectedIndex >= 0)
+                {
+                    strSql = Common.GetQueryString(cblTopic, "TopicID", splitStr);
+                    strResult += "1";
+                }
+                else
+                {
+                    strResult += "0";
+                }
+
+                if (strQuery == "")
+                {
+                    strQuery = strSql;
+                }
+                else
+                {
+                    if (strQuery.IndexOf("and") > 0)
+                    {
+                        strQuery = string.Format("{0} and ({1})", strQuery, strSql);
+                    }
+                    else
+                    {
+                        strQuery = string.Format("({0}) and ({1})", strQuery, strSql);
+                    }
                 }
             }
             string[] strResults = new string[] { strResult, strQuery };
-
             return strResults;
         }        /// <summary>
         /// 初始化检索控件控件
         /// </summary>
-        private void InitQueryControls()
+        private void InitQueryControls(string cpName)
         {
-            //话题
-            string types = "Topic";
-            DataSet dsTopic = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            CBLBindCorpusExt(dsTopic, cblTopic);
+            if (cpName == "NEULC")
+            {
+                divNEULC.Visible = true;
+                divNEUAC.Visible = false;
+                //话题
+                string types = "Topic";
+                DataSet dsTopic = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+                CBLBindCorpusExt(dsTopic, cblTopic);
 
-            //同时绑定WordList中的话题下拉列表框
-            ddlTopics.DataSource = dsTopic.Tables[0].Copy();
-            ddlTopics.DataTextField = "Title";
-            ddlTopics.DataValueField = "ItemID";
-            ddlTopics.DataBind();
+                //同时绑定WordList中的话题下拉列表框
+                ddlTopics.DataSource = dsTopic.Tables[0].Copy();
+                ddlTopics.DataTextField = "Title";
+                ddlTopics.DataValueField = "ItemID";
+                ddlTopics.DataBind();
 
-            //文体
-            types = "Genre";
-            DataSet dsGenre = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            CBLBindCorpusExt(dsGenre, cblGenre);
+                //文体
+                types = "Genre";
+                DataSet dsGenre = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+                CBLBindCorpusExt(dsGenre, cblGenre);
 
-            //年级
-            types = "Level";
-            DataSet dsLevel = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
-            CBLBindCorpusExt(dsLevel, cblLevel);
-            divforCorpusResult.Visible = false;
-            divNEULC.Visible = true;
+                //年级
+                types = "Level";
+                DataSet dsLevel = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(types);
+                CBLBindCorpusExt(dsLevel, cblLevel);
+                divforCorpusResult.Visible = false;
+                divNEULC.Visible = true;
+            }
+            else
+            {
+                divNEULC.Visible = false;
+                divNEUAC.Visible = true;
+            }
         }
 
         private void CBLBindCorpusExt(DataSet ds, CheckBoxList cblExt)
