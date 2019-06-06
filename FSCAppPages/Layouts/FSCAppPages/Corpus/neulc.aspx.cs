@@ -390,9 +390,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtSummary.Columns.Add("wstandard");
             dtSummary.Columns.Add("pAvglength");
             dtSummary.Columns.Add("pstandard");
-
-            listFKs.Remove(fkid);
-            foreach (string fk in listFKs)
+            List<string> listFK = listFKs;
+            listFK.Remove(fkid);
+            foreach (string fk in listFK)
             {
                 dtSummary.Columns.Add(fk);
             }
@@ -407,8 +407,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             drSummary[6] = "mean word length standard deviation";
             drSummary[7] = "mean in words";
             drSummary[8] = "standard deviation";
-            drSummary[9] = listFKs[0].Replace("ID", "s");
-            drSummary[10] = listFKs[1].Replace("ID", "s");
+            drSummary[9] = listFK[0].Replace("ID", "s");
+            drSummary[10] = listFK[1].Replace("ID", "s");
             dtSummary.Rows.Add(drSummary);
             #endregion 构造汇总表
 
@@ -446,13 +446,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                                 }
                                 //listWords = listWords.Concat(dictPara[key]).ToList<string>(); //保留重复项，合并词汇数组
                             }
-                            string strFks = dr[listFKs[0]].ToString();
+                            string strFks = dr[listFK[0]].ToString();
                             if (!fk1.Contains(strFks))
                             {
                                 fk1.Add(strFks);
                             }
 
-                            strFks = dr[listFKs[1]].ToString();
+                            strFks = dr[listFK[1]].ToString();
                             if (!fk2.Contains(strFks))
                             {
                                 fk2.Add(strFks);
@@ -564,7 +564,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             DataTable dtResult = dsResult.Tables[0].Copy();
             List<string> listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
             BuildTable(dtResult, cblLevel, "LevelID", tbforLevel, listFKs);
+            listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
             BuildTable(dtResult, cblTopic, "TopicID", tbforTopic, listFKs);
+            listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
             BuildTable(dtResult, cblGenre, "GenreID", tbforGenre, listFKs);
         }        /// <summary>
         /// 构造检索字符串，用于检索大库
