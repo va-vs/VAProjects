@@ -316,6 +316,13 @@
             display:inline-block;
         }
     </style>
+    <script type="text/javascript">
+                                function checkOrNot(cblId, val) {
+                                    for (var i = 0; i < document.getElementById(cblId).getElementsByTagName("input").length; i++) {
+                                        document.getElementById(cblId + "_" + i).checked = val.checked;
+                                    }
+                                }
+                            </script>
 </asp:Content>
 
 <asp:Content ID="Main" ContentPlaceHolderID="PlaceHolderMain" runat="server">
@@ -381,13 +388,7 @@
                             Select Corpus you need according to:
                         </div>
                         <div class="qfld">
-                            <script type="text/javascript">
-                                function checkOrNot(cblId, val) {
-                                    for (var i = 0; i < document.getElementById(cblId).getElementsByTagName("input").length; i++) {
-                                        document.getElementById(cblId + "_" + i).checked = val.checked;
-                                    }
-                                }
-                            </script>
+
                             <fieldset id="fdsLevel">
                                 <legend>
                                     Level
@@ -435,7 +436,7 @@
                         </div>
                     </div>
 
-                    <div id="divNEUAC" class="qfld" runat="server">
+                    <div id="divNEUAC" class="qfld" runat="server" visible="false">
                             <fieldset>
                                 <legend>Year
                                     <input id="cbforYears" type="checkbox" onchange='checkOrNot("<%=cblYears.ClientID%>", this)' />
@@ -465,6 +466,9 @@
                                     <asp:ListItem Value="2">2</asp:ListItem>
                                 </asp:CheckBoxList>
                             </fieldset>
+                        <div class="qfld" style="text-align: center; margin: 10px;">
+                            <asp:Button ID="btnSubmitforNEUAC" runat="server" Text="Submit" CssClass="outbtndiv-button" />
+                        </div>
                         </div>
 
                     <%-- 检索过后的语料库数据统计与分析 --%>
