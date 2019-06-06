@@ -31,7 +31,10 @@
 			font-size: 15px;
 		}
         .qfld fieldset legend input{
-			margin-left:5em;
+			margin-left:10px;
+		}
+        .qfld fieldset legend span{
+			width:100px;
 		}
         .qfld fieldset legend label{
 			font-weight:normal;
@@ -391,7 +394,7 @@
 
                             <fieldset id="fdsLevel">
                                 <legend>
-                                    Level
+                                    <span> Level </span>
                                     <input id="cbforLevel" type="checkbox" onchange='checkOrNot("<%=cblLevel.ClientID%>", this)' />
                                     <label for="cbforLevel" style="font-weight:normal">Select All Levels</label>
                                 </legend>
@@ -404,7 +407,8 @@
                                 </asp:CheckBoxList>
                             </fieldset>
                             <fieldset>
-                                <legend>Genre
+                                <legend>
+                                    <span> Genre </span>
                                     <input id="cbforGenre" type="checkbox" onchange='checkOrNot("<%=cblGenre.ClientID%>", this)' />
                                     <label for="cbforGenre" style="font-weight:normal">Select All Genres</label>
                                 </legend>
@@ -417,7 +421,8 @@
                                 </asp:CheckBoxList>
                             </fieldset>
                             <fieldset>
-                                <legend>Topic
+                                <legend>
+                                    <span> Topic </span>
                                     <input id="cbforTopic" type="checkbox" onchange='checkOrNot("<%=cblTopic.ClientID%>", this)' />
                                     <label for="cbforTopic" style="font-weight:normal">Select All Topics</label>
                                 </legend>
@@ -438,32 +443,37 @@
 
                     <div id="divNEUAC" class="qfld" runat="server" visible="false">
                             <fieldset>
-                                <legend>Year
-                                    <input id="cbforYears" type="checkbox" onchange='checkOrNot("<%=cblYears.ClientID%>", this)' />
-                                    <label for="cbforYears" style="font-weight:normal">Select All Years</label>
+                                <legend>
+                                    <span> Year </span>
+                                    <input id="cbforYear" type="checkbox" onchange='checkOrNot("<%=cblYear.ClientID%>", this)' />
+                                    <label for="cbforYear" style="font-weight:normal">Select All Years</label>
                                 </legend>
-                                <asp:CheckBoxList ID="cblYears" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
-                                    <asp:ListItem Value="1">1</asp:ListItem>
-                                    <asp:ListItem Value="2">2</asp:ListItem>
+                                <asp:CheckBoxList ID="cblYear" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
+                                    <asp:ListItem Value="1">2013</asp:ListItem>
+                                    <asp:ListItem Value="2">2014</asp:ListItem>
                                 </asp:CheckBoxList>
                             </fieldset>
                             <fieldset>
-                                <legend>Major
-                                    <input id="cbforMajors" type="checkbox" onchange='checkOrNot("<%=cblMajors.ClientID%>", this)' />
-                                    <label for="cbforMajors" style="font-weight:normal">Select All Majors</label>
+                                <legend>
+                                    <span> Major </span>
+                                    <input id="cbforMajor" type="checkbox" onchange='checkOrNot("<%=cblMajor.ClientID%>", this)' />
+                                    <label for="cbforMajor" style="font-weight:normal">Select All Majors</label>
                                 </legend>
-                                <asp:CheckBoxList ID="cblMajors" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
-                                    <asp:ListItem Value="1">1</asp:ListItem>
-                                    <asp:ListItem Value="2">2</asp:ListItem>
+                                <asp:CheckBoxList ID="cblMajor" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
+                                    <asp:ListItem Value="1">Computer</asp:ListItem>
+                                    <asp:ListItem Value="2">Material</asp:ListItem>
                                 </asp:CheckBoxList>
                             </fieldset>
                             <fieldset id="fldJournals" runat="server">
-                                <legend>Journal
-                                    <input id="cbforJournals" type="checkbox" onchange='checkOrNot("<%=cblJournals.ClientID%>", this)'/><label for="cbforJournals" style="font-weight:normal">Select All Journals</label>
+                                <legend>
+                                    <span> Journal </span>
+                                    <input id="cbforJournal" type="checkbox" onchange='checkOrNot("<%=cblJournal.ClientID%>", this)'/>
+                                    <label for="cbforJournal" style="font-weight:normal">Select All Journals</label>
                                 </legend>
-                                <asp:CheckBoxList ID="cblJournals" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
-                                    <asp:ListItem Value="1">1</asp:ListItem>
-                                    <asp:ListItem Value="2">2</asp:ListItem>
+                                <asp:CheckBoxList ID="cblJournal" runat="server" >
+                                    <asp:ListItem Value="1">JOURNAL OF ALLOYS AND COMPOUNDS</asp:ListItem>
+                                    <asp:ListItem Value="2">MATERIALS SCIENCE AND ENGINEERING A-STRUCTURAL MATERIALS PROPERTIES MICROSTRUCTURE AND PROCESSING
+</asp:ListItem>
                                 </asp:CheckBoxList>
                             </fieldset>
                         <div class="qfld" style="text-align: center; margin: 10px;">
@@ -550,8 +560,8 @@
                             </div>
                             <div class="flexbox_div">
                                 Display up to&nbsp;
-                            <a href="#" onclick='sub("<%=txtLimit.ClientID%>",10,10)' class="flexbox_asub">-</a>
-                                <input type="text" id="txtLimit" name="terminate" size="4" value="100" class="flexbox_text" runat="server" />
+                            <a href="#" onclick='sub("<%=txtLimit.ClientID%>",10,0)' class="flexbox_asub">-</a>
+                                <input type="text" id="txtLimit" name="terminate" size="4" value="0" class="flexbox_text" runat="server" title="0 Means Display All Result" />
                                 <a href="#" onclick='add("<%=txtLimit.ClientID%>",10,100)' class="flexbox_a">+</a>
                                 &nbsp;matches with&nbsp;
                             <a href="#" onclick='sub("<%=txtRpp.ClientID%>",5,10)' class="flexbox_asub">-</a>
@@ -570,46 +580,6 @@
                     <div id="divConcordanceResult" runat="server">
                         <asp:Button ID="btnReConc" runat="server" Text="<<< Go back to Search" Visible="false"/>
                         <asp:Label ID="lbConcCount" runat="server" Text=""></asp:Label>
-                        <asp:GridView ID="gvConcComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" Visible="false">
-                            <Columns>
-                                <asp:TemplateField HeaderText="Match">
-                                        <ItemTemplate>
-                                            <div style="padding: 2px">
-                                                <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("match")%>' CommandArgument='<%# Bind("match")%>' ToolTip="View all the corpus contain this match "></asp:LinkButton>
-                                            </div>
-                                        </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="center" />
-                                    </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Total match count in Corpus">
-                                        <ItemTemplate>
-                                            <div style="padding: 2px">
-                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("totalTimes")%>'></asp:Label>
-                                            </div>
-                                        </ItemTemplate>
-                                     <ItemStyle HorizontalAlign="center" />
-                                    </asp:TemplateField>
-
-                                <asp:TemplateField HeaderText="Total corpora count that contain the match">
-                                        <ItemTemplate>
-                                            <div style="padding: 2px">
-                                                <asp:Label ID="lbCorpora" runat="server" Text='<%# Bind("phraseTimes")%>'></asp:Label>
-                                            </div>
-                                        </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="center" />
-                                    </asp:TemplateField>
-                            </Columns>
-                                <AlternatingRowStyle BackColor="White" />
-                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
-                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-                                <RowStyle BackColor="#EFF3FB" />
-                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                                <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                        </asp:GridView>
-                        <asp:Button ID="btnCloseConc" runat="server" Text="Go back to Search Result" Visible="false"/>
                         <asp:GridView ID="gvConcordance" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" >
                                 <AlternatingRowStyle BackColor="White" />
                                 <Columns>
@@ -900,34 +870,83 @@
                                 <span id="lcount" style="color: green">Remaining: 30,000 Words</span>)
                             </span>
                         </div>
-
-                        <div id="divLemma">
-                            <table>
-                                <tr>
-                                    <th>Select WordList：
-                                    </th>
-                                    <td colspan="3">
-                                        <asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList">
-                                            <asp:ListItem Value="0" Selected="true">CECR</asp:ListItem>
-                                            <asp:ListItem Value="1" Enabled="false">GSL</asp:ListItem>
-                                            <asp:ListItem Value="2" Enabled="false">AWL</asp:ListItem>
-                                            <asp:ListItem Value="3" Enabled="false">EVP</asp:ListItem>
-                                        </asp:RadioButtonList>
-                                    </td>
-                                    <td>
-                                        <div>
+                        <div class="qlfd">
                                             <asp:Button ID="clearBtn" runat="server" Text="Clear" CssClass="outbtndiv-button" ToolTip="Clear the Texts" />
-                                            <asp:Button ID="lemmanew" runat="server" Text="Submit" CssClass="outbtndiv-button" ToolTip="Submit to Process" />
+                                            <asp:Button ID="btnSubmitForLemma" runat="server" Text="Submit" CssClass="outbtndiv-button" ToolTip="Submit to Process" />
                                         </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+
                     </div>
 
-                    <%-- 输出处理结果 --%>
-                    <div id="divOutput" runat="server" visible="false" class="wbdiv">
 
+                </asp:View>
+
+                <%-- Cluster --%>
+                <asp:View ID="vwCluster" runat="server">
+                    <h2>Cluster</h2>
+                </asp:View>
+
+                <%-- Compare Frequencies --%>
+                <asp:View ID="vwCompare" runat="server">
+                    <div id="divQueryforCompare" runat="server" class="qfld">
+                        <table>
+                        <tr>
+                            <th>Compared in: </th>
+                            <td>
+                                <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal" CssClass="cb">
+                                    <asp:ListItem Value="All" Selected="true">All corpora</asp:ListItem>
+                                    <asp:ListItem Value="Some">Only selected corpra</asp:ListItem>
+                                </asp:RadioButtonList>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>1st KeyWord: </th>
+                            <td><input type="text" id="txtfreqField1"  size="80" placeholder="Type the 1st KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span></td>
+                        </tr>
+                        <tr>
+                            <th>2nd KeyWord: </th>
+                            <td><input type="text" id="txtfreqField2"  size="80" placeholder="Type the 2nd KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span></td>
+                        </tr>
+                        <tr>
+                            <th>3rd KeyWord: </th>
+                            <td><input type="text" id="txtfreqField3"  size="80" placeholder="Type the 3rd KeyWord for comparison here,This is not required" runat="server" class="input-text"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <asp:Button ID="btnCompared" runat="server" Text="Sumbit" />
+                            </td>
+                        </tr>
+                            </table>
+                   </div>
+                    <div id="divforCompareResult" runat="server" visible="false" class="qfld">
+                        <asp:Button ID="btnBackToCompare" runat="server" Text="Back" />
+                        <asp:Chart ID="chartForCompare" runat="server">
+                            <Series>
+                                <asp:Series Name="Series1"></asp:Series>
+                            </Series>
+                            <ChartAreas>
+                                <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
+                            </ChartAreas>
+                        </asp:Chart>
+                    </div>
+                </asp:View>
+
+                <asp:View ID="vwLemma" runat="server">
+                     <%-- 输出处理结果 --%>
+                    <div id="divLemma" runat="server" class="qlfd">
+                        <table>
+                            <tr>
+                                <th>Select WordList：
+                                </th>
+                                <td>
+                                    <asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList" AutoPostBack="true">
+                                        <asp:ListItem Value="CECR" Selected="true">CECR</asp:ListItem>
+                                        <asp:ListItem Value="GSL" Enabled="false">GSL</asp:ListItem>
+                                        <asp:ListItem Value="AWL" Enabled="false">AWL</asp:ListItem>
+                                        <asp:ListItem Value="EVP" Enabled="false">EVP</asp:ListItem>
+                                    </asp:RadioButtonList>
+                                </td>
+                            </tr>
+                        </table>
                         <div class="divmain">
                             <div class="it-ec-textdiv" id="divContext" runat="server">
                                 <%-- 这是输出的彩色文本以及各个级别单词占比 --%>
@@ -938,7 +957,6 @@
                                 <div class="outbtndiv">
                                     <input id="btnLight" type="button" value="HighLight" data-i="1" onclick="HighLightAll(this)" class="outbtndiv-button" />
                                     <asp:Button ID="btnBackLemma" runat="server" Text="Back" CssClass="outbtndiv-button" ToolTip="关闭页面" />
-                                    <asp:Button ID="btnCloseLemma" runat="server" Text="Close" CssClass="outbtndiv-button" ToolTip="关闭页面" />
                                 </div>
                                 <dl class="it-chart-dl" id="dlChart" runat="server">
                                     <dt class="it-chart-dt" data-level="UN" onclick="HighLightthis(this)">忽略处理</dt>
@@ -979,66 +997,13 @@
                                 </dl>
                             </div>
                         </div>
-                        <div class="divbr"></div>
+
                     </div>
-                </asp:View>
-
-                <%-- Cluster --%>
-                <asp:View ID="vwCluster" runat="server">
-                    <h2>Cluster</h2>
-                </asp:View>
-
-                <%-- Compare Frequencies --%>
-                <asp:View ID="vwCompare" runat="server">
-                    <div id="divQueryforCompare" runat="server" class="qfld">
-                        <table>
-                        <tr>
-                            <th>Compared in: </th>
-                            <td>
-                                <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal">
-                                    <asp:ListItem Value="All" Selected="true">All corpora</asp:ListItem>
-                                    <asp:ListItem Value="Some">Only selected corpra</asp:ListItem>
-                                </asp:RadioButtonList>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>1st KeyWord: </th>
-                            <td><input type="text" id="txtfreqField1"  size="80" placeholder="Type the 1st KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span></td>
-                        </tr>
-                        <tr>
-                            <th>2nd KeyWord: </th>
-                            <td><input type="text" id="txtfreqField2"  size="80" placeholder="Type the 2nd KeyWord for comparison here. This is a required field" runat="server" class="input-text"/><span style="color:red">*</span></td>
-                        </tr>
-                        <tr>
-                            <th>3rd KeyWord: </th>
-                            <td><input type="text" id="txtfreqField3"  size="80" placeholder="Type the 3rd KeyWord for comparison here,This is not required" runat="server" class="input-text"/></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <asp:Button ID="btnCompared" runat="server" Text="Sumbit" />
-                            </td>
-                        </tr>
-                            </table>
-                   </div>
-                    <div id="divforCompareResult" runat="server" visible="false" class="qfld">
-                        <asp:Chart ID="chartForCompare" runat="server">
-                            <Series>
-                                <asp:Series Name="Series1"></asp:Series>
-                            </Series>
-                            <ChartAreas>
-                                <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
-                            </ChartAreas>
-                        </asp:Chart>
-                    </div>
-                </asp:View>
-
-                <asp:View ID="vwLemma">
-
                 </asp:View>
             </asp:MultiView>
         </div>
     </div>
-
+    <asp:HiddenField ID="hdfvwIndex" runat="server" Value="0"/>
 	<asp:Label ID="lbErr" runat="server" Text="" ForeColor="red"></asp:Label>
 </asp:Content>
 

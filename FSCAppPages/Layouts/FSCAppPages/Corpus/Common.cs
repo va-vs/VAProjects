@@ -26,26 +26,26 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtResults.Columns.Add("match", typeof(string));
             dtResults.Columns.Add("totalTimes", typeof(int));
             dtResults.Columns.Add("phraseTimes", typeof(int));
-            DataTable dtMatchs= dtSearchResult.DefaultView.ToTable(true, "match");
+            DataTable dtMatchs = dtSearchResult.DefaultView.ToTable(true, "match");
             DataRow drNew;
             DataSet dsTmp = new DataSet();
- 
+
             string match;
-            DataRow[] drs; 
-            foreach (DataRow drTmp in dtMatchs.Rows )
+            DataRow[] drs;
+            foreach (DataRow drTmp in dtMatchs.Rows)
             {
                 dsTmp = new DataSet();
                 drNew = dtResults.Rows.Add();
-                match=drTmp["match"].ToString ();
+                match = drTmp["match"].ToString();
                 drNew["match"] = match;
-                drNew["totalTimes"] =dtSearchResult.Compute("count(match)", "match='" + match + "'");
-                drs = dtSearchResult.Select("match='"+match +"'");
+                drNew["totalTimes"] = dtSearchResult.Compute("count(match)", "match='" + match + "'");
+                drs = dtSearchResult.Select("match='" + match + "'");
                 dsTmp.Merge(drs);
                 drNew["phraseTimes"] = dsTmp.Tables[0].DefaultView.ToTable(true, "CorpusID").Rows.Count;
 
             }
             return dtResults;
-        } 
+        }
         /// <summary>
         /// 返回包含五列的数据表（CorpusID,Title,left,match,right）
         /// </summary>
@@ -77,7 +77,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 List<string> words = ParseWords(strContent);//先解析单词
 
                 string phrase = GetPhrase(words, findWord, findLeftWordsCount, findRightWordsCount);//要构造的短语
-                if (phrase.Length == 0) continue;                                                                                  
+                if (phrase.Length == 0) continue;
                 //在段落中查询短语
                 Regex rx = new Regex(@"(" + phrase + ")");// (@"(e\S*$)");//(a|e|s)
 
@@ -85,7 +85,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 Dictionary<int, List<string>> findPhrase = new Dictionary<int, List<string>>();
                 string leftContent;
                 string rightContent;
-               
+
                 List<string> leftWords;
                 List<string> rightWords;
                 string leftStr;
@@ -108,7 +108,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                             iStart += 1;
                         }
                         leftStr = leftStr.Trim();
-                        
+
 
                     }
                     if (rightWordsCount > 0 && i + phrase.Length + 1 < strContent.Length)
@@ -153,20 +153,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="leftWords">左边的单词个数</param>
         /// <param name="rightWords">右边的单词个数</param>
         /// <returns></returns>
-        private  static string GetPhrase(List<string> words,string findWord,int leftWords,int rightWords)
+        private static string GetPhrase(List<string> words, string findWord, int leftWords, int rightWords)
         {
-            string phrase="";
+            string phrase = "";
             if (leftWords == 0 && rightWords == 0) return phrase;
-             int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
-            if (wordIndex < 0  ) return phrase;
+            int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
+            if (wordIndex < 0) return phrase;
             int leftIndex = wordIndex - leftWords;
             int rightIndex = wordIndex + rightWords;
             if (leftIndex < 0) leftIndex = 0;
             if (rightIndex > words.Count - 1) rightIndex = words.Count - 1;
             if (leftIndex == rightIndex) return phrase;
-            while (leftIndex <=rightIndex )
+            while (leftIndex <= rightIndex)
             {
-                phrase = phrase+words[leftIndex] + " ";
+                phrase = phrase + words[leftIndex] + " ";
                 leftIndex += 1;
             }
             return phrase.Trim();
@@ -181,20 +181,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="leftWords">左边的单词</param>
         /// <param name="rightWords"></param>
         /// <returns></returns>
-        public static DataTable GetWordsFromCorpus(DataTable dtCorpus,string findWord,int leftWords,int rightWords)
+        public static DataTable GetWordsFromCorpus(DataTable dtCorpus, string findWord, int leftWords, int rightWords)
         {
             DataTable dtResults = new DataTable();
-            dtResults.Columns.Add("CorpusID", typeof(long ));
+            dtResults.Columns.Add("CorpusID", typeof(long));
             dtResults.Columns.Add("Title", typeof(string));
             dtResults.Columns.Add("left", typeof(string));
             dtResults.Columns.Add("match", typeof(string));
             dtResults.Columns.Add("right", typeof(string));
             DataTable findResults;
             DataRow drNew;
-            foreach (DataRow dr in dtCorpus.Rows )
+            foreach (DataRow dr in dtCorpus.Rows)
             {
                 findResults = FindWord(findWord, dr["OriginalText"].ToString(), leftWords, rightWords);
-                foreach (DataRow drWord in findResults.Rows  )
+                foreach (DataRow drWord in findResults.Rows)
                 {
                     drNew = dtResults.Rows.Add();
                     drNew["CorpusID"] = dr["CorpusID"];
@@ -215,7 +215,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="position">单词的匹配位置；-1：左匹配，0：中间匹配，1：匹配</param>
         /// <param name="wordsCount">显示的其他单词的个数</param>
         /// <returns>DataTable</returns>
-        private  static DataTable  FindWord(string findWord, string strContent,int leftWords,int rightWords)
+        private static DataTable FindWord(string findWord, string strContent, int leftWords, int rightWords)
         {
             string ignore = "[\r\n\t\"]";//需要替换的符号
             strContent = Regex.Replace(strContent, ignore, " ");
@@ -278,20 +278,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     break;
                 wordIndex = words.FindIndex(wordIndex + rightWords + 1, word => word == findWord);
             }
-            return dtResults ;
+            return dtResults;
         }
         #endregion
         #region 处理句子与单词
-        public static List<string > SplitSentences(string strContent)
+        public static List<string> SplitSentences(string strContent)
         {
             string ignore = "[\r\n\t\"]";//需要替换的符号
             strContent = Regex.Replace(strContent, ignore, " ");
             Regex rx = new Regex(@"(\S.+?[.!?])(?=\s+|$)");
             MatchCollection matchs = rx.Matches(strContent);
-             List<string> sentence = new List<string>();
+            List<string> sentence = new List<string>();
             foreach (Match match in matchs)
             {
-                sentence.Add ( match.Value);
+                sentence.Add(match.Value);
 
             }
             return sentence;
@@ -460,6 +460,31 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #endregion
 
         #region DataTable方法
+
+
+        /// <summary>
+        /// 获取DataTable前几条数据
+        /// </summary>
+        /// <param name="TopItem">前N条数据</param>
+        /// <param name="oDT">源DataTable</param>
+        /// <returns></returns>
+        public static DataTable DtSelectTop(int TopItem, DataTable oDT)
+        {
+            if (oDT.Rows.Count < TopItem)
+            {
+                return oDT;
+            }
+            else
+            {
+                DataTable NewTable = oDT.Clone();
+                DataRow[] rows = oDT.Select("1=1");
+                for (int i = 0; i < TopItem; i++)
+                {
+                    NewTable.ImportRow((DataRow)rows[i]);
+                }
+                return NewTable;
+            }
+        }
 
         /// <summary>
         /// 行列转置

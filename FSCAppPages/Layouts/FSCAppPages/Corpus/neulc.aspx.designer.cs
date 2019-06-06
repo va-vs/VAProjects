@@ -103,22 +103,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divNEUAC;
         
         /// <summary>
-        /// cblYears 控件。
+        /// cblYear 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cblYears;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblYear;
         
         /// <summary>
-        /// cblMajors 控件。
+        /// cblMajor 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cblMajors;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblMajor;
         
         /// <summary>
         /// fldJournals 控件。
@@ -130,13 +130,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl fldJournals;
         
         /// <summary>
-        /// cblJournals 控件。
+        /// cblJournal 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cblJournals;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblJournal;
         
         /// <summary>
         /// btnSubmitforNEUAC 控件。
@@ -344,24 +344,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbConcCount;
-        
-        /// <summary>
-        /// gvConcComputed 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvConcComputed;
-        
-        /// <summary>
-        /// btnCloseConc 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCloseConc;
         
         /// <summary>
         /// gvConcordance 控件。
@@ -634,15 +616,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlTextArea txtcontent;
         
         /// <summary>
-        /// rbVBS 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rbVBS;
-        
-        /// <summary>
         /// clearBtn 控件。
         /// </summary>
         /// <remarks>
@@ -652,58 +625,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Button clearBtn;
         
         /// <summary>
-        /// lemmanew 控件。
+        /// btnSubmitForLemma 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button lemmanew;
-        
-        /// <summary>
-        /// divOutput 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divOutput;
-        
-        /// <summary>
-        /// divContext 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContext;
-        
-        /// <summary>
-        /// btnBackLemma 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBackLemma;
-        
-        /// <summary>
-        /// btnCloseLemma 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCloseLemma;
-        
-        /// <summary>
-        /// dlChart 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dlChart;
+        protected global::System.Web.UI.WebControls.Button btnSubmitForLemma;
         
         /// <summary>
         /// vwCluster 控件。
@@ -787,6 +715,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divforCompareResult;
         
         /// <summary>
+        /// btnBackToCompare 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBackToCompare;
+        
+        /// <summary>
         /// chartForCompare 控件。
         /// </summary>
         /// <remarks>
@@ -794,6 +731,69 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.DataVisualization.Charting.Chart chartForCompare;
+        
+        /// <summary>
+        /// vwLemma 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View vwLemma;
+        
+        /// <summary>
+        /// divLemma 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divLemma;
+        
+        /// <summary>
+        /// rbVBS 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rbVBS;
+        
+        /// <summary>
+        /// divContext 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContext;
+        
+        /// <summary>
+        /// btnBackLemma 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBackLemma;
+        
+        /// <summary>
+        /// dlChart 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dlChart;
+        
+        /// <summary>
+        /// hdfvwIndex 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdfvwIndex;
         
         /// <summary>
         /// lbErr 控件。
