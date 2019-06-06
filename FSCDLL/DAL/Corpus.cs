@@ -87,13 +87,15 @@ namespace FSCDLL.DAL
         #endregion
         #region 添加
         /// <summary>
-        /// 添加新的语料
+        /// 添加新的语料，Source默认为LC
         /// </summary>
         /// <param name="trans">事务，如果只是一条，则传值null</param>
-        /// <param name="dr">包含语料的数据行</param>
+        /// <param name="source">语料库的来源LC、AC</param>
+        /// 
         /// <returns></returns>
-        public static long InsertCorpus(SqlTransaction trans, DataRow dr)
+        public static long InsertCorpus(SqlTransaction trans, DataRow dr,string source="LC")
         {
+            dr["Source"] = source;
             if (trans == null)
 
                 return ((long)DAL.SqlHelper.ExecuteNonQueryTypedParamsOutput(DAL.DataProvider.ConnectionString, "FSC_InsertCorpus", dr)[0].Value);
