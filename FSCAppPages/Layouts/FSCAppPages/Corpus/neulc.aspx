@@ -14,6 +14,41 @@
 	<link rel="stylesheet" href="../css/tab.css"  type="text/css" charset="utf-8" />
 
 	<style type="text/css">
+             .divBlock{
+            width:100%;
+            clear:both;
+            padding:5px;
+            border:1px solid #808080;
+            display:inline-block;
+        }
+
+             .imgul {
+	list-style: none; /* 去掉ul前面的符号 */
+	margin: 0px; /* 与外界元素的距离为0 */
+	padding: 0px; /* 与内部元素的距离为0 */
+	width: auto; /* 宽度根据元素内容调整 */
+}
+
+	.imgul li {
+		float: left; /* 向左漂移，将竖排变为横排 */
+	}
+    .imgul li input{
+        margin-left:10px;
+        margin-right:10px;
+    }
+
+		.imgul li a, .imgul li a:visited {
+			display: block; /* 此元素将显示为块级元素，此元素前后会带有换行符 */
+			line-height: 1.35em;
+			padding: 4px 20px;
+			text-decoration: none;
+			white-space: nowrap;
+		}
+
+			.imgul li a:hover {
+				background-color: #eeeeee;
+				text-decoration: none;
+			}
 		.qfld {
 			border: none;
 			line-height: 25px;
@@ -38,6 +73,7 @@
 		}
         .qfld fieldset legend label{
 			font-weight:normal;
+            font-size:10px;
 		}
         .qfld table{
             width:100%;
@@ -146,6 +182,8 @@
          .flexbox_a:active{
             text-decoration:none;
         }
+
+
     </style>
 
      <script type="text/javascript">
@@ -310,15 +348,7 @@
 			}
 		}
 	</script>
-    <style type="text/css">
-        .divBlock{
-            width:100%;
-            clear:both;
-            padding:5px;
-            border:1px solid #808080;
-            display:inline-block;
-        }
-    </style>
+
     <script type="text/javascript">
                                 function checkOrNot(cblId, val) {
                                     for (var i = 0; i < document.getElementById(cblId).getElementsByTagName("input").length; i++) {
@@ -334,29 +364,23 @@
         <div id="divNav" class="divBlock">
             <ul class="imgul">
                 <li>
-                    <a>
-                        <asp:Label ID="lbCorpus" runat="server" Text="NEULC" Font-Size="18" Font-Bold="true"></asp:Label>
-                    </a>
+                     <asp:Label ID="lbCorpus" runat="server" Text="NEULC" Font-Size="18" Font-Bold="true"></asp:Label>
                 </li>
                 <li>
-                    <a href="#">
-                        <img alt="About this Corpus" src="../images/Info.png" width="20" height="20" /></a>
+                    <asp:ImageButton ID="ibtnInfo" runat="server" ImageUrl="../images/Info.png" ImageAlign="Middle" Height="20" Width="20"  PostBackUrl="#" ToolTip="About this Corpus"  Enabled="false"/>
                 </li>
                 <li>
-                    <a href="#">
-                        <img alt="Download" src="../images/Download.png" height="20" /></a>
+                    <asp:ImageButton ID="ibtnDownload" runat="server" ImageUrl="../images/Download.png" ImageAlign="Middle" Height="20" Width="20"  PostBackUrl="#" ToolTip="DownLoad This Corpus" Enabled="false" />
                 </li>
                 <li>
-                    <a href="admin.aspx">
-                        <img alt="Upload" src="../images/Upload.png" height="20" /></a>
+                    <asp:ImageButton ID="ibtnUpload" runat="server" ImageUrl="../images/Upload.png" PostBackUrl="admin.aspx" ImageAlign="Middle" Height="20" Width="20" ToolTip="Upload a new Corpora" />
+
                 </li>
                 <li>
-                    <a href="#">
-                        <img alt="Share" src="../images/Share.png" height="20" /></a>
+                    <asp:ImageButton ID="ibtnShare" runat="server" ImageUrl="../images/Share.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Share this Corpus" Enabled="false" />
                 </li>
                 <li>
-                    <a href="#">
-                        <img alt="Guide" src="../images/Guide.png" height="20" /></a>
+                    <asp:ImageButton ID="ibtnGuide" runat="server" ImageUrl="../images/Guide.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Get Help" Enabled="false" />
                 </li>
             </ul>
         </div>
@@ -477,7 +501,8 @@
                                 </asp:CheckBoxList>
                             </fieldset>
                         <div class="qfld" style="text-align: center; margin: 10px;">
-                            <asp:Button ID="btnSubmitforNEUAC" runat="server" Text="Submit" CssClass="outbtndiv-button" />
+                            <asp:Button ID="btnSubmitforNEUAC" runat="server" Text="Submit" CssClass="outbtndiv-button" Enabled="false" />
+                            <asp:Label ID="Label1" runat="server" Text="NEUAC暂不提供汇总计算..." ForeColor="red"></asp:Label>
                         </div>
                         </div>
 
@@ -578,8 +603,10 @@
                         </fieldset>
                     </div>
                     <div id="divConcordanceResult" runat="server">
-                        <asp:Button ID="btnReConc" runat="server" Text="<<< Go back to Search" Visible="false"/>
-                        <asp:Label ID="lbConcCount" runat="server" Text=""></asp:Label>
+                        <div style="width:98%;text-align:right;padding-right:10px;">
+                            <asp:Label ID="lbConcCount" runat="server" Text="" ForeColor="red"></asp:Label>
+                            <asp:Button ID="btnReConc" runat="server" Text="<<< Go back to Search" Visible="false"/>
+                        </div>
                         <asp:GridView ID="gvConcordance" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" >
                                 <AlternatingRowStyle BackColor="White" />
                                 <Columns>
@@ -676,8 +703,11 @@
                             </div>
                         </fieldset>
                     </div>
-                    <div id="divCollocateResult" runat="server"  class="qfld">
-                        <asp:Button ID="btnReColl" runat="server" Text="Go back to Search" Visible="false"/>
+                    <div id="divCollocateResult" runat="server">
+                        <div style="width:98%;text-align:right;padding-right:10px;">
+                            <asp:Label ID="lbCoLLComputedCount" runat="server" Text="" ForeColor="red"></asp:Label>
+                            <asp:Button ID="btnReColl" runat="server" Text="Go back to Search" Visible="false"/>
+                            </div>
                         <asp:GridView ID="gvCollComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
                             <Columns>
                                 <asp:TemplateField HeaderText="Match">
@@ -686,7 +716,7 @@
                                                 <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("match")%>' CommandArgument='<%# Bind("match")%>' ToolTip="View all the corpus contain this match "></asp:LinkButton>
                                             </div>
                                         </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="center" />
+                                    <ItemStyle HorizontalAlign="left" />
                                     </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Total match count in Corpus">
                                         <ItemTemplate>
@@ -717,8 +747,10 @@
                                 <SortedDescendingCellStyle BackColor="#E9EBEF" />
                                 <SortedDescendingHeaderStyle BackColor="#4870BE" />
                         </asp:GridView>
-
-                        <asp:Button ID="btnCloseColl" runat="server" Text="Go back to Search Result" Visible="false"/>
+                        <div style="width:98%;text-align:right;padding-right:10px;">
+                            <asp:Label ID="lbCollCount" runat="server" Text="" ForeColor="red"></asp:Label>
+                            <asp:Button ID="btnCloseColl" runat="server" Text="Go back to Search Result" Visible="false"/>
+                            </div>
                         <asp:GridView ID="gvCollocate" runat="server"  AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" Visible="false">
                                 <AlternatingRowStyle BackColor="White" />
                                 <Columns>
@@ -775,7 +807,7 @@
 
                     <%-- 文本来源选择 --%>
                     <div id="divtxtFrom">
-                        <asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList">
+                        <asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList" Visible="false">
                             <asp:ListItem Value="0" Selected="true">Fill Text by Yourself </asp:ListItem>
                             <asp:ListItem Value="1" Enabled="false">Get Text From Corpus </asp:ListItem>
                         </asp:RadioButtonList>
@@ -813,7 +845,7 @@
                     </div>
 
                     <%-- 文本来源于语料库 --%>
-                    <div id="divFromCorpus" runat="server" class="wbdiv">
+                    <div id="divFromCorpus" runat="server" class="wbdiv" visible="false">
                         <input type="text" class="input-text" value="" id="txtKeyWordsforWordlist" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
                         <asp:Button ID="btnQueryforWordlist" runat="server" Text=" 检 索 " CssClass="outbtndiv-button" />
                         <div id="divCorpusforWordList" runat="server" visible="false">
@@ -947,7 +979,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <div class="divmain">
+                        <div class="divmain" class="qlfd">
                             <div class="it-ec-textdiv" id="divContext" runat="server">
                                 <%-- 这是输出的彩色文本以及各个级别单词占比 --%>
                             </div>
@@ -997,7 +1029,7 @@
                                 </dl>
                             </div>
                         </div>
-
+                        <div class="divbr"></div>
                     </div>
                 </asp:View>
             </asp:MultiView>

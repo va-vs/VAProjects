@@ -71,12 +71,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             //词汇表选择
             rbVBS.SelectedIndexChanged += RbVBS_SelectedIndexChanged;
 
-            InitMenu();
 
-            ShowCPByUrl();
             //页面加载
             if (!IsPostBack)
             {
+                InitMenu();
+
+                ShowCPByUrl();
                 string cpName = GetCorpusByUrl();
                 InitQueryControls(cpName);
                 ClearQueryControls(cpName);
@@ -367,11 +368,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 divNEULC.Visible = true;
                 divNEUAC.Visible = false;
+                ibtnUpload.PostBackUrl = "admin.aspx?Source=LC";
             }
             else
             {
                 divNEUAC.Visible = true;
                 divNEULC.Visible = false;
+                ibtnUpload.PostBackUrl = "admin.aspx?Source=AC";
             }
         }
         private DataTable BuildDTSummary(DataTable dtCorpus, string fkid, CheckBoxList cbl, List<string> listFKs)
@@ -755,7 +758,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             else
             {
                 divNEUAC.Visible = true;
-
                 foreach (ListItem itm in cblYear.Items)
                 {
                     itm.Selected = false;
@@ -824,7 +826,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     }
                     GVBind(gvConcordance, dtConcordance);
                     string pageSize = txtRpp.Value;
-                    gvConcordance.PageSize =int.Parse(pageSize);
+                    gvConcordance.PageSize = int.Parse(pageSize);
                     ViewState["dtConcordance"] = dtConcordance;
                     divConcordanceQuery.Visible = false;
                     divConcordanceResult.Visible = true;
@@ -954,6 +956,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     //查找所有和关键词相关的搭配的语料
                     DataTable dtCollComputed = Common.CaculatePhrase(dtCollocate);
                     ViewState["dtCollComputed"] = dtCollComputed;
+                    lbCoLLComputedCount.Text = "Total number of Matchs: " + dtCollComputed.Rows.Count;
                     GVBind(gvCollComputed, dtCollComputed);
                     ViewState["dtCollocate"] = dtCollocate;
                     divCollocateQuery.Visible = false;
@@ -961,6 +964,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     gvCollocate.Visible = false;
                     btnCloseColl.Visible = false;
                     gvCollComputed.Visible = true;
+
+                    lbCollCount.Visible = false;
+                    lbCoLLComputedCount.Visible = true;
                 }
                 else
                 {
@@ -1020,6 +1026,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCollocate.Visible = true;
             btnCloseColl.Visible = true;
             gvCollComputed.Visible = false;
+            lbCollCount.Text = "Total number of Matchs: " + dtFilter.Rows.Count;
+            lbCollCount.Visible = true;
+            lbCoLLComputedCount.Visible = false;
             GVBind(gvCollocate, dtFilter);
         }
 
@@ -1046,18 +1055,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void BtnReColl_Click(object sender, EventArgs e)
         {
-            btnCloseColl.Visible = true;
             divCollocateQuery.Visible = true;
+
             divCollocateResult.Visible = false;
-            btnReColl.Visible = false;
         }
 
         private void BtnCloseColl_Click(object sender, EventArgs e)
         {
             gvCollComputed.Visible = true;
+            btnReColl.Visible = true;
+            lbCoLLComputedCount.Visible = true;
+
             gvCollocate.Visible = false;
             btnCloseColl.Visible = false;
-            btnReColl.Visible = true;
+            lbCollCount.Visible = false;
         }
 
         #endregion Collocate事件

@@ -38,11 +38,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 drNew = dtResults.Rows.Add();
                 match = drTmp["match"].ToString();
                 drNew["match"] = match;
-                drNew["totalTimes"] = dtSearchResult.Compute("count(match)", "match='" + match + "'");
-                drs = dtSearchResult.Select("match='" + match + "'");
+                drNew["totalTimes"] = dtSearchResult.Compute("count(match)", string.Format("match='{0}'", match));
+                drs = dtSearchResult.Select(string.Format("match='{0}'", match));
                 dsTmp.Merge(drs);
                 drNew["phraseTimes"] = dsTmp.Tables[0].DefaultView.ToTable(true, "CorpusID").Rows.Count;
-
+                dtResults.DefaultView.Sort = "totalTimes Desc";
             }
             return dtResults;
         }
