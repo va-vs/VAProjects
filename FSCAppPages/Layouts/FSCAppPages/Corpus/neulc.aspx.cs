@@ -801,6 +801,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             else
             {
+                lbErr.Text = "";
                 string keyConc = txtKeyConcordance.Value.Trim();
                 string cpName = GetCorpusByUrl();
                 string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' and Source = '{1}'", keyConc, cpName);
@@ -810,7 +811,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     int iCount = int.Parse(txtCDChars.Value.Trim());
 
-                    int[] lAndr = GetLeftandRight(ddlCDCharacters, iCount);//iLeft & iRight
+                    int[] lAndr = GetLeftandRight(ddlMatchPos , iCount);//iLeft & iRight
                     DataTable dtConcordance = Common.GetWordsFromCorpus(dtCorpus, keyConc, lAndr[0], lAndr[1]);
                     if (isShowTotalCount.Checked)
                     {
@@ -826,9 +827,17 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     {
                         dtConcordance = dtConcordance.AsEnumerable().Take(int.Parse(dispCount)).CopyToDataTable<DataRow>();
                     }
-                    GVBind(gvConcordance, dtConcordance);
+                    if (lAndr[0] == 0)
+                        ViewState["HideCol"] = 1;
+                    else if (lAndr[1] == 0)
+                        ViewState["HideCol"] = 3;
+                    else
+                        ViewState["HideCol"] = null;
                     string pageSize = txtRpp.Value;
                     gvConcordance.PageSize = int.Parse(pageSize);
+
+                    GVBind(gvConcordance, dtConcordance);
+
                     ViewState["dtConcordance"] = dtConcordance;
                     divConcordanceQuery.Visible = false;
                     divConcordanceResult.Visible = true;
@@ -847,6 +856,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void GvConcordance_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            if (e.CommandName == "Page") return;
             string cpId = e.CommandArgument.ToString();
             DataTable dt = FSCDLL.DAL.Corpus.GetCorporaByID(long.Parse(cpId)).Tables[0];
             if (dt != null)
@@ -884,6 +894,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
                 //当鼠标离开的时候 将背景颜色还原的以前的颜色
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
+
+            if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
+            {
+                if (ViewState["HideCol"] != null)
+                    e.Row.Cells[int.Parse(ViewState["HideCol"].ToString())].Visible = false; //隐藏ID列,可以取得该隐藏列的信息 
             }
         }
 
@@ -943,6 +959,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             else
             {
+                lbErr.Text = "";
                 string keyColl = txtKeyCollocate.Value.Trim();
                 string cpName = GetCorpusByUrl();
                 string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' and Source ='{1}'", keyColl, cpName);
@@ -951,7 +968,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     int iCount = int.Parse(txtCCChars.Value.Trim());
 
-                    int[] lAndr = GetLeftandRight(ddlCCCharacters, iCount);//iLeft & iRight
+                    int[] lAndr = GetLeftandRight(ddlCollocatesPos, iCount);//iLeft & iRight
                     int mleft = int.Parse(txtcfLeft.Value.Trim());
                     int mright = int.Parse(txtcfRight.Value.Trim());
                     DataTable dtCollocate = Common.GetPhraseFromCorpus(keyColl, dtCorpus, mleft, mright, lAndr[0], lAndr[1]);
@@ -959,6 +976,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     DataTable dtCollComputed = Common.CaculatePhrase(dtCollocate);
                     ViewState["dtCollComputed"] = dtCollComputed;
                     lbCoLLComputedCount.Text = "Total number of Matchs: " + dtCollComputed.Rows.Count;
+
                     GVBind(gvCollComputed, dtCollComputed);
                     ViewState["dtCollocate"] = dtCollocate;
                     divCollocateQuery.Visible = false;
@@ -981,6 +999,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void GvCollocate_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            if (e.CommandName == "Page") return;
             string cpId = e.CommandArgument.ToString();
             DataTable dt = FSCDLL.DAL.Corpus.GetCorporaByID(long.Parse(cpId)).Tables[0];
             if (dt != null)
@@ -1020,6 +1039,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void GvCollComputed_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            if (e.CommandName == "Page") return;
             DataTable dtCollocate = (DataTable)ViewState["dtCollocate"];
             DataView dv = dtCollocate.DefaultView;
             dv.RowFilter = string.Format("match = '{0}'", e.CommandArgument);
@@ -1031,6 +1051,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             lbCollCount.Text = "Total number of Matchs: " + dtFilter.Rows.Count;
             lbCollCount.Visible = true;
             lbCoLLComputedCount.Visible = false;
+            if (dtFilter.Rows.Count >0  )
+            {
+                if (dtFilter.Rows[0]["Left"].ToString() == "")
+                    ViewState["HideCol"] = 1;
+                else if (dtFilter.Rows[0]["Right"].ToString() == "")
+                    ViewState["HideCol"] = 3;
+                else
+                    ViewState["HideCol"] = null;
+            }
             GVBind(gvCollocate, dtFilter);
         }
 
@@ -1052,6 +1081,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
                 //当鼠标离开的时候 将背景颜色还原的以前的颜色
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
+            if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
+            {
+                if (ViewState["HideCol"] != null)
+                    e.Row.Cells[int.Parse(ViewState["HideCol"].ToString())].Visible = false; //隐藏ID列,可以取得该隐藏列的信息 
             }
         }
 

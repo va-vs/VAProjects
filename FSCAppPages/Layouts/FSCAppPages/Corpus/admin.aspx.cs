@@ -77,7 +77,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCorpus.PageIndex = e.NewPageIndex;
             ReQuery();
         }
-
+        /// <summary>
+        /// 显示外键中的文本
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GvCorpus_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             DataTable dtExtend;
@@ -90,7 +94,25 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 dtExtend = (ViewState["dtCorpusExtend"] as DataTable).Copy();
             }
-
+            string splitStr = "";
+            if (CorpusSource == "LC")
+                splitStr = split;
+            else
+            {
+                if (gvCorpus.HeaderRow != null)
+                {
+                    foreach (TableCell cell in gvCorpus.HeaderRow.Cells)
+                    {
+                        if (cell.Text.Contains("Level"))
+                            cell.Text = cell.Text.Replace("Level", "Year");
+                        else if (cell.Text.Contains("Topic"))
+                            cell.Text = cell.Text.Replace("Topic", "Major");
+                        else if (cell.Text.Contains("Genre"))
+                            cell.Text = cell.Text.Replace("Genre", "Journal");
+                    }
+                }
+            }
+            string majorID = "";
             foreach (GridViewRow gRow in gvCorpus.Rows)
             {
                 if (gRow.RowType == DataControlRowType.DataRow)
@@ -107,16 +129,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     {
                         lblLevel = gRow.FindControl("lbLevel") as Label;
                         if (CorpusSource == "LC")
-                            lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Level", split);
-                        else
-                            lblLevel.Text = hId.Value;
-                    }
-                    hId = gRow.FindControl("hdfGenreId") as HiddenField;
-                    if (hId.Value.Length > 0)
-                    {
-                        lblLevel = gRow.FindControl("lbGenre") as Label;
-                        if (CorpusSource == "LC")
-                            lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Genre", split);
+                            lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Level", splitStr);
                         else
                             lblLevel.Text = hId.Value;
                     }
@@ -124,10 +137,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     if (hId.Value.Length > 0)
                     {
                         lblLevel = gRow.FindControl("lbTopic") as Label;
-                        if (CorpusSource == "LC")
-                            lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value, "Topic", split);
-                        else
-                            lblLevel.Text = hId.Value;
+                         if (splitStr == "")
+                            majorID = hId.Value;//专业ID
+                       lblLevel.Text = Common.GetTitlesByIDs(dtExtend, hId.Value,splitStr == ""?"Major" :"Topic", splitStr);
+                    }
+                    hId = gRow.FindControl("hdfGenreId") as HiddenField;
+                    if (hId.Value.Length > 0)
+                    {
+                        lblLevel = gRow.FindControl("lbGenre") as Label;
+                        lblLevel.Text = Common.GetTitlesByIDs(dtExtend, majorID + hId.Value,splitStr == ""?"Journal": "Genre", splitStr);
                     }
                 }
             }
@@ -136,13 +154,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             long corpusID = long.Parse(e.CommandArgument.ToString());
             //此处为查询的结果
-            DataTable dt = (DataTable)ViewState["dtCorpus"];
-            DataRow dr = dt.Select("CorpusID=" + corpusID)[0];
+            DataTable dt = FSCDLL.DAL.Corpus.GetCorporaByID(corpusID).Tables[0] ;// (DataTable)ViewState["dtCorpus"];
+            DataRow dr = dt.Rows[0];// dt.Select("CorpusID=" + corpusID)[0];
             if (e.CommandName == "EditPlan")
             {
-                FillControls(dr);
                 divList.Visible = false;
-                divEditCorpora.Visible = true;
+                FillControls(dr);
                 ViewState["Edit"] = corpusID;
             }
             else if (e.CommandName == "DelPlan")
@@ -157,6 +174,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             divList.Visible = true;
             divEditCorpora.Visible = false;
+            divEditCorporaAc.Visible = false;
 
         }
 
@@ -170,6 +188,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 if (ViewState.ToString() != "0")//如果是编辑，则返回到查询
                 {
                     divEditCorpora.Visible = false;
+                    divEditCorporaAc.Visible = false;
                     divList.Visible = true;
                     ReQuery();
                 }
@@ -184,16 +203,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// </summary>
         private void ReQuery()
         {
-            DataTable dtAll;
-            if (ViewState["dtCorpus"] == null)
-            {
-                dtAll = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
-                ViewState["dtCorpus"] = dtAll;
-            }
-            else
-            {
-                dtAll = (DataTable)ViewState["dtCorpus"];
-            }
             string filterExpression = GetSelectQuery();
             DataSet dsResult;
             dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
@@ -266,20 +275,29 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="drCorpus">语料数据行</param>
         private void FillControls(DataRow drCorpus)
         {
-            txtTitle.Text = drCorpus["Title"].ToString();
-            txtSource.Text = drCorpus["Source"].ToString();
-            txtOriginalText.Text = drCorpus["OriginalText"].ToString();
             if (CorpusSource == "LC")
             {
+                divEditCorpora.Visible = true;
+                divEditCorporaAc.Visible = false;
+                txtTitle.Text = drCorpus["Title"].ToString();
+                txtSource.Text = drCorpus["Source"].ToString();
+                txtOriginalText.Text = drCorpus["OriginalText"].ToString();
                 Common.SetCBListChecked(cblTopics, drCorpus["TopicID"].ToString(), split);
                 Common.SetCBListChecked(cblLevel, drCorpus["LevelID"].ToString(), split);
                 Common.SetCBListChecked(cblGenre, drCorpus["GenreID"].ToString(), split);
             }
             else//AC
             {
+                divEditCorporaAc.Visible = true;
+                divEditCorpora.Visible = false;
+                txtTitleAc.Text = drCorpus["Title"].ToString();
+                txtSourceAc.Text = drCorpus["Source"].ToString();
+                txtOriginalTextAc.Text = drCorpus["OriginalText"].ToString();
+
                 ddlYear.SelectedValue = drCorpus["LevelID"].ToString();
                 ddlMajor.SelectedValue = drCorpus["TopicID"].ToString();
-                ddlJournal.SelectedValue = drCorpus["GenreID"].ToString();
+                string majorID = drCorpus["TopicID"].ToString();
+                ddlJournal.SelectedValue = majorID + drCorpus["GenreID"].ToString();
             }
         }
         private void InitControlsAC()
@@ -376,48 +394,69 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
         private void SaveCorpus()
         {//此处要改
-            if (txtTitle.Text.Length == 0)
+            string title;
+            string originalText;
+
+            if (CorpusSource=="LC")
+            {
+                title = txtTitle.Text;
+                originalText = txtOriginalText.Text;
+            }
+            else
+            {
+                title = txtTitleAc.Text;
+                originalText = txtOriginalTextAc.Text;
+            }
+            if (title .Length == 0)
             {
                 lbErr.Text = "Title cannot be empty!";
                 return;
             }
-            if (txtOriginalText.Text.Length == 0)
+            if (originalText.Length == 0)
             {
                 lbErr.Text = "Context cannot be empty!";
                 return;
             }
-            if (ViewState["dtCorpus"] == null)
-            {
-                ViewState["dtCorpus"] = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
-            }
-            DataTable dt = (DataTable)ViewState["dtCorpus"];
+           
             long corpusID = long.Parse(ViewState["Edit"].ToString());
-            DataRow dr = dt.NewRow();
-            if (corpusID > 0)
-                dr = dt.Select("CorpusID=" + corpusID)[0];
+            DataSet ds=FSCDLL.DAL.Corpus.GetCorporaByID(corpusID);
+            DataRow dr;
+            if (ds.Tables[0].Rows.Count   > 0)
+                dr = ds.Tables[0].Rows[0];
             else
             {
-                DataRow[] drs = dt.Select("Title='" + txtTitle.Text + "' and OriginalText='" + txtOriginalText.Text + "'");//通过标题和正文判断唯一性
-                if (drs.Length > 0)
+                ds= FSCDLL.DAL.Corpus.GetCorpusByFilterString("Title='" + txtTitle.Text + "' and OriginalText='" + txtOriginalText.Text + "'");//通过标题和正文判断唯一性
+                 if (ds.Tables[0].Rows.Count   > 0)
                 {
-                    dr = drs[0];
+                    dr = ds.Tables[0].Rows[0];
                     corpusID = Convert.ToInt64(dr["CorpusID"].ToString());
                 }
                 else
                 {
+                    dr = ds.Tables[0].Rows.Add(); 
                     dr["Created"] = DateTime.Now;
                     dr["Author"] = FSCDLL.Common.Users.UserID;
                     dr["Flag"] = 1;
                 }
             }
-            dr["Title"] = txtTitle.Text;
-            dr["OriginalText"] = txtOriginalText.Text;
-            string ids = Common.GetCBListChecked(cblTopics, split);
-            dr["TopicID"] = ids;
-            ids = Common.GetCBListChecked(cblGenre, split);
-            dr["GenreID"] = ids;
-            ids = Common.GetCBListChecked(cblLevel, split);
-            dr["LevelID"] = ids;
+            dr["Title"] = title ;
+            dr["OriginalText"] = originalText ;
+            if (CorpusSource == "LC")
+            {
+                string ids = Common.GetCBListChecked(cblTopics, split);
+                dr["TopicID"] = ids;
+                ids = Common.GetCBListChecked(cblGenre, split);
+                dr["GenreID"] = ids;
+                ids = Common.GetCBListChecked(cblLevel, split);
+                dr["LevelID"] = ids;
+            }
+            else
+            {
+                dr["LevelID"] = ddlYear.SelectedValue;
+                dr["TopicID"] = ddlMajor.SelectedValue;
+                dr["GenreID"] = ddlJournal.SelectedValue.Replace(ddlMajor.SelectedValue,"");
+            }
+            
             //赋码未添加
             //dr["CodedText"] ="";
             if (corpusID == 0)
@@ -438,13 +477,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             //此处进行查询，关键词、Level、topic、genre
             string strQuery = "";
             string strSql = "";
-
+            string txtKey;
             if (CorpusSource == "LC")
             {
-                if (cblLevel.SelectedIndex >= 0)
-                    strQuery = Common.GetQueryString(cblLevel, "LevelID", split);
-                if (cblGenre.SelectedIndex >= 0)
-                    strSql = Common.GetQueryString(cblGenre, "GenreID", split);
+                if (cblQueryLevel.SelectedIndex >= 0)
+                    strQuery = Common.GetQueryString(cblQueryLevel, "LevelID", split);
+                if (cblQueryGenre.SelectedIndex >= 0)
+                    strSql = Common.GetQueryString(cblQueryGenre, "GenreID", split);
                 if (strQuery == "")
                     strQuery = strSql;
                 else
@@ -457,8 +496,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     }
                 }
                 strSql = "";
-                if (cblTopics.SelectedIndex >= 0)
-                    strSql = Common.GetQueryString(cblTopics, "TopicID", split);
+                if (cblQueryTopics.SelectedIndex >= 0)
+                    strSql = Common.GetQueryString(cblQueryTopics, "TopicID", split);
                 if (strQuery == "")
                     strQuery = strSql;
                 else
@@ -470,15 +509,18 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         strQuery = "(" + strQuery + ") and (" + strSql + ")";
                     }
                 }
+                txtKey = txtKeyWord.Text.Trim();
             }
             else//AC
             {
-                strQuery =string.Format( "TopicID='{0}' and GenreID='{1}' and LevelID='{2}'",ddlMajor.SelectedValue,ddlJournal.SelectedValue,ddlYear.SelectedValue );
+                string genreID = ddlQueryJournal.SelectedValue.Replace(ddlQueryMajor.SelectedValue, "");
+                strQuery =string.Format( "TopicID='{0}' and GenreID='{1}' and LevelID='{2}'",ddlQueryMajor.SelectedValue,genreID ,ddlQueryYear.SelectedValue );
+                txtKey = txtKeyWordAc.Text.Trim();
             }
             //关键词
-            if (txtKeyWord.Text.Length > 0)
+            if (txtKey.Length > 0)
             {
-                strSql = "Title like '%" + txtKeyWord.Text + "%'or Source like '%" + txtKeyWord.Text + "%' or OriginalText like '%" + txtKeyWord.Text + "%' or CodedText like '%" + txtKeyWord.Text + "%'";
+                strSql = "Title like '%" + txtKey + "%'or Source like '%" + txtKey + "%' or OriginalText like '%" + txtKey + "%' or CodedText like '%" + txtKey + "%'";
                 if (strQuery == "")
                     strQuery = strSql;
                 else

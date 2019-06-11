@@ -108,9 +108,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                             iStart += 1;
                         }
                         leftStr = leftStr.Trim();
-
-
                     }
+                    else
+                        leftStr = "";
                     if (rightWordsCount > 0 && i + phrase.Length + 1 < strContent.Length)
                     {
                         rightContent = strContent.Substring(i + phrase.Length + 1);
@@ -125,6 +125,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         rightStr = rightStr.Trim();
 
                     }
+                    else
+                        rightStr = "";
                     if (rightStr.Length > 0 || leftStr.Length > 0)
                     {
                         drNew = dtResults.Rows.Add();
@@ -267,8 +269,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         start += 1;
                     }
                     resultWord = resultWord.Trim();
-
                 }
+                else
+                    resultWord = "";
                 //三部分的数组
                 dr["right"] = resultWord;
                 if (!dr.IsNull("left") || !dr.IsNull("right"))
@@ -368,21 +371,32 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         public static string GetTitlesByIDs(DataTable dtCorpusExtends, string ids, string typeName, string splitStr)
         {
             string strTitles = "";
-            string[] idKeys = Regex.Split(ids, splitStr);
-            DataRow[] drs;
-            foreach (string id in idKeys)
+                DataRow[] drs;
+            if (splitStr.Length >0)//LC
             {
-                if (id.Length > 0)
+                string[] idKeys = Regex.Split(ids, splitStr);
+                foreach (string id in idKeys)
                 {
-                    drs = dtCorpusExtends.Select("Types='" + typeName + "' and ItemID=" + id);
-                    if (drs.Length > 0)
-                        strTitles += drs[0]["Title"].ToString() + splitStr;
+                    if (id.Length > 0)
+                    {
+                        drs = dtCorpusExtends.Select("Types='" + typeName + "' and ItemID=" + id);
+                        if (drs.Length > 0)
+                            strTitles += drs[0]["Title"].ToString() + splitStr;
+                    }
                 }
+                if (strTitles.Length > 0)
+                    strTitles = strTitles.Substring(0, strTitles.Length - 1);
             }
-            if (strTitles.Length > 0)
-                strTitles = strTitles.Substring(0, strTitles.Length - 1);
+            else
+            {
+                drs = dtCorpusExtends.Select("Types='" + typeName + "' and TitleCN='" + ids+"'");
+                if (drs.Length > 0)
+                    strTitles += drs[0]["Title"].ToString();
+            }
+            
             return strTitles;
         }
+
         /// <summary>
         /// 获取一个控件的多个选项作为查询条件
         /// </summary>

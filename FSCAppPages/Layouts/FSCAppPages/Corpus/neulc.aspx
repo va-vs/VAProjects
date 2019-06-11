@@ -607,7 +607,7 @@
                             <asp:Label ID="lbConcCount" runat="server" Text="" ForeColor="red"></asp:Label>
                             <asp:Button ID="btnReConc" runat="server" Text="<<< Go back to Search" Visible="false"/>
                         </div>
-                        <asp:GridView ID="gvConcordance" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" >
+                        <asp:GridView  ID="gvConcordance" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID"  AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" >
                                 <AlternatingRowStyle BackColor="White" />
                                 <Columns>
                                     <asp:TemplateField HeaderText="Title">
@@ -708,7 +708,7 @@
                             <asp:Label ID="lbCoLLComputedCount" runat="server" Text="" ForeColor="red"></asp:Label>
                             <asp:Button ID="btnReColl" runat="server" Text="Go back to Search" Visible="false"/>
                             </div>
-                        <asp:GridView ID="gvCollComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
+                        <asp:GridView ID="gvCollComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
                             <Columns>
                                 <asp:TemplateField HeaderText="Match">
                                         <ItemTemplate>
@@ -751,7 +751,7 @@
                             <asp:Label ID="lbCollCount" runat="server" Text="" ForeColor="red"></asp:Label>
                             <asp:Button ID="btnCloseColl" runat="server" Text="Go back to Search Result" Visible="false"/>
                             </div>
-                        <asp:GridView ID="gvCollocate" runat="server"  AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" Visible="false">
+                        <asp:GridView ID="gvCollocate" runat="server"  AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" Visible="false">
                                 <AlternatingRowStyle BackColor="White" />
                                 <Columns>
                                     <asp:TemplateField HeaderText="Title">

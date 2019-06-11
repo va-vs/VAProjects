@@ -154,7 +154,7 @@
                                 </tr>
                             </table>
                         </div>
-                        <asp:GridView ID="gvCorpus" AllowPaging="true" runat="server" AutoGenerateColumns="False" CellPadding="2" CellSpacing="2" BorderColor="#CCCCCC" BorderStyle="None" GridLines="Horizontal" DataKeyNames="CorpusID" CssClass="myGrid" PageSize="50" PagerSettings-Mode="NumericFirstLast">
+                        <asp:GridView ID="gvCorpus" AllowPaging="true" runat="server" AutoGenerateColumns="False" CellPadding="2" CellSpacing="2" BorderColor="#CCCCCC" BorderStyle="None" GridLines="Horizontal" DataKeyNames="CorpusID" CssClass="myGrid" PageSize="10" PagerSettings-Mode="NumericFirstLast">
                             <AlternatingRowStyle BackColor="White" />
                             <Columns>
                                 <asp:TemplateField HeaderText="&nbsp;Title&nbsp;">
