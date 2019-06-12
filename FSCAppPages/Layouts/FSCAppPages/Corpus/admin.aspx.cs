@@ -175,6 +175,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             divList.Visible = true;
             divEditCorpora.Visible = false;
             divEditCorporaAc.Visible = false;
+            lbErr.Text = "";
 
         }
 
@@ -182,15 +183,18 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             try
             {
-
-                SaveCorpus();
-                ClearControls();
-                if (ViewState.ToString() != "0")//如果是编辑，则返回到查询
+                bool isValid = true;
+                SaveCorpus(ref isValid);
+                if (isValid)
                 {
-                    divEditCorpora.Visible = false;
-                    divEditCorporaAc.Visible = false;
-                    divList.Visible = true;
-                    ReQuery();
+                    ClearControls();
+                    if (ViewState.ToString() != "0")//如果是编辑，则返回到查询
+                    {
+                        divEditCorpora.Visible = false;
+                        divEditCorporaAc.Visible = false;
+                        divList.Visible = true;
+                        ReQuery();
+                    }
                 }
             }
             catch (Exception ex)
@@ -231,6 +235,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             divList.Visible = false;
             ViewState["Edit"] = "0";
+            lbErr.Text = "";
         }
         #endregion
         #region 方法
@@ -392,7 +397,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             cblLevel.DataValueField = "ItemID";
             cblLevel.DataBind();
         }
-        private void SaveCorpus()
+        /// <summary>
+        /// 保存单条语料
+        /// </summary>
+        /// <param name="isValid">是否合法，如果存在空值为False</param>
+        private void SaveCorpus(ref bool isValid )
         {//此处要改
             string title;
             string originalText;
@@ -407,17 +416,23 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 title = txtTitleAc.Text;
                 originalText = txtOriginalTextAc.Text;
             }
-            if (title .Length == 0)
+            if (title.Length == 0)
             {
                 lbErr.Text = "Title cannot be empty!";
+                isValid = false;
                 return;
             }
-            if (originalText.Length == 0)
+            else if (originalText.Length == 0)
             {
                 lbErr.Text = "Context cannot be empty!";
+                isValid = false;
                 return;
             }
-           
+            else
+            {
+                lbErr.Text = "";
+                isValid = true;
+            }
             long corpusID = long.Parse(ViewState["Edit"].ToString());
             DataSet ds=FSCDLL.DAL.Corpus.GetCorporaByID(corpusID);
             DataRow dr;
