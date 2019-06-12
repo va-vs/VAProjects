@@ -796,13 +796,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Button btnBackToCompare;
         
         /// <summary>
-        /// chartForCompare 控件。
+        /// ctForCompare 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.DataVisualization.Charting.Chart chartForCompare;
+        protected global::System.Web.UI.DataVisualization.Charting.Chart ctForCompare;
         
         /// <summary>
         /// vwLemma 控件。
@@ -875,6 +875,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbErr;
+        
+        /// <summary>
+        /// hlinkPageTitle1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlinkPageTitle1;
         
         /// <summary>
         /// Titlelb 控件。

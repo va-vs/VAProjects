@@ -39,9 +39,9 @@ html>body #tab {
 #tab .block {
 	display: block;
 	border: 1px solid #0292cf;
-    height: 360px;
-    overflow-y:auto;
-    overflow-x:hidden;
+	height: 360px;
+	overflow-y:auto;
+	overflow-x:hidden;
 }
 
 
@@ -49,7 +49,7 @@ html>body #tab {
 
 #tab h3 {
 	float: left;
-	width: 30%;
+	width:25%;
 	height: 30px;
 	line-height: 30px;
 	margin: 0 0 0 0;

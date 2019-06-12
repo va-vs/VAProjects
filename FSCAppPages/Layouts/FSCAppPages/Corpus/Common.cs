@@ -510,7 +510,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             DataTable dtResult = new DataTable();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                dtResult.Columns.Add("Col" + i);
+                DataRow dr = dt.Rows[i];
+                string colName = dt.Columns[0].ColumnName;
+                string drName = FSCDLL.DAL.SystemDataExtension.GetString(dr, colName);
+                if (drName == string.Empty)
+                {
+                    drName = "Col" + i;
+                }
+
+                dtResult.Columns.Add(drName);
             }
             for (int c = 0; c < dt.Columns.Count; c++)
             {

@@ -112,6 +112,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 cpName = Request.QueryString["cp"].Trim().ToUpper() == "NEUAC" ? "NEUAC" : "NEULC";
             }
+
             return cpName;
         }
         /// <summary>
@@ -327,7 +328,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (result0 != "1;1;1")//不是所有的筛选项都被筛选了
             {
                 lbErr.Text = "Level、Genre、Topic中每项都至少要选择一个条目！";
-                rbltxtFrom.Items[1].Enabled = false;
+                rblforCompare.Items[1].Enabled = false;
                 return;
             }
             else
@@ -348,7 +349,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 QueryCorpus(cpNam);//检索语料库
                 divforCorpusResult.Visible = true;
                 divNEULC.Visible = false;
-                rbltxtFrom.Items[1].Enabled = true;//经过检索后，WordList中才可以使用关键词检索语料库文本做WordList
+                rblforCompare.Items[1].Enabled = true;//经过检索后，Compare中才可以使用该检索结果做为比较用语料
             }
 
         }
@@ -376,6 +377,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 divNEULC.Visible = false;
                 ibtnUpload.PostBackUrl = "admin.aspx?Source=AC";
             }
+            hlinkPageTitle1.NavigateUrl = "neulc.aspx?cp=" + cpName;
+            hlinkPageTitle1.Text = cpName;
         }
         private DataTable BuildDTSummary(DataTable dtCorpus, string fkid, CheckBoxList cbl, List<string> listFKs)
         {
@@ -811,7 +814,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     int iCount = int.Parse(txtCDChars.Value.Trim());
 
-                    int[] lAndr = GetLeftandRight(ddlMatchPos , iCount);//iLeft & iRight
+                    int[] lAndr = GetLeftandRight(ddlMatchPos, iCount);//iLeft & iRight
                     DataTable dtConcordance = Common.GetWordsFromCorpus(dtCorpus, keyConc, lAndr[0], lAndr[1]);
                     if (isShowTotalCount.Checked)
                     {
@@ -899,7 +902,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
             {
                 if (ViewState["HideCol"] != null)
-                    e.Row.Cells[int.Parse(ViewState["HideCol"].ToString())].Visible = false; //隐藏ID列,可以取得该隐藏列的信息 
+                {
+                    e.Row.Cells[int.Parse(ViewState["HideCol"].ToString())].Visible = false; //隐藏ID列,可以取得该隐藏列的信息
+                }
             }
         }
 
@@ -1051,7 +1056,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             lbCollCount.Text = "Total number of Matchs: " + dtFilter.Rows.Count;
             lbCollCount.Visible = true;
             lbCoLLComputedCount.Visible = false;
-            if (dtFilter.Rows.Count >0  )
+            if (dtFilter.Rows.Count > 0)
             {
                 if (dtFilter.Rows[0]["Left"].ToString() == "")
                     ViewState["HideCol"] = 1;
@@ -1085,7 +1090,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
             {
                 if (ViewState["HideCol"] != null)
-                    e.Row.Cells[int.Parse(ViewState["HideCol"].ToString())].Visible = false; //隐藏ID列,可以取得该隐藏列的信息 
+                    e.Row.Cells[int.Parse(ViewState["HideCol"].ToString())].Visible = false; //隐藏ID列,可以取得该隐藏列的信息
             }
         }
 
@@ -1553,20 +1558,20 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     filterStr = ViewState["filterExp"].ToString();
                 }
 
-                DataTable dtComputed = InitComputedTable();
+                DataTable dtComputed = InitComparedTable();
 
                 cTitle += string.Format("\"{0}\"", keyWord1);
                 string filterStr1 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And ({1})", keyWord1, filterStr);
                 DataTable dt1 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr1).Tables[0];
-                GetComputedDate(ref dtComputed, dt1, keyWord1);
+                GetComparedDate(ref dtComputed, dt1, keyWord1);
 
 
                 cTitle += string.Format(",\"{0}\"", keyWord2);
                 string filterStr2 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord2, filterStr);
                 DataTable dt2 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr2).Tables[0];
-                GetComputedDate(ref dtComputed, dt2, keyWord2);
+                GetComparedDate(ref dtComputed, dt2, keyWord2);
 
-                if (string.IsNullOrEmpty(txtfreqField3.Value.Trim()))
+                if (!string.IsNullOrEmpty(txtfreqField3.Value.Trim()))
                 {
                     string keyWord3 = txtfreqField3.Value.Trim();
                     if (keyWord3 == keyWord1 || keyWord3 == keyWord2)
@@ -1578,13 +1583,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         cTitle += string.Format(",\"{0}\"", keyWord3);
                         string filterStr3 = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' And {1}", keyWord3, filterStr);
                         DataTable dt3 = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr3).Tables[0];
-                        GetComputedDate(ref dtComputed, dt3, keyWord3);
+                        GetComparedDate(ref dtComputed, dt3, keyWord3);
                     }
                 }
                 divQueryforCompare.Visible = false;
                 divforCompareResult.Visible = true;
-                ChartBind(dtComputed, cTitle + "使用次数与分布语篇数", SeriesChartType.Column);
-                //InitChart(chartForCompare, cTitle + "使用次数与分布语篇数", SeriesChartType.Column, dtComputed);
+                //DataTable dt = Common.TranspositionDT(dtComputed);
+                BindComparedData(dtComputed, ctForCompare, cTitle + "词频与分布语篇数");
             }
 
         }
@@ -1592,7 +1597,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void BtnBackToCompare_Click(object sender, EventArgs e)
         {
-            chartForCompare.Series.Clear();
+            ctForCompare.Series.Clear();
             divQueryforCompare.Visible = true;
             divforCompareResult.Visible = false;
         }
@@ -1609,106 +1614,59 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="dtComputed"></param>
         /// <param name="dtSource"></param>
         /// <param name="wd"></param>
-        private void GetComputedDate(ref DataTable dtComputed, DataTable dtSource, string wd)
+        private void GetComparedDate(ref DataTable dtComputed, DataTable dtSource, string wd)
         {
-            DataRow dr = dtComputed.NewRow();
-            dr[0] = wd;
-            dr[1] = dtSource.Rows.Count;
-            dr[2] = dtSource.DefaultView.ToTable(true, "CorpusID").Rows.Count;
-            dtComputed.Rows.Add(dr);
-
+            dtComputed.Columns.Add(wd);
+            dtComputed.Rows[0][wd] = dtSource.Rows.Count;
+            DataView dv = dtSource.DefaultView;
+            DataTable dt = dv.ToTable(true, "CorpusID");
+            dtComputed.Rows[1][wd] = dt.Rows.Count;
+            dtComputed.AcceptChanges();
         }
-
 
         /// <summary>
-        /// Chart初始化
+        /// 比较柱状图Chart绑定数据
         /// </summary>
-        /// <param name="mychart">chart控件Id</param>
-        /// <param name="chartTitle">chart标题</param>
-        /// <param name="chartType">chart图像类型</param>
-        private void InitChart(Chart mychart, string chartTitle, SeriesChartType chartType, DataTable dtComputed)
+        /// <param name="dt">绑定的数据源</param>
+        /// <param name="ct1">chart图像ID</param>
+        /// <param name="ctTitle">chart图像标题</param>
+        private void BindComparedData(DataTable dt, Chart ct1, string ctTitle)
         {
-            //图表标题
-            mychart.Titles.Clear();
-            mychart.Titles.Add(chartTitle);
-            mychart.Titles[0].Text = chartTitle;
-            mychart.Titles[0].ForeColor = Color.Red;
-            //清除默认的series
-            mychart.Series.Clear();
-            for (int i = 0; i < dtComputed.Rows.Count; i++)
+            ct1.Titles.Clear();
+            ct1.Titles.Add(ctTitle);
+            ct1.Series.Clear();
+            for (int i = 1; i < dt.Columns.Count; i++)
             {
-                DataRow dr = dtComputed.Rows[i];
-                Series ss = new Series()
-                {
-                    ChartType = chartType,
-                    MarkerBorderWidth = 2,
-                    MarkerSize = 4,
-                    Name = dr[0].ToString(),
-                    MarkerStyle = MarkerStyle.Circle,
-                    ToolTip = dr[0].ToString() + " #VAL \r\n #AXISLABEL",
-                    XValueType = ChartValueType.String,
-                    Legend = dr[0].ToString(),
-                    Label = "#VAL"
-                };
-
-                if (ss.ChartType == SeriesChartType.Pie)
-                {
-                    ss.LabelToolTip = "#PERCENT{P}";
-                }
-                ss.ShadowColor = Color.Black;
-                ss.BorderColor = Color.Brown;
-                ss.LegendText = ss.Name;
-                mychart.Series.Add(ss);
+                Series cs = new Series();
+                cs.Points.DataBind(dt.DefaultView, dt.Columns[0].ColumnName, dt.Columns[i].ColumnName, string.Format("LegendText={0},YValues={1},ToolTip={1}", dt.Columns[0].ColumnName, dt.Columns[i].ColumnName));
+                cs.ChartType = SeriesChartType.Column;
+                cs.Name = dt.Columns[i].ColumnName;
+                cs.Label = dt.Columns[i].ColumnName + " #VAL ";
+                Legend lg = new Legend();
+                lg.Name= dt.Columns[i].ColumnName;
+                ct1.Legends.Add(lg);
+                ct1.Series.Add(cs);
             }
-
+            
+            ct1.DataBind();
         }
 
-
-        //创建表
-        private DataTable InitComputedTable()
+        /// <summary>
+        /// 创建比较计算结果表
+        /// </summary>
+        /// <returns></returns>
+        private DataTable InitComparedTable()
         {
             DataTable dt = new DataTable();
             //添加列
-            dt.Columns.Add("Words");
-            dt.Columns.Add("WCount");
-            dt.Columns.Add("WFreq");
+            dt.Columns.Add("Items");//比较项目
+            DataRow dr = dt.NewRow();
+            dr[0] = "The number of times the words appear in all corpus";
+            dt.Rows.Add(dr);
+            dr = dt.NewRow();
+            dr[0] = "The number of corpus which contains the word";
+            dt.Rows.Add(dr);
             return dt;
-        }
-
-        private void ChartBind(DataTable dtComputed, string chartTitle, SeriesChartType cType)
-        {
-            InitChart(chartForCompare, chartTitle, cType, dtComputed);
-
-
-            //Color[] bgcolor = new Color[3] { Color.Red, Color.Blue, Color.Green };
-            //Color[] lnColor = new Color[3] { Color.FromArgb(50, 255, 0, 0), Color.FromArgb(50, 0, 0, 255), Color.FromArgb(50, 0, 255, 0) };
-
-            //数据绑定
-            for (int i = 0; i < dtComputed.Columns.Count - 1; i++)//在前台设置好Series的个数与yFields个数相同，并设定好每个Series的样式
-            {
-                string xField = dtComputed.Columns[0].ColumnName;
-                string yField = dtComputed.Columns[i + 1].ColumnName;
-                chartForCompare.Series[i].Points.DataBind(dtComputed.DefaultView, xField, yField, string.Format("LegendText={0},YValues={1},ToolTip={0}", xField, yField));
-                chartForCompare.Series[i].ToolTip = chartForCompare.Series[i].Name + " #VAL \r\n #AXISLABEL";
-                chartForCompare.Series[i].ChartType = cType;
-            }
-
-
-            //背景色设置
-            chartForCompare.ChartAreas[0].ShadowColor = Color.Transparent;
-            chartForCompare.ChartAreas[0].BackColor = Color.FromArgb(209, 237, 254);//该处设置为了由天蓝到白色的逐渐变化
-            chartForCompare.ChartAreas[0].BackGradientStyle = GradientStyle.TopBottom;
-            chartForCompare.ChartAreas[0].BackSecondaryColor = Color.White;
-
-            //中间X,Y线条的颜色设置
-            chartForCompare.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.FromArgb(64, 64, 64, 64);
-            chartForCompare.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.FromArgb(64, 64, 64, 64);
-
-            //3D设置
-            //chartForCompare.ChartAreas[0].Area3DStyle.Enable3D = true;
-
-
-            chartForCompare.DataBind();
         }
 
         #endregion Compare方法

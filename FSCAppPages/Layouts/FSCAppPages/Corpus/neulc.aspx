@@ -362,27 +362,33 @@
     <div class="divneulc">
         <%-- 快捷菜单 --%>
         <div id="divNav" class="divBlock">
-            <ul class="imgul">
-                <li>
-                     <asp:Label ID="lbCorpus" runat="server" Text="NEULC" Font-Size="18" Font-Bold="true"></asp:Label>
-                </li>
-                <li>
-                    <asp:ImageButton ID="ibtnInfo" runat="server" ImageUrl="../images/Info.png" ImageAlign="Middle" Height="20" Width="20"  PostBackUrl="#" ToolTip="About this Corpus"  Enabled="false"/>
-                </li>
-                <li>
-                    <asp:ImageButton ID="ibtnDownload" runat="server" ImageUrl="../images/Download.png" ImageAlign="Middle" Height="20" Width="20"  PostBackUrl="#" ToolTip="DownLoad This Corpus" Enabled="false" />
-                </li>
-                <li>
-                    <asp:ImageButton ID="ibtnUpload" runat="server" ImageUrl="../images/Upload.png" PostBackUrl="admin.aspx" ImageAlign="Middle" Height="20" Width="20" ToolTip="Upload a new Corpora" />
+            <table>
+                <tr>
+                    <td>
+                        <asp:Label ID="lbCorpus" runat="server" Text="NEULC" Font-Size="18" Font-Bold="true"></asp:Label>
+                    </td>
+                    <td>
+                        <ul class="imgul">
+                            <li>
+                                <asp:ImageButton ID="ibtnInfo" runat="server" ImageUrl="../images/Info.png" ImageAlign="Middle" Height="20" Width="20" PostBackUrl="#" ToolTip="About this Corpus" Enabled="false" />
+                            </li>
+                            <li>
+                                <asp:ImageButton ID="ibtnDownload" runat="server" ImageUrl="../images/Download.png" ImageAlign="Middle" Height="20" Width="20" PostBackUrl="#" ToolTip="DownLoad This Corpus" Enabled="false" />
+                            </li>
+                            <li>
+                                <asp:ImageButton ID="ibtnUpload" runat="server" ImageUrl="../images/Upload.png" PostBackUrl="admin.aspx" ImageAlign="Middle" Height="20" Width="20" ToolTip="Upload a new Corpora" />
 
-                </li>
-                <li>
-                    <asp:ImageButton ID="ibtnShare" runat="server" ImageUrl="../images/Share.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Share this Corpus" Enabled="false" />
-                </li>
-                <li>
-                    <asp:ImageButton ID="ibtnGuide" runat="server" ImageUrl="../images/Guide.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Get Help" Enabled="false" />
-                </li>
-            </ul>
+                            </li>
+                            <li>
+                                <asp:ImageButton ID="ibtnShare" runat="server" ImageUrl="../images/Share.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Share this Corpus" Enabled="false" />
+                            </li>
+                            <li>
+                                <asp:ImageButton ID="ibtnGuide" runat="server" ImageUrl="../images/Guide.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Get Help" Enabled="false" />
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
         </div>
         <%-- 导航菜单 --%>
         <div id="divMenu" class="divBlock">
@@ -919,14 +925,14 @@
 
                 <%-- Compare Frequencies --%>
                 <asp:View ID="vwCompare" runat="server">
-                    <div id="divQueryforCompare" runat="server" class="qfld">
+                    <div id="divQueryforCompare" runat="server" class="divmain">
                         <table>
                         <tr>
                             <th>Compared in: </th>
-                            <td>
-                                <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal" CssClass="cb">
+                            <td style="text-align:center;">
+                                <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal">
                                     <asp:ListItem Value="All" Selected="true">All corpora</asp:ListItem>
-                                    <asp:ListItem Value="Some">Only selected corpra</asp:ListItem>
+                                    <asp:ListItem Value="Some" Enabled="false">Only selected corpra</asp:ListItem>
                                 </asp:RadioButtonList>
                             </td>
                         </tr>
@@ -943,7 +949,7 @@
                             <td><input type="text" id="txtfreqField3"  size="80" placeholder="Type the 3rd KeyWord for comparison here,This is not required" runat="server" class="input-text"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2">
+                            <td colspan="2" style="text-align:center;">
                                 <asp:Button ID="btnCompared" runat="server" Text="Sumbit" />
                             </td>
                         </tr>
@@ -951,7 +957,7 @@
                    </div>
                     <div id="divforCompareResult" runat="server" visible="false" class="qfld">
                         <asp:Button ID="btnBackToCompare" runat="server" Text="Back" />
-                        <asp:Chart ID="chartForCompare" runat="server">
+                        <asp:Chart ID="ctForCompare" runat="server" Width="800px">
                             <Series>
                                 <asp:Series Name="Series1"></asp:Series>
                             </Series>
@@ -965,69 +971,78 @@
                 <asp:View ID="vwLemma" runat="server">
                      <%-- 输出处理结果 --%>
                     <div id="divLemma" runat="server" class="qlfd">
-                        <table>
-                            <tr>
-                                <th>Select WordList：
-                                </th>
-                                <td>
-                                    <asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList" AutoPostBack="true">
-                                        <asp:ListItem Value="CECR" Selected="true">CECR</asp:ListItem>
-                                        <asp:ListItem Value="GSL" Enabled="false">GSL</asp:ListItem>
-                                        <asp:ListItem Value="AWL" Enabled="false">AWL</asp:ListItem>
-                                        <asp:ListItem Value="EVP" Enabled="false">EVP</asp:ListItem>
-                                    </asp:RadioButtonList>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="divmain" class="qlfd">
-                            <div class="it-ec-textdiv" id="divContext" runat="server">
-                                <%-- 这是输出的彩色文本以及各个级别单词占比 --%>
-                            </div>
-                            <div class="it-ec-statsdiv" id="divstats">
-                                <%-- 单词颜色标记说明与占比 --%>
-
-                                <div class="outbtndiv">
-                                    <input id="btnLight" type="button" value="HighLight" data-i="1" onclick="HighLightAll(this)" class="outbtndiv-button" />
-                                    <asp:Button ID="btnBackLemma" runat="server" Text="Back" CssClass="outbtndiv-button" ToolTip="关闭页面" />
-                                </div>
-                                <dl class="it-chart-dl" id="dlChart" runat="server">
-                                    <dt class="it-chart-dt" data-level="UN" onclick="HighLightthis(this)">忽略处理</dt>
-                                    <dd class="it-chart-dd" data-level="UN" onclick="HighLightthis(this)">
-                                        <div class="it-chart-bar" style="background-color: grey; width: 11.1588%;"></div>
-                                        <div class="it-chart-label">26(11.16%)</div>
-                                    </dd>
-                                    <dt class="it-chart-dt" data-level="C1" onclick="HighLightthis(this)">未处理</dt>
-                                    <dd class="it-chart-dd" data-level="C1" onclick="HighLightthis(this)">
-                                        <div class="it-chart-bar" style="background-color: orange; width: 2.5751%;"></div>
-                                        <div class="it-chart-label">6(2.58%)</div>
-                                    </dd>
-                                    <dt class="it-chart-dt" data-level="C2" onclick="HighLightthis(this)">超纲词汇</dt>
-                                    <dd class="it-chart-dd" data-level="C2" onclick="HighLightthis(this)">
-                                        <div class="it-chart-bar" style="background-color: red; width: 1.7167%;"></div>
-                                        <div class="it-chart-label">4(1.72%)</div>
-                                    </dd>
-                                    <dt class="it-chart-dt" data-level="A1" onclick="HighLightthis(this)">高中大纲</dt>
-                                    <dd class="it-chart-dd" data-level="A1" onclick="HighLightthis(this)">
-                                        <div class="it-chart-bar" style="background-color: indigo; width: 99.8283%; max-width: unset"></div>
-                                        <div class="it-chart-label">186(88.83%)</div>
-                                    </dd>
-                                    <dt class="it-chart-dt" data-level="A2" onclick="HighLightthis(this)">基本要求</dt>
-                                    <dd class="it-chart-dd" data-level="A2" onclick="HighLightthis(this)">
-                                        <div class="it-chart-bar" style="background-color: blue; width: 3.4335%;"></div>
-                                        <div class="it-chart-label">8(3.43%)</div>
-                                    </dd>
-                                    <dt class="it-chart-dt" data-level="B1" onclick="HighLightthis(this)">较高要求</dt>
-                                    <dd class="it-chart-dd" data-level="B1" onclick="HighLightthis(this)">
-                                        <div class="it-chart-bar" style="background-color: green; width: 1.2876%;"></div>
-                                        <div class="it-chart-label">3(1.29%)</div>
-                                    </dd>
-                                    <dt class="it-chart-dt" data-level="B2" onclick="HighLightthis(this)">更高要求</dt>
-                                    <dd class="it-chart-dd" data-level="B2" onclick="HighLightthis(this)">
-                                        <div class="it-chart-bar" style="background-color: yellow; width: 0%;"></div>
-                                        <div class="it-chart-label">0(0.00%)</div>
-                                    </dd>
-                                </dl>
-                            </div>
+                        <div class="divmain">
+                            <table>
+                                <tr>
+                                    <th>Select WordList：
+                                    </th>
+                                    <td>
+                                        <asp:RadioButtonList ID="rbVBS" runat="server" RepeatDirection="Horizontal" CssClass="cblList" AutoPostBack="true">
+                                            <asp:ListItem Value="CECR" Selected="true">CECR</asp:ListItem>
+                                            <asp:ListItem Value="GSL" Enabled="false">GSL</asp:ListItem>
+                                            <asp:ListItem Value="AWL" Enabled="false">AWL</asp:ListItem>
+                                            <asp:ListItem Value="EVP" Enabled="false">EVP</asp:ListItem>
+                                        </asp:RadioButtonList>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="divmain">
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top">
+                                        <div class="it-ec-textdiv" id="divContext" runat="server">
+                                            <%-- 这是输出的彩色文本以及各个级别单词占比 --%>
+                                        </div>
+                                    </td>
+                                    <td style="vertical-align: top">
+                                        <div class="it-ec-statsdiv" id="divstats">
+                                            <%-- 单词颜色标记说明与占比 --%>
+                                            <div class="outbtndiv">
+                                                <input id="btnLight" type="button" value="HighLight" data-i="1" onclick="HighLightAll(this)" class="outbtndiv-button" />
+                                                <asp:Button ID="btnBackLemma" runat="server" Text="Back" CssClass="outbtndiv-button" ToolTip="关闭页面" />
+                                            </div>
+                                            <dl class="it-chart-dl" id="dlChart" runat="server">
+                                                <dt class="it-chart-dt" data-level="UN" onclick="HighLightthis(this)">忽略处理</dt>
+                                                <dd class="it-chart-dd" data-level="UN" onclick="HighLightthis(this)">
+                                                    <div class="it-chart-bar" style="background-color: grey; width: 11.1588%;"></div>
+                                                    <div class="it-chart-label">26(11.16%)</div>
+                                                </dd>
+                                                <dt class="it-chart-dt" data-level="C1" onclick="HighLightthis(this)">未处理</dt>
+                                                <dd class="it-chart-dd" data-level="C1" onclick="HighLightthis(this)">
+                                                    <div class="it-chart-bar" style="background-color: orange; width: 2.5751%;"></div>
+                                                    <div class="it-chart-label">6(2.58%)</div>
+                                                </dd>
+                                                <dt class="it-chart-dt" data-level="C2" onclick="HighLightthis(this)">超纲词汇</dt>
+                                                <dd class="it-chart-dd" data-level="C2" onclick="HighLightthis(this)">
+                                                    <div class="it-chart-bar" style="background-color: red; width: 1.7167%;"></div>
+                                                    <div class="it-chart-label">4(1.72%)</div>
+                                                </dd>
+                                                <dt class="it-chart-dt" data-level="A1" onclick="HighLightthis(this)">高中大纲</dt>
+                                                <dd class="it-chart-dd" data-level="A1" onclick="HighLightthis(this)">
+                                                    <div class="it-chart-bar" style="background-color: indigo; width: 99.8283%; max-width: unset"></div>
+                                                    <div class="it-chart-label">186(88.83%)</div>
+                                                </dd>
+                                                <dt class="it-chart-dt" data-level="A2" onclick="HighLightthis(this)">基本要求</dt>
+                                                <dd class="it-chart-dd" data-level="A2" onclick="HighLightthis(this)">
+                                                    <div class="it-chart-bar" style="background-color: blue; width: 3.4335%;"></div>
+                                                    <div class="it-chart-label">8(3.43%)</div>
+                                                </dd>
+                                                <dt class="it-chart-dt" data-level="B1" onclick="HighLightthis(this)">较高要求</dt>
+                                                <dd class="it-chart-dd" data-level="B1" onclick="HighLightthis(this)">
+                                                    <div class="it-chart-bar" style="background-color: green; width: 1.2876%;"></div>
+                                                    <div class="it-chart-label">3(1.29%)</div>
+                                                </dd>
+                                                <dt class="it-chart-dt" data-level="B2" onclick="HighLightthis(this)">更高要求</dt>
+                                                <dd class="it-chart-dd" data-level="B2" onclick="HighLightthis(this)">
+                                                    <div class="it-chart-bar" style="background-color: yellow; width: 0%;"></div>
+                                                    <div class="it-chart-label">0(0.00%)</div>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="divbr"></div>
                     </div>
@@ -1040,9 +1055,9 @@
 </asp:Content>
 
 <asp:Content ID="PageTitle" ContentPlaceHolderID="PlaceHolderPageTitle" runat="server">
-NEULC
+NEU English Corpus
 </asp:Content>
 
 <asp:Content ID="PageTitleInTitleArea" ContentPlaceHolderID="PlaceHolderPageTitleInTitleArea" runat="server" >
-NEU English Corpus > NEULC <asp:Label runat="server" ID="Titlelb"></asp:Label>
+<a href="/NEU_EC/">NEU English Corpus</a> > <asp:HyperLink ID="hlinkPageTitle1" runat="server" NavigateUrl="neulc.aspx?cp=neulc">NEULC</asp:HyperLink> <asp:Label runat="server" ID="Titlelb"></asp:Label>
 </asp:Content>
