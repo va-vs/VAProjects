@@ -15,6 +15,175 @@
     <link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets/css/highlight.css" type="text/css" />
     <link rel="stylesheet" href="../css/tab.css" type="text/css" />
     <script src="../js/neulc.js" type="text/javascript"></script>
+    <style type="text/css">
+        /*遮罩层*/
+
+        .divLoadingBG {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            opacity: 0.5;
+            /*兼容IE8及以下版本浏览器*/
+            filter: alpha(opacity=50);
+        }
+
+        .divLoading {
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            margin: auto;
+            position: absolute;
+            z-index: 3;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+
+        /*语料彩色可视化*/
+        .divmain {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .it-ec-textdiv {
+            float: left;
+            background-color: #dcdcdc;
+            border: 1px solid #808080;
+            line-height: 25px;
+            font-size: 13px;
+            padding: 5px;
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .it-ec-statsdiv {
+            float: left;
+        }
+
+        .it-ec-paragraph {
+            text-align: justify;
+            border: 1px solid;
+            margin: 0px;
+            padding: 5px;
+            border-color: #663;
+            background-color: #dcdcdc;
+        }
+
+
+
+        .it-chart-dl {
+            margin-left: 10px;
+            width: 400px;
+        }
+
+        .it-chart-dt {
+            cursor: pointer;
+            float: left;
+            width: 60px;
+            text-align: right;
+            padding: 5px 0px 5px 0px;
+            clear: left;
+        }
+
+        .it-chart-dd {
+            cursor: pointer;
+            float: left;
+            width: 320px;
+            margin-left: 5px;
+            padding: 5px 0px 5px 0px;
+        }
+
+        .it-chart-bar {
+            height: 20px;
+            float: left;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+        }
+
+        .it-chart-label {
+            width: 20px;
+            height: 100%;
+            float: left;
+            text-align: right;
+        }
+
+        /*文本高亮*/
+
+        .KW.highlight {
+            background-color: pink;
+        }
+
+        .C2.highlight {
+            background-color: red;
+            color: white;
+        }
+
+        .C1.highlight {
+            background-color: orange;
+            color: white;
+        }
+
+        .B2.highlight {
+            background-color: yellow;
+            color: black;
+        }
+
+        .B1.highlight {
+            background-color: green;
+            color: white;
+        }
+
+        .A2.highlight {
+            background-color: blue;
+            color: white;
+        }
+
+        .A1.highlight {
+            background-color: indigo;
+            color: white;
+        }
+
+        .UN.highlight {
+            background-color: grey;
+            color: white;
+        }
+
+        span.MW {
+            font-weight: bold;
+        }
+
+        .div-inline {
+            display: inline;
+        }
+
+
+        .box {
+            width: 140px;
+            height: 25px;
+            border: 1px solid #000;
+            margin: 100px auto;
+            box-shadow: 0 0 10px 5px rgba(0, 0, 0, .8);
+            border-radius: 5px;
+            line-height: 25px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            text-shadow: 0 0 3px;
+            transition: all 1s;
+        }
+
+            .box #entity {
+                width: 100%;
+                height: 100%;
+            }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Main" ContentPlaceHolderID="PlaceHolderMain" runat="server">
@@ -45,6 +214,14 @@
                                 <asp:ImageButton ID="ibtnGuide" runat="server" ImageUrl="../images/Guide.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Get Help" Enabled="false" />
                             </li>
                         </ul>
+                    </td>
+                    <td>
+                        <div id="divCPTips" runat="server">
+                            <span class="gvtips">
+                                You haven't chosen corpus yet,so you can use all corpus for other operations or click the <strong>"Corpus"</strong> Menu to  select the corpus first.
+                            </span>
+                        </div>
+
                     </td>
                 </tr>
             </table>

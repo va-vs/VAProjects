@@ -77,7 +77,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             //页面加载
             if (!IsPostBack)
             {
-                InitMenu();
+                InitCorpus();
 
                 ShowCorpusByName();
                 string cpName = GetCorpusByUrl();
@@ -235,49 +235,43 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         private void muNeulc_MenuItemClick(object sender, MenuEventArgs e)
         {
-            try
-            {
-                lbErr.Text = "";
-                ViewState["filterExp"] = null;
-                switch (muNeulc.SelectedValue)
-                {
-                    case "Concordance"://Concordance
-                        {
-                            mvNeulc.ActiveViewIndex = 1;
-                            break;
-                        }
-                    case "Collocate"://Collocate
-                        {
-                            mvNeulc.ActiveViewIndex = 2;
-                            break;
-                        }
-                    case "WordList"://WordList
-                        {
-                            mvNeulc.ActiveViewIndex = 3;
-                            break;
-                        }
-                    case "Cluster"://Cluster
-                        {
-                            mvNeulc.ActiveViewIndex = 4;
-                            break;
-                        }
-                    case "Compare"://Compare
-                        {
-                            mvNeulc.ActiveViewIndex = 5;
-                            break;
-                        }
-                    default://Corpus
-                        mvNeulc.ActiveViewIndex = 0;
-                        InitMenu();
-                        break;
-                }
-                Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
-            }
-            catch (Exception ex)
-            {
 
-                lbErr.Text = ex.ToString();
+            lbErr.Text = "";
+            ViewState["filterExp"] = null;
+            switch (muNeulc.SelectedValue)
+            {
+                case "Concordance"://Concordance
+                    {
+                        mvNeulc.ActiveViewIndex = 1;
+                        break;
+                    }
+                case "Collocate"://Collocate
+                    {
+                        mvNeulc.ActiveViewIndex = 2;
+                        break;
+                    }
+                case "WordList"://WordList
+                    {
+                        mvNeulc.ActiveViewIndex = 3;
+                        break;
+                    }
+                case "Cluster"://Cluster
+                    {
+                        mvNeulc.ActiveViewIndex = 4;
+                        break;
+                    }
+                case "Compare"://Compare
+                    {
+                        mvNeulc.ActiveViewIndex = 5;
+                        break;
+                    }
+                default://Corpus
+                    mvNeulc.ActiveViewIndex = 0;
+                    InitCorpus();
+                    break;
             }
+            Titlelb.Text = "> " + muNeulc.SelectedItem.Text;
+
         }
 
 
@@ -288,7 +282,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <summary>
         /// 初始化菜单项，根据URL中的参数，改变菜单的显示
         /// </summary>
-        private void InitMenu()
+        private void InitCorpus()
         {
             string cpName = GetCorpusByUrl();
             lbCorpus.Text = cpName;
@@ -296,17 +290,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 divNEULC.Visible = true;
                 divNEUAC.Visible = false;
-                InitQueryControls(cpName);
-                ClearQueryControls(cpName);
             }
             else
             {
                 divNEULC.Visible = false;
                 divNEUAC.Visible = true;
             }
+            divforCorpusResult.Visible = false;
         }
 
-        #endregion
+        #endregion 顶部工具栏方法
 
         #endregion
 
@@ -354,7 +347,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     ViewState["filterExp"] = newQueryStr;//清空旧的检索字符串
                 }
-                QueryCorpus();//检索语料库
+                divCPTips.InnerHtml = string.Format("<span class='gvtips'>{0}</span>", newQueryStr);
+                QueryCorpus(newQueryStr);//检索语料库
                 divforCorpusResult.Visible = true;
                 divNEULC.Visible = false;
                 rblforCompare.Items[1].Enabled = true;//经过检索后，Compare中才可以使用该检索结果做为比较用语料
@@ -409,7 +403,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtSummary.Columns.Add("pAvglength");
             dtSummary.Columns.Add("pstandard");
             List<string> listFK = listFKs;
-            listFK.Remove(fkid);
+            listFK.Remove(fkid);//删除本次针对性的元素
             foreach (string fk in listFK)
             {
                 dtSummary.Columns.Add(fk);
@@ -524,6 +518,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     dtSummary.Rows.Add(drSummary);
                 }
             }
+            listFK.Add(fkid);//将数组删除的元素还原
             return dtSummary;
         }
 
@@ -574,16 +569,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }        /// <summary>
         /// 根据条件筛选大库，生成关键小库的数据集
         /// </summary>
-        private void QueryCorpus()
+        private void QueryCorpus(string filterExpression)
         {
-            string filterExpression = ViewState["filterExp"].ToString();
             DataSet dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterExpression);
             DataTable dtResult = dsResult.Tables[0].Copy();
             List<string> listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
             BuildTable(dtResult, cblLevel, "LevelID", tbforLevel, listFKs);
-            listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
+            //listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
             BuildTable(dtResult, cblTopic, "TopicID", tbforTopic, listFKs);
-            listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
+            //listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
             BuildTable(dtResult, cblGenre, "GenreID", tbforGenre, listFKs);
         }        /// <summary>
         /// 构造检索字符串，用于检索大库
