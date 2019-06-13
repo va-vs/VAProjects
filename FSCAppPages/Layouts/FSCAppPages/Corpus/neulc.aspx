@@ -552,6 +552,7 @@
                             }
                         </script>
                     </div>
+                    <div runat="server" id ="divProcCps" style="text-align:center;padding-left:20px;color :red"></div>
                 </asp:View>
                 <%-- Concordance --%>
                 <asp:View ID="vwConcordance" runat="server">
@@ -661,6 +662,7 @@
                                 <SortedDescendingHeaderStyle BackColor="#4870BE" />
                         </asp:GridView>
                     </div>
+                    <div runat="server" id ="divProcConc" style="text-align:center;padding-left:20px;color :red"></div>
                 </asp:View>
 
                 <%-- Collocate --%>
@@ -710,38 +712,39 @@
                         </fieldset>
                     </div>
                     <div id="divCollocateResult" runat="server">
-                        <div style="width:98%;text-align:right;padding-right:10px;">
-                            <asp:Label ID="lbCoLLComputedCount" runat="server" Text="" ForeColor="red"></asp:Label>
-                            <asp:Button ID="btnReColl" runat="server" Text="Go back to Search" Visible="false"/>
+                        <div id="divCollComputed" runat="server" visible="false">
+                            <div style="width: 98%; text-align: right; padding-right: 10px;">
+                                <asp:Label ID="lbCoLLComputedCount" runat="server" Text="" ForeColor="red"></asp:Label>
+                                <asp:Button ID="btnReColl" runat="server" Text="Go back to Search" />
                             </div>
-                        <asp:GridView ID="gvCollComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
-                            <Columns>
-                                <asp:TemplateField HeaderText="Match">
+                            <asp:GridView ID="gvCollComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Match">
                                         <ItemTemplate>
                                             <div style="padding: 2px">
                                                 <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("match")%>' CommandArgument='<%# Bind("match")%>' ToolTip="View all the corpus contain this match "></asp:LinkButton>
                                             </div>
                                         </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="left" />
+                                        <ItemStyle HorizontalAlign="left" />
                                     </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Total match count in Corpus">
+                                    <asp:TemplateField HeaderText="Total match count in Corpus">
                                         <ItemTemplate>
                                             <div style="padding: 2px">
                                                 <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("totalTimes")%>'></asp:Label>
                                             </div>
                                         </ItemTemplate>
-                                     <ItemStyle HorizontalAlign="center" />
+                                        <ItemStyle HorizontalAlign="center" />
                                     </asp:TemplateField>
 
-                                <asp:TemplateField HeaderText="Total corpora count that contain the match">
+                                    <asp:TemplateField HeaderText="Total corpora count that contain the match">
                                         <ItemTemplate>
                                             <div style="padding: 2px">
                                                 <asp:Label ID="lbCorpora" runat="server" Text='<%# Bind("phraseTimes")%>'></asp:Label>
                                             </div>
                                         </ItemTemplate>
-                                    <ItemStyle HorizontalAlign="center" />
+                                        <ItemStyle HorizontalAlign="center" />
                                     </asp:TemplateField>
-                            </Columns>
+                                </Columns>
                                 <AlternatingRowStyle BackColor="White" />
                                 <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
                                 <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
@@ -752,18 +755,21 @@
                                 <SortedAscendingHeaderStyle BackColor="#6D95E1" />
                                 <SortedDescendingCellStyle BackColor="#E9EBEF" />
                                 <SortedDescendingHeaderStyle BackColor="#4870BE" />
-                        </asp:GridView>
-                        <div style="width:98%;text-align:right;padding-right:10px;">
-                            <asp:Label ID="lbCollCount" runat="server" Text="" ForeColor="red"></asp:Label>
-                            <asp:Button ID="btnCloseColl" runat="server" Text="Go back to Search Result" Visible="false"/>
+                            </asp:GridView>
+
+                        </div>
+                        <div id="divCollView" runat="server" visible="false">
+                            <div style="width: 98%; text-align: right; padding-right: 10px;">
+                                <asp:Label ID="lbCollCount" runat="server" Text="" ForeColor="red"></asp:Label>
+                                <asp:Button ID="btnCloseColl" runat="server" Text="Go back to Search Result" />
                             </div>
-                        <asp:GridView ID="gvCollocate" runat="server"  AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast" Visible="false">
+                            <asp:GridView ID="gvCollocate" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
                                 <AlternatingRowStyle BackColor="White" />
                                 <Columns>
                                     <asp:TemplateField HeaderText="Title">
                                         <ItemTemplate>
                                             <div style="padding: 2px">
-                                                <asp:HiddenField ID="hdfCorpusID" runat="server" value='<%# Bind("CorpusID")%>'/>
+                                                <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
                                                 <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
                                             </div>
                                         </ItemTemplate>
@@ -804,8 +810,10 @@
                                 <SortedDescendingCellStyle BackColor="#E9EBEF" />
                                 <SortedDescendingHeaderStyle BackColor="#4870BE" />
 
-                        </asp:GridView>
+                            </asp:GridView>
+                        </div>
                     </div>
+                    <div runat="server" id ="divProcColl" style="text-align:center;padding-left:20px;color :red"></div>
                 </asp:View>
 
                 <%-- WordList --%>
@@ -826,17 +834,17 @@
                             <tr>
                                 <th>Title：</th>
                                 <td>
-                                    <input type="text" value="" class="input-text" id="txt_Title" placeholder="Type the title" runat="server" />
+                                    <input type="text" value="" size="80" style="width:150px" class="input-text" id="txt_Title" placeholder="Type the title" runat="server" />
                                 </td>
                                 <th>Author：
                                 </th>
                                 <td>
-                                    <input type="text" value="" class="input-text" id="txt_Author" placeholder="Type the Author's Name" runat="server" />
+                                    <input type="text" value="" size="80" style="width:150px" class="input-text" id="txt_Author" placeholder="Type the Author's Name" runat="server" />
                                 </td>
                                 <th>Topic：
                                 </th>
                                 <td>
-                                    <asp:DropDownList ID="ddlTopics" runat="server"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlTopics" runat="server" Width="150px"></asp:DropDownList>
                                 </td>
                             </tr>
                             <tr>
@@ -863,7 +871,7 @@
                                 }
                             </script>
                             点击下面数据行，可以处理该行语料文本，点击后面的处理所有按钮，将处理筛选出的所有语料&nbsp;&nbsp;
-                                                <asp:Button ID="btnLemmaAll" runat="server" Text="处理所有" />
+                            <asp:Button ID="btnLemmaAll" runat="server" Text="处理所有" />
                             <br />
                             <asp:GridView ID="gvCorpusforWordList" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
                                 <AlternatingRowStyle BackColor="White" />
@@ -909,13 +917,13 @@
                             </span>
                         </div>
                         <div class="qlfd">
-                                            <asp:Button ID="clearBtn" runat="server" Text="Clear" CssClass="outbtndiv-button" ToolTip="Clear the Texts" />
-                                            <asp:Button ID="btnSubmitForLemma" runat="server" Text="Submit" CssClass="outbtndiv-button" ToolTip="Submit to Process" />
-                                        </div>
+                            <asp:Button ID="clearBtn" runat="server" Text="Clear" CssClass="outbtndiv-button" ToolTip="Clear the Texts" />
+                            <asp:Button ID="btnSubmitForLemma" runat="server" Text="Submit" CssClass="outbtndiv-button" ToolTip="Submit to Process" />
+
+                        </div>
 
                     </div>
-
-
+                    <div runat="server" id ="divProcLemma" style="text-align:center;padding-left:20px;color :red"></div>
                 </asp:View>
 
                 <%-- Cluster --%>
@@ -953,19 +961,28 @@
                                 <asp:Button ID="btnCompared" runat="server" Text="Sumbit" />
                             </td>
                         </tr>
-                            </table>
+                        </table>
                    </div>
                     <div id="divforCompareResult" runat="server" visible="false" class="qfld">
                         <asp:Button ID="btnBackToCompare" runat="server" Text="Back" />
-                        <asp:Chart ID="ctForCompare" runat="server" Width="800px">
+                        <asp:Chart ID="ctForCompare" runat="server" Width="960px" BorderlineDashStyle="Solid" BorderlineColor="Gray" BackGradientStyle="DiagonalLeft" BackSecondaryColor="AliceBlue" BackColor="WhiteSmoke">
                             <Series>
                                 <asp:Series Name="Series1"></asp:Series>
                             </Series>
                             <ChartAreas>
-                                <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
+                                <asp:ChartArea Name="ChartArea1">
+                                    <AxisY>
+                                       <MajorGrid LineColor="LightSlateGray" LineDashStyle="Dash" />
+                                    </AxisY>
+                                    <AxisX>
+                                         <MajorGrid Enabled="False" />
+                                         <LabelStyle Font="Microsoft Sans Serif, 8pt" />
+                                     </AxisX>
+                                </asp:ChartArea>
                             </ChartAreas>
                         </asp:Chart>
                     </div>
+                    <div runat="server" id ="divProcCompare" style="text-align:center;padding-left:20px;color :red"></div>
                 </asp:View>
 
                 <asp:View ID="vwLemma" runat="server">
@@ -984,6 +1001,13 @@
                                             <asp:ListItem Value="EVP" Enabled="false">EVP</asp:ListItem>
                                         </asp:RadioButtonList>
                                     </td>
+                                    <td>
+                                        <input id="btnLight" type="button" value="HighLight" data-i="1" onclick="HighLightAll(this)" class="outbtndiv-button" />
+
+                                    </td>
+                                    <td>
+                                        <asp:Button ID="btnBackLemma" runat="server" Text="Back" CssClass="outbtndiv-button" ToolTip="关闭页面" />
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -998,10 +1022,6 @@
                                     <td style="vertical-align: top">
                                         <div class="it-ec-statsdiv" id="divstats">
                                             <%-- 单词颜色标记说明与占比 --%>
-                                            <div class="outbtndiv">
-                                                <input id="btnLight" type="button" value="HighLight" data-i="1" onclick="HighLightAll(this)" class="outbtndiv-button" />
-                                                <asp:Button ID="btnBackLemma" runat="server" Text="Back" CssClass="outbtndiv-button" ToolTip="关闭页面" />
-                                            </div>
                                             <dl class="it-chart-dl" id="dlChart" runat="server">
                                                 <dt class="it-chart-dt" data-level="UN" onclick="HighLightthis(this)">忽略处理</dt>
                                                 <dd class="it-chart-dd" data-level="UN" onclick="HighLightthis(this)">

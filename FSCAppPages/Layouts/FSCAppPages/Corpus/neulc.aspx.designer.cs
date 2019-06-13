@@ -274,6 +274,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Button btnBacktoQuery;
         
         /// <summary>
+        /// divProcCps 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProcCps;
+        
+        /// <summary>
         /// vwConcordance 控件。
         /// </summary>
         /// <remarks>
@@ -409,6 +418,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.GridView gvConcordance;
         
         /// <summary>
+        /// divProcConc 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProcConc;
+        
+        /// <summary>
         /// vwCollocate 控件。
         /// </summary>
         /// <remarks>
@@ -499,6 +517,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollocateResult;
         
         /// <summary>
+        /// divCollComputed 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollComputed;
+        
+        /// <summary>
         /// lbCoLLComputedCount 控件。
         /// </summary>
         /// <remarks>
@@ -526,6 +553,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.GridView gvCollComputed;
         
         /// <summary>
+        /// divCollView 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollView;
+        
+        /// <summary>
         /// lbCollCount 控件。
         /// </summary>
         /// <remarks>
@@ -551,6 +587,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvCollocate;
+        
+        /// <summary>
+        /// divProcColl 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProcColl;
         
         /// <summary>
         /// vwWordList 控件。
@@ -706,6 +751,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Button btnSubmitForLemma;
         
         /// <summary>
+        /// divProcLemma 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProcLemma;
+        
+        /// <summary>
         /// vwCluster 控件。
         /// </summary>
         /// <remarks>
@@ -805,6 +859,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.DataVisualization.Charting.Chart ctForCompare;
         
         /// <summary>
+        /// divProcCompare 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProcCompare;
+        
+        /// <summary>
         /// vwLemma 控件。
         /// </summary>
         /// <remarks>
@@ -832,15 +895,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.RadioButtonList rbVBS;
         
         /// <summary>
-        /// divContext 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContext;
-        
-        /// <summary>
         /// btnBackLemma 控件。
         /// </summary>
         /// <remarks>
@@ -848,6 +902,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnBackLemma;
+        
+        /// <summary>
+        /// divContext 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContext;
         
         /// <summary>
         /// dlChart 控件。
