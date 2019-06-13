@@ -159,6 +159,7 @@
     <Content Include="Layouts\FSCAppPages\images\head.jpg" />
     <Content Include="Layouts\FSCAppPages\images\head.png" />
     <Content Include="Layouts\FSCAppPages\images\Info.png" />
+    <Content Include="Layouts\FSCAppPages\images\loading.gif" />
     <Content Include="Layouts\FSCAppPages\images\Share.png" />
     <Content Include="Layouts\FSCAppPages\images\Upload.png" />
     <Content Include="Layouts\FSCAppPages\js\address.js" />
@@ -166,6 +167,7 @@
     <Content Include="Layouts\FSCAppPages\js\fixdiv.js" />
     <Content Include="Layouts\FSCAppPages\js\jquery-1.8.3.min.js" />
     <Content Include="Layouts\FSCAppPages\js\jquery.js" />
+    <Content Include="Layouts\FSCAppPages\js\neulc.js" />
     <Content Include="Layouts\FSCAppPages\js\tiles.js" />
     <Content Include="Layouts\FSCAppPages\Mentors.aspx" />
     <Content Include="Layouts\FSCAppPages\Performances.aspx" />

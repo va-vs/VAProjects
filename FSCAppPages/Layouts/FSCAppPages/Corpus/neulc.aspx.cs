@@ -30,11 +30,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             //Concordance提交按钮点击事件
             btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
-            btnSubmitforCorpus.Attributes.Add("onclick", string.Format("javascript:document.getElementById('{0}').innerHTML ='正在处理中，请稍等……';", divProcCps.ClientID));//为Lemma处理过程增加提示
+            btnSubmitforCorpus.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
             //WordList控件事件绑定
             btnBacktoQuery.Click += BtnBacktoQuery_Click;
             btnSubmitForLemma.Click += BtnSubmitForLemma_Click;//WordList提交按钮点击事件
-            btnSubmitForLemma.Attributes.Add("onclick", string.Format("javascript:document.getElementById('{0}').innerHTML ='正在处理中，请稍等……';", divProcLemma.ClientID));//为Lemma处理过程增加提示
+            btnSubmitForLemma.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
             btnBackLemma.Click += BtnBackLemma_Click;
 
             rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
@@ -46,7 +46,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             //Concordance 内的控件事件绑定
             btnSubmitConcordance.Click += BtnSubmitConcordance_Click;
-            btnSubmitConcordance.Attributes.Add("onclick", string.Format("javascript:document.getElementById('{0}').innerHTML ='正在处理中，请稍等……';", divProcConc.ClientID));//为Lemma处理过程增加提示
+            btnSubmitConcordance.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
             btnReConc.Click += BtnReConc_Click;
             gvConcordance.RowDataBound += GvConcordance_RowDataBound;
             gvConcordance.PageIndexChanging += GvConcordance_PageIndexChanging;
@@ -54,7 +54,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             //Collocate 内的控件事件绑定
             btnSubmitCollocate.Click += BtnSubmitCollocate_Click;
-            btnSubmitCollocate.Attributes.Add("onclick", string.Format("javascript:document.getElementById('{0}').innerHTML ='正在处理中，请稍等……';", divProcColl.ClientID));//为Lemma处理过程增加提示
+            btnSubmitCollocate.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
             btnReColl.Click += BtnReColl_Click;
             gvCollocate.RowDataBound += GvCollocate_RowDataBound;
             gvCollocate.PageIndexChanging += GvCollocate_PageIndexChanging;
@@ -67,7 +67,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             //Compare提交按钮点击事件
             btnCompared.Click += BtnCompared_Click;
-            btnCompared.Attributes.Add("onclick", string.Format("javascript:document.getElementById('{0}').innerHTML ='正在处理中，请稍等……';", divProcCompare.ClientID));//为Lemma处理过程增加提示
+            btnCompared.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
             btnBackToCompare.Click += BtnBackToCompare_Click;
 
             //词汇表选择
@@ -340,6 +340,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             else
             {
+                lbErr.Text = "";
                 string newQueryStr = strResult[1];
                 if (ViewState["filterExp"] != null)//已有检索历史
                 {
@@ -830,6 +831,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 ViewState["KeyWords"] = keyConc;
                 string cpName = GetCorpusByUrl();
                 string filterStr = string.Format("' '+OriginalText+' ' like '%[^a-zA-Z]{0}[^a-zA-Z]%' and Source = '{1}'", keyConc, cpName);
+                //if (ViewState["filterExp"] != null)
+                //{
+                //    filterStr += " and " + ViewState["filterExp"].ToString();
+                //}
                 DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
 
                 if (dtCorpus.Rows.Count > 0)
@@ -841,7 +846,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     if (isShowTotalCount.Checked)
                     {
                         int rCount = dtConcordance.Rows.Count;
-                        lbConcCount.Text = "Total Count in All Corpus is：" + rCount;
+                        lbConcCount.Text = "Total number of matches：" + rCount;
                     }
                     else
                     {
@@ -866,8 +871,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     ViewState["dtConcordance"] = dtConcordance;
                     divConcordanceQuery.Visible = false;
                     divConcordanceResult.Visible = true;
-                    gvConcordance.Visible = true;
-                    btnReConc.Visible = true;
                 }
                 else
                 {
@@ -935,7 +938,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             divConcordanceQuery.Visible = true;
             divConcordanceResult.Visible = false;
-            btnReConc.Visible = false;
         }
 
         #endregion Concordance事件
@@ -1011,7 +1013,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     //查找所有和关键词相关的搭配的语料
                     DataTable dtCollComputed = Common.CaculatePhrase(dtCollocate);
                     ViewState["dtCollComputed"] = dtCollComputed;
-                    lbCoLLComputedCount.Text = "Total number of Matchs: " + dtCollComputed.Rows.Count;
+                    lbCoLLComputedCount.Text = "Total number of matchs: " + dtCollComputed.Rows.Count;
 
                     GVBind(gvCollComputed, dtCollComputed);
                     ViewState["dtCollocate"] = dtCollocate;
@@ -1076,11 +1078,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             DataTable dtCollocate = (DataTable)ViewState["dtCollocate"];
             DataView dv = dtCollocate.DefaultView;
             dv.RowFilter = string.Format("match = '{0}'", e.CommandArgument);
+            ViewState["KeyWords"] = e.CommandArgument.ToString();
             DataTable dtFilter = dv.ToTable();
             ViewState["dtCollFilter"] = dtFilter;
 
             divCollView.Visible = true;
-            lbCollCount.Text = "Total number of Matchs: " + dtFilter.Rows.Count;
+            lbCollCount.Text = "Total number of matchs: " + dtFilter.Rows.Count;
 
             //if (dtFilter.Rows.Count > 0)
             //{
@@ -1398,12 +1401,17 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     }
                     else
                     {
-                        titleStr = string.Format("{0}({1})", txt_Title.Value.Trim(), authorName);//标题
+                        titleStr = string.Format("{0}-{1}", txt_Title.Value.Trim(), authorName);//标题
                     }
 
                     DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
-
-                    if (dtCorpus.Select("OriginalText = '" + txtStr + "'").Length <= 0)//本次处理的文本没有保存过
+                    DataView dv = dtCorpus.DefaultView;
+                    dv.RowFilter = string.Format(" OriginalText = '{0}'", txtStr);
+                    //筛选可使用通配符%,*实现
+                    dv.RowFilter = string.Format("OriginalText like '%{0}%'", txtStr);
+                    //将查得的数据转换为DataTable
+                    DataTable dtSelect = dv.ToTable();
+                    if (dtSelect.Rows.Count <= 0)//本次处理的文本没有保存过
                     {
                         DataRow drCorpus = dtCorpus.NewRow();
                         drCorpus["Title"] = titleStr;
@@ -1416,9 +1424,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         {
                             splitStr = ";";
                         }
+                        drCorpus["Source"] = string.Format("{0}-{1}", cpName, authorName);//用户录入的材料，标记来源为语料库名称＋authorName
                         drCorpus["TopicID"] = splitStr + ddlTopics.SelectedValue + splitStr;
                         drCorpus["Flag"] = 3;
                         FSCDLL.DAL.Corpus.InsertCorpus(null, drCorpus);
+                        dtCorpus.Rows.Add(drCorpus);
+                        dtCorpus.AcceptChanges();
                     }
                     #endregion  保存要处理的文本
 
@@ -1694,10 +1705,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             //添加列
             dt.Columns.Add("Items");//比较项目
             DataRow dr = dt.NewRow();
-            dr[0] = "The number of times the words appear in all corpus";
+            dr[0] = "The number of matches that the words appears";
             dt.Rows.Add(dr);
             dr = dt.NewRow();
-            dr[0] = "The number of corpus which contains the word";
+            dr[0] = "The number of corpus that contains the word";
             dt.Rows.Add(dr);
             return dt;
         }
