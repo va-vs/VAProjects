@@ -208,7 +208,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     drNew["left"] = drWord["left"];
                     drNew["match"] = drWord["match"];
                     drNew["right"] = drWord["right"];
-                    drNew["OriginalText"] = drWord["OriginalText"];
+                    drNew["OriginalText"] = dr["OriginalText"];
 
                 }
             }
