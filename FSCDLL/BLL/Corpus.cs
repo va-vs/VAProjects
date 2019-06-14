@@ -12,6 +12,6 @@ namespace FSCDLL.BLL
     /// </summary>
     public class Corpus
     {
-        
+
     }
 }

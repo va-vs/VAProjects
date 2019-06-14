@@ -6,6 +6,8 @@ using System.Data;
 using System.Web.UI;
 using System.Text.RegularExpressions;
 using System.Text;
+using FSCDLL.DAL;
+using FSCDLL.Common;
 using lemmatizerDLL;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +35,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             //Concordance提交按钮点击事件
             btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
-            btnSubmitforCorpus.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
+            btnSubmitforCorpus.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             //WordList控件事件绑定
             btnBacktoQuery.Click += BtnBacktoQuery_Click;
             btnSubmitForLemma.Click += BtnSubmitForLemma_Click;//WordList提交按钮点击事件
-            btnSubmitForLemma.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
+            btnSubmitForLemma.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnBackLemma.Click += BtnBackLemma_Click;
 
             rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
@@ -49,16 +51,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             //Concordance 内的控件事件绑定
             btnSubmitConcordance.Click += BtnSubmitConcordance_Click;
-            btnSubmitConcordance.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
+            btnSubmitConcordance.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnReConc.Click += BtnReConc_Click;
             gvConcordance.RowDataBound += GvConcordance_RowDataBound;
             gvConcordance.PageIndexChanging += GvConcordance_PageIndexChanging;
             gvConcordance.RowCommand += GvConcordance_RowCommand;
             btnViewConc.Click += BtnViewConc_Click;
-
+            btnViewConc.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             //Collocate 内的控件事件绑定
             btnSubmitCollocate.Click += BtnSubmitCollocate_Click;
-            btnSubmitCollocate.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
+            btnSubmitCollocate.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnReColl.Click += BtnReColl_Click;
             gvCollocate.RowDataBound += GvCollocate_RowDataBound;
             gvCollocate.PageIndexChanging += GvCollocate_PageIndexChanging;
@@ -69,9 +71,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCollComputed.RowDataBound += GvCollComputed_RowDataBound;
             btnCloseColl.Click += BtnCloseColl_Click;
             btnViewColl.Click += BtnViewColl_Click;
+            btnViewColl.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             //Compare提交按钮点击事件
             btnCompared.Click += BtnCompared_Click;
-            btnCompared.Attributes.Add("onclick", "javascript:shield();");//为Lemma处理过程增加提示
+            btnCompared.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnBackToCompare.Click += BtnBackToCompare_Click;
 
             //词汇表选择
@@ -101,36 +104,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
 
-        /// <summary>
-        /// 浏览所有的检索到的Concordance匹配
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnViewConc_Click(object sender, EventArgs e)
-        {
-            DataTable dtConcordance = (DataTable)ViewState["dtConcordance"];
-            string strContext = ContactContextinTable(dtConcordance, "OriginalText");
-            string keyWord = ViewState["KeyWords"].ToString();
-            TextLemma(strContext, keyWord, "CECR");
-        }
-
-        /// <summary>
-        /// 浏览所有的检索到的Collocate匹配
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnViewColl_Click(object sender, EventArgs e)
-        {
-            DataTable dtCollocate = (DataTable)ViewState["dtCollocate"];
-            string strContext = ContactContextinTable(dtCollocate, "OriginalText");
-            string keyWord = ViewState["KeyWords"].ToString();
-            TextLemma(strContext, keyWord, "CECR");
-        }
 
         private string ContactContextinTable(DataTable dtSource, string keyCol)
         {
             StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < dtSource.Rows.Count; i++)
+            for (int i = 0; i < dtSource.Rows.Count; i++)
             {
                 DataRow dr = dtSource.Rows[i];
                 string strContext = FSCDLL.DAL.SystemDataExtension.GetString(dr, keyCol);
@@ -388,7 +366,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         #endregion Corpus事件
 
-        #region Corpus方法        /*特别注释：NEUAC的三个筛选条件：Year、Major、Journal与NEULC的三个筛选条件：Level、Topic、Gener 一一对应*/
+        #region Corpus方法        /*特别注释：NEUAC的三个筛选条件：Year、Major、Journal与NEULC的三个筛选条件：Level、Topic、Genre 一一对应*/
         /// <summary>
         /// 根据Url传递的Corpus参数名称来决定使用哪一个Corpus
         /// </summary>
@@ -603,9 +581,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             DataTable dtResult = dsResult.Tables[0].Copy();
             List<string> listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
             BuildTable(dtResult, cblLevel, "LevelID", tbforLevel, listFKs);
-            //listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
+
             BuildTable(dtResult, cblTopic, "TopicID", tbforTopic, listFKs);
-            //listFKs = new List<string> { "LevelID", "TopicID", "GenreID" };
+
             BuildTable(dtResult, cblGenre, "GenreID", tbforGenre, listFKs);
         }        /// <summary>
         /// 构造检索字符串，用于检索大库
@@ -855,36 +833,49 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 //    filterStr += " and " + ViewState["filterExp"].ToString();
                 //}
                 DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
-
+                dtCorpus.TableName = "Table-Corpus";
                 if (dtCorpus.Rows.Count > 0)
                 {
                     int iCount = int.Parse(txtCDChars.Value.Trim());
 
                     int[] lAndr = GetLeftandRight(ddlMatchPos, iCount);//iLeft & iRight
                     DataTable dtConcordance = Common.GetWordsFromCorpus(dtCorpus, keyConc, lAndr[0], lAndr[1]);
-
+                    dtConcordance.TableName = "Table-Concordance";
                     int rCount = dtConcordance.Rows.Count;
+                    int dispCount = rCount;
                     string showLimit = txtLimit.Value;
                     if (showLimit != "0")//指定输出的行数
                     {
-                        dtConcordance = dtConcordance.AsEnumerable().Take(int.Parse(showLimit)).CopyToDataTable<DataRow>();
+                        dispCount = int.Parse(showLimit);
+                        dtConcordance = dtConcordance.AsEnumerable().Take(dispCount).CopyToDataTable<DataRow>();
                         showLimit = string.Format("You choose to display <strong>{0}</strong>", showLimit);
                     }
                     else
                     {
                         showLimit = "You choose to display <strong>All</strong>";
+
                     }
                     string pageSize = txtRpp.Value;
                     gvConcordance.PageSize = int.Parse(pageSize);
                     showLimit = string.Format("{0} matches with <strong>{1}</strong> per page", showLimit, pageSize);
 
-                    spConcCount.InnerHtml = string.Format("Total number of matches is <strong>{0}</strong> ; {1}", rCount, showLimit);
+                    spConcCount.InnerHtml = string.Format("Total number of matches with \"<strong>{0}</strong>\" is <strong>{1}</strong> ; {2}", keyConc, rCount, showLimit);
                     GVBind(gvConcordance, dtConcordance);
 
                     ViewState["dtConcordance"] = dtConcordance;
                     divConcordanceQuery.Visible = false;
                     divConcordanceResult.Visible = true;
                     divConcTips.Visible = true;
+                    if (dispCount > 100)
+                    {
+                        spConcTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context;The \"View All\" Button is disabled because Total number of matches with \"<strong>{0}</strong>\" is larger than 100.", keyConc);
+                        btnViewConc.Enabled = false;
+                    }
+                    else
+                    {
+                        spConcTips.InnerHtml = "Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context";
+                        btnViewConc.Enabled = true;
+                    }
                 }
                 else
                 {
@@ -896,12 +887,38 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
         }
 
+        /// <summary>
+        /// 浏览所有的检索到的Concordance匹配
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnViewConc_Click(object sender, EventArgs e)
+        {
+            DataTable dtConcordance = (DataTable)ViewState["dtConcordance"];
+            string strContext = ContactContextinTable(dtConcordance, "OriginalText");
+            string keyWord = ViewState["KeyWords"].ToString();
+            ViewState["LemmaContext"] = strContext;
+            mvNeulc.ActiveViewIndex = 6;
+            hdfvwIndex.Value = "1";
+            TextLemma(strContext, keyWord, "CECR");
+
+        }
 
         private void GvConcordance_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Page") return;
             string cpId = e.CommandArgument.ToString();
-            DataTable dt = FSCDLL.DAL.Corpus.GetCorporaByID(long.Parse(cpId)).Tables[0];
+            DataTable dtCorpusExtend;
+            if (ViewState["dtCorpusExtend"] == null)
+            {
+                dtCorpusExtend = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(null).Tables[0];
+                ViewState["dtCorpusExtend"] = dtCorpusExtend.Copy();
+            }
+            else
+            {
+                dtCorpusExtend = (ViewState["dtCorpusExtend"] as DataTable).Copy();
+            }
+            DataTable dt = Common.GetCorpusByID(long.Parse(cpId), CorpusName, dtCorpusExtend);
             if (dt != null)
             {
                 DataRow dr = dt.Rows[0];
@@ -911,6 +928,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 mvNeulc.ActiveViewIndex = 6;
                 hdfvwIndex.Value = "1";
                 TextLemma(txtStr, kWords, "CECR");//缺省第一次采用CECR词汇表计算
+                ShowContextInfo(dr, kWords);
             }
             else
             {
@@ -921,6 +939,48 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
 
+        private void ShowContextInfo(DataRow dr, string kWords)
+        {
+            if (dr != null)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("<table>");
+                sb.AppendLine("<tr><th>Title:</th>");
+                sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Title")));
+                sb.AppendLine("<tr><th>Created:</th>");
+                sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Created")));
+                sb.AppendLine("<tr><th>Source:</th>");
+                sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Source")));
+
+                if (CorpusName == "NEULC")
+                {
+                    sb.AppendLine("<tr><th>Topic:</th>");
+                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Topic")));
+                    sb.AppendLine("<tr><th>Genre:</th>");
+                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Genre")));
+                    sb.AppendLine("<tr><th>Level:</th>");
+                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Level")));
+                }
+                else
+                {
+                    sb.AppendLine("<tr><th>Major:</th>");
+                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Major")));
+                    sb.AppendLine("<tr><th>Journal:</th>");
+                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Journal")));
+                    sb.AppendLine("<tr><th>Year:</th>");
+                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Year")));
+
+                }
+                sb.AppendLine("<tr><th>KeyWord:</th>");
+                sb.AppendLine(string.Format("<td>{0}</td></tr>", kWords));
+                sb.AppendLine("</table>");
+                divContextInfo.InnerHtml = sb.ToString();
+            }
+            else
+            {
+                divContextInfo.InnerHtml = "";
+            }
+        }
 
         private void GvConcordance_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -1024,12 +1084,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     int mleft = int.Parse(txtcfLeft.Value.Trim());
                     int mright = int.Parse(txtcfRight.Value.Trim());
                     DataTable dtCollocate = Common.GetPhraseFromCorpus(keyColl, dtCorpus, mleft, mright, lAndr[0], lAndr[1]);
+                    dtCollocate.TableName = "Table-Collocate";
                     //查找所有和关键词相关的搭配的语料
                     if (dtCollocate.Rows.Count > 0)
                     {
+                        string matchKey = GetTags(mleft, "*") + keyColl + GetTags(mright, "*");
                         DataTable dtCollComputed = Common.CaculatePhrase(dtCollocate);
+                        dtCollComputed.DefaultView.Sort = "totalTimes desc";
+                        dtCollComputed.TableName = "Table-CollComputed";
                         ViewState["dtCollComputed"] = dtCollComputed;
-                        spCoLLComputedCount.InnerHtml = string.Format("Total number of matches is <strong>{0}</strong>", dtCollComputed.Rows.Count);
+                        spCoLLComputedCount.InnerHtml = string.Format("Total number of matches with \"<strong>{0}</strong>\" is <strong>{1}</strong>", matchKey, dtCollComputed.Rows.Count);
 
                         GVBind(gvCollComputed, dtCollComputed);
                         ViewState["dtCollocate"] = dtCollocate;
@@ -1055,20 +1119,58 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
         }
 
+        private string GetTags(int tagCount, string strTag)
+        {
+            string stars = " ";
+            for (int i = 0; i < tagCount; i++)
+            {
+                stars += strTag + " ";
+            }
+            return stars;
+
+        }
+
+        /// <summary>
+        /// 浏览所有的检索到的Collocate匹配
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnViewColl_Click(object sender, EventArgs e)
+        {
+            DataTable dtCollFilter = (DataTable)ViewState["dtCollFilter"];
+            string strContext = ContactContextinTable(dtCollFilter, "OriginalText");
+            string keyWord = ViewState["KeyWords"].ToString();
+            ViewState["LemmaContext"] = strContext;
+            mvNeulc.ActiveViewIndex = 6;
+            hdfvwIndex.Value = "2";
+            TextLemma(strContext, keyWord, "CECR");
+        }
+
         private void GvCollocate_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Page") return;
             string cpId = e.CommandArgument.ToString();
-            DataTable dt = FSCDLL.DAL.Corpus.GetCorporaByID(long.Parse(cpId)).Tables[0];
+            DataTable dtCorpusExtend;
+            if (ViewState["dtCorpusExtend"] == null)
+            {
+                dtCorpusExtend = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(null).Tables[0];
+                ViewState["dtCorpusExtend"] = dtCorpusExtend.Copy();
+            }
+            else
+            {
+                dtCorpusExtend = (ViewState["dtCorpusExtend"] as DataTable).Copy();
+            }
+            DataTable dt = Common.GetCorpusByID(long.Parse(cpId), CorpusName, dtCorpusExtend);
             if (dt != null)
             {
                 DataRow dr = dt.Rows[0];
-                string txtStr = FSCDLL.DAL.SystemDataExtension.GetString(dr, "OriginalText");
+                string txtStr = SystemDataExtension.GetString(dr, "OriginalText");
                 ViewState["LemmaContext"] = txtStr;
                 mvNeulc.ActiveViewIndex = 6;
                 hdfvwIndex.Value = "2";
                 string kWords = ViewState["KeyWords"].ToString();
                 TextLemma(txtStr, kWords, "CECR");//缺省第一次采用CECR词汇表计算
+                ShowContextInfo(dr, kWords);
             }
             else
             {
@@ -1104,20 +1206,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dv.RowFilter = string.Format("match = '{0}'", e.CommandArgument);
             ViewState["KeyWords"] = e.CommandArgument.ToString();
             DataTable dtFilter = dv.ToTable();
+            dtFilter.TableName = "Table-CollFilter";
             ViewState["dtCollFilter"] = dtFilter;
 
             divCollView.Visible = true;
-            spCoLLCount.InnerHtml = string.Format("Total number of matches is <strong>{0}</strong>", dtFilter.Rows.Count);
+            spCoLLCount.InnerHtml = string.Format("Total number of matches with \"<strong>{0}</strong>\" is <strong>{1}</strong>", e.CommandArgument, dtFilter.Rows.Count);
 
-            //if (dtFilter.Rows.Count > 0)
-            //{
-            //    if (dtFilter.Rows[0]["Left"].ToString() == "")
-            //        ViewState["HideCol"] = 1;
-            //    else if (dtFilter.Rows[0]["Right"].ToString() == "")
-            //        ViewState["HideCol"] = 3;
-            //    else
-            //        ViewState["HideCol"] = null;
-            //}
+            if (dtFilter.Rows.Count > 100)
+            {
+                spCollTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context;The \"View All\" Button is disabled because Total number of matches with \"<strong>{0}</strong>\" is larger than 100.", e.CommandArgument);
+                btnViewColl.Enabled = false;
+            }
+            else
+            {
+                spCollTips.InnerHtml = "Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context";
+                btnViewColl.Enabled = true;
+            }
             divCollComputed.Visible = false;
             GVBind(gvCollocate, dtFilter);
         }

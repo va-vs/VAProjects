@@ -8,6 +8,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
+using FSCDLL;
+using FSCDLL.DAL;
+using FSCDLL.Common;
 
 namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
@@ -137,7 +140,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         drNew["right"] = rightStr;
                         drNew["match"] = phrase;
                         drNew["OriginalText"] = dr["OriginalText"];
-                        
+
                     }
 
                 }
@@ -401,6 +404,49 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
 
             return strTitles;
+        }
+
+        public static DataTable GetCorpusByID(long corpusId, string CorpusName, DataTable dtCorpusExtend)
+        {
+            DataSet dsCorpus = FSCDLL.DAL.Corpus.GetCorporaByID(corpusId);
+            DataTable dtCorpus = dsCorpus.Tables[0];
+            DataTable dtResult = dtCorpus.Copy();
+            DataRow drCorpus;
+            if (dtResult != null)
+            {
+                if (CorpusName == "NEUAC")
+                {
+                    dtResult.Columns["TopicID"].ColumnName = "MajorID";
+                    dtResult.Columns["GenreID"].ColumnName = "JournalID";
+                    dtResult.Columns["LevelID"].ColumnName = "YearID";
+                    dtResult.Columns.Add("Major");
+                    dtResult.Columns.Add("Journal");
+                    dtResult.Columns.Add("Year");
+                    drCorpus = dtResult.Rows[0];
+                    string Ids = SystemDataExtension.GetString(drCorpus, "MajorID");
+                    drCorpus["Major"] = GetTitlesByIDs(dtCorpusExtend, Ids, "Major", "");
+                    Ids = SystemDataExtension.GetString(drCorpus, "JournalID");
+                    drCorpus["Journal"] = GetTitlesByIDs(dtCorpusExtend, Ids, "Journal", "");
+                    Ids = SystemDataExtension.GetString(drCorpus, "YearID");
+                    drCorpus["Year"] = GetTitlesByIDs(dtCorpusExtend, Ids, "Year", "");
+                    dtResult.AcceptChanges();
+                }
+                else
+                {
+                    dtResult.Columns.Add("Topic");
+                    dtResult.Columns.Add("Genre");
+                    dtResult.Columns.Add("Level");
+                    drCorpus = dtResult.Rows[0];
+                    string Ids = SystemDataExtension.GetString(drCorpus, "TopicID");
+                    drCorpus["Topic"] = GetTitlesByIDs(dtCorpusExtend, Ids, "Topic", ";");
+                    Ids = SystemDataExtension.GetString(drCorpus, "GenreID");
+                    drCorpus["Genre"] = GetTitlesByIDs(dtCorpusExtend, Ids, "Genre", ";");
+                    Ids = SystemDataExtension.GetString(drCorpus, "LevelID");
+                    drCorpus["Level"] = GetTitlesByIDs(dtCorpusExtend, Ids, "Level", ";");
+                    dtResult.AcceptChanges();
+                }
+            }
+            return dtResult;
         }
 
         /// <summary>
