@@ -364,15 +364,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlInputText txtRpp;
         
         /// <summary>
-        /// isShowTotalCount 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox isShowTotalCount;
-        
-        /// <summary>
         /// btnSubmitConcordance 控件。
         /// </summary>
         /// <remarks>
@@ -391,13 +382,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divConcordanceResult;
         
         /// <summary>
-        /// lbConcCount 控件。
+        /// spConcCount 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbConcCount;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spConcCount;
         
         /// <summary>
         /// btnReConc 控件。
@@ -416,6 +407,24 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvConcordance;
+        
+        /// <summary>
+        /// divConcTips 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divConcTips;
+        
+        /// <summary>
+        /// btnViewConc 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnViewConc;
         
         /// <summary>
         /// vwCollocate 控件。
@@ -517,13 +526,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollComputed;
         
         /// <summary>
-        /// lbCoLLComputedCount 控件。
+        /// spCoLLComputedCount 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbCoLLComputedCount;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spCoLLComputedCount;
         
         /// <summary>
         /// btnReColl 控件。
@@ -544,6 +553,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.GridView gvCollComputed;
         
         /// <summary>
+        /// divCollComputedTips 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollComputedTips;
+        
+        /// <summary>
         /// divCollView 控件。
         /// </summary>
         /// <remarks>
@@ -553,13 +571,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollView;
         
         /// <summary>
-        /// lbCollCount 控件。
+        /// spCoLLCount 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lbCollCount;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spCoLLCount;
         
         /// <summary>
         /// btnCloseColl 控件。
@@ -578,6 +596,24 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvCollocate;
+        
+        /// <summary>
+        /// divCollTips 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCollTips;
+        
+        /// <summary>
+        /// btnViewColl 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnViewColl;
         
         /// <summary>
         /// vwWordList 控件。

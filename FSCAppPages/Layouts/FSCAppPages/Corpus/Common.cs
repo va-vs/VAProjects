@@ -371,8 +371,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         public static string GetTitlesByIDs(DataTable dtCorpusExtends, string ids, string typeName, string splitStr)
         {
             string strTitles = "";
-                DataRow[] drs;
-            if (splitStr.Length >0)//LC
+            DataRow[] drs;
+            if (splitStr.Length > 0)//LC
             {
                 string[] idKeys = Regex.Split(ids, splitStr);
                 foreach (string id in idKeys)
@@ -389,11 +389,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
             else
             {
-                drs = dtCorpusExtends.Select("Types='" + typeName + "' and TitleCN='" + ids+"'");
+                drs = dtCorpusExtends.Select("Types='" + typeName + "' and TitleCN='" + ids + "'");
                 if (drs.Length > 0)
                     strTitles += drs[0]["Title"].ToString();
             }
-            
+
             return strTitles;
         }
 
@@ -414,9 +414,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 if (cbl.Items[i].Selected)
                 {
                     if (builder.ToString() == "")
-                        builder.Append(fieldName + " like '%" + splitStr + cbl.Items[i].Value + splitStr + "%'");
+                    {
+                        builder.AppendFormat("{0} like '%{1}{2}{1}%'", fieldName, splitStr, cbl.Items[i].Value);
+                    }
                     else
-                        builder.Append(" or " + fieldName + " like '%" + splitStr + cbl.Items[i].Value + splitStr + "%'");
+                    {
+                        builder.AppendFormat(" or {0} like '%{1}{2}{1}%'", fieldName, splitStr, cbl.Items[i].Value);
+                    }
                 }
             }
             selval = builder.ToString();

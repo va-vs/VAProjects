@@ -1,19 +1,5 @@
 ﻿
-		function shield() {
-			var s = document.getElementById("<%=divLoadingBG.ClientID%>");
-			s.style.display = "block";
 
-			var l = document.getElementById("<%=divLoading.ClientID%>");
-			l.style.display = "block";
-		}
-
-		function cancel_shield() {
-			var s = document.getElementById("<%=divLoadingBG.ClientID%>");
-			s.style.display = "none";
-
-			var l = document.getElementById("<%=divLoading.ClientID%>");
-			l.style.display = "none";
-		}
 
 		function add(txtId, diff, max) {
 			var txt = document.getElementById(txtId);

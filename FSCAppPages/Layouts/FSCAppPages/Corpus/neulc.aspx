@@ -15,6 +15,23 @@
     <link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets/css/highlight.css" type="text/css" />
     <link rel="stylesheet" href="../css/tab.css" type="text/css" />
     <script src="../js/neulc.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function shield() {
+			var s = document.getElementById("<%=divLoadingBG.ClientID%>");
+			s.style.display = "block";
+
+			var l = document.getElementById("<%=divLoading.ClientID%>");
+			l.style.display = "block";
+		}
+
+		function cancel_shield() {
+			var s = document.getElementById("<%=divLoadingBG.ClientID%>");
+			s.style.display = "none";
+
+			var l = document.getElementById("<%=divLoading.ClientID%>");
+			l.style.display = "none";
+		}
+    </script>
     <style type="text/css">
         /*遮罩层*/
 
@@ -216,7 +233,7 @@
                         </ul>
                     </td>
                     <td>
-                        <div id="divCPTips" runat="server">
+                        <div id="divCPTips" runat="server" visible="false">
                             <span class="gvtips">
                                 You haven't chosen corpus yet,so you can use all corpus for other operations or click the <strong>"Corpus"</strong> Menu to  select the corpus first.
                             </span>
@@ -437,16 +454,13 @@
                             per page
                             </div>
                             <div class="flexbox_div">
-                                <asp:CheckBox ID="isShowTotalCount" runat="server" Text="Show total number of matches" />
-                            </div>
-                            <div class="flexbox_div">
                                 <asp:Button ID="btnSubmitConcordance" runat="server" Text="Search" CssClass="outbtndiv-button" />
                             </div>
                         </fieldset>
                     </div>
                     <div id="divConcordanceResult" runat="server" visible="false">
                         <div style="width: 98%; padding: 10px;">
-                            <asp:Label ID="lbConcCount" runat="server" Text="" ForeColor="red"></asp:Label>
+                            <span id="spConcCount" class="gvtips" runat="server"></span>
                             <asp:Button ID="btnReConc" runat="server" Text=" Back " CssClass="outbtndiv-button" />
                         </div>
                         <asp:GridView ID="gvConcordance" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
@@ -496,8 +510,9 @@
                             <SortedDescendingCellStyle BackColor="#E9EBEF" />
                             <SortedDescendingHeaderStyle BackColor="#4870BE" />
                         </asp:GridView>
-                        <div style="width: 98%; padding: 10px;">
-                            <span class="gvtips">Click the title to view the corpus context</span>
+                        <div id="divConcTips" runat="server" style="width: 98%; padding: 10px;" visible="false">
+                            <span class="gvtips">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
+                            <asp:Button ID="btnViewConc" runat="server" Text="View All" CssClass="outbtndiv-button" />
                         </div>
                     </div>
                 </asp:View>
@@ -551,7 +566,7 @@
                     <div id="divCollocateResult" runat="server">
                         <div id="divCollComputed" runat="server" visible="false">
                             <div style="width: 98%; padding: 10px;">
-                                <asp:Label ID="lbCoLLComputedCount" runat="server" Text="" ForeColor="red"></asp:Label>
+                                <span id="spCoLLComputedCount" class="gvtips" runat="server"></span>
                                 <asp:Button ID="btnReColl" runat="server" Text=" Back "  CssClass="outbtndiv-button"/>
                             </div>
                             <asp:GridView ID="gvCollComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
@@ -593,13 +608,13 @@
                                 <SortedDescendingCellStyle BackColor="#E9EBEF" />
                                 <SortedDescendingHeaderStyle BackColor="#4870BE" />
                             </asp:GridView>
-                            <div style="width: 98%; padding: 10px;">
-                                <span class="gvtips">Click the match to view the corpus with the match</span>
+                            <div id="divCollComputedTips" runat="server" style="width: 98%; padding: 10px;">
+                                <span class="gvtips">Click on the <strong>"Match"</strong> in each row of the list to view the corpus with the match</span>
                             </div>
                         </div>
                         <div id="divCollView" runat="server" visible="false">
                             <div style="width: 98%; padding: 10px;">
-                                <asp:Label ID="lbCollCount" runat="server" Text="" ForeColor="red"></asp:Label>
+                                <span id="spCoLLCount" class="gvtips" runat="server"></span>
                                 <asp:Button ID="btnCloseColl" runat="server" Text=" Back "  CssClass="outbtndiv-button"/>
                             </div>
                             <asp:GridView ID="gvCollocate" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
@@ -650,8 +665,9 @@
                                 <SortedDescendingHeaderStyle BackColor="#4870BE" />
 
                             </asp:GridView>
-                            <div style="width: 98%; padding: 10px;">
-                                <span class="gvtips">Click the title to view the corpus context</span>
+                            <div id="divCollTips" style="width: 98%; padding: 10px;" runat="server">
+                                <span class="gvtips">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
+                                <asp:Button ID="btnViewColl" runat="server" Text="View All" CssClass="outbtndiv-button" />
                             </div>
                         </div>
                     </div>
