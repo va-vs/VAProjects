@@ -67,6 +67,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtResults.Columns.Add("left", typeof(string));
             dtResults.Columns.Add("match", typeof(string));
             dtResults.Columns.Add("right", typeof(string));
+            dtResults.Columns.Add("OriginalText", typeof(string));
             DataRow drNew;
             foreach (DataRow dr in dtCorpus.Rows)
             {
@@ -135,7 +136,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         drNew["left"] = leftStr;
                         drNew["right"] = rightStr;
                         drNew["match"] = phrase;
-
+                        drNew["OriginalText"] = dr["OriginalText"];
+                        
                     }
 
                 }
@@ -191,6 +193,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtResults.Columns.Add("left", typeof(string));
             dtResults.Columns.Add("match", typeof(string));
             dtResults.Columns.Add("right", typeof(string));
+            dtResults.Columns.Add("OriginalText", typeof(string));
+
             DataTable findResults;
             DataRow drNew;
             foreach (DataRow dr in dtCorpus.Rows)
@@ -204,6 +208,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     drNew["left"] = drWord["left"];
                     drNew["match"] = drWord["match"];
                     drNew["right"] = drWord["right"];
+                    drNew["OriginalText"] = drWord["OriginalText"];
+
                 }
             }
 
