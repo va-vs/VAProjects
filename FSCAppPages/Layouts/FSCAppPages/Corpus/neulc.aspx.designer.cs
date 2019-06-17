@@ -904,6 +904,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divLemma;
         
         /// <summary>
+        /// divContextInfo 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContextInfo;
+        
+        /// <summary>
         /// rbVBS 控件。
         /// </summary>
         /// <remarks>
@@ -922,22 +931,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.WebControls.Button btnBackLemma;
         
         /// <summary>
-        /// divContext 控件。
+        /// divContextHighLight 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContext;
-        
-        /// <summary>
-        /// divContextInfo 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContextInfo;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContextHighLight;
         
         /// <summary>
         /// dlChart 控件。

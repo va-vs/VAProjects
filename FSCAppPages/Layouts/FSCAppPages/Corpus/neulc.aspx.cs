@@ -1,17 +1,16 @@
-﻿using System;
-using Microsoft.SharePoint.WebControls;
-using System.Web.UI.WebControls;
-using System.Drawing;
-using System.Data;
-using System.Web.UI;
-using System.Text.RegularExpressions;
-using System.Text;
-using FSCDLL.DAL;
-using FSCDLL.Common;
+﻿using FSCDLL.DAL;
 using lemmatizerDLL;
+using Microsoft.SharePoint.WebControls;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.UI;
 using System.Web.UI.DataVisualization.Charting;
+using System.Web.UI.WebControls;
 
 namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
@@ -30,29 +29,36 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
+
             //导航按钮点击事件
             muNeulc.MenuItemClick += muNeulc_MenuItemClick;
-
+            muNeulc.Attributes.Add("onclick", "javascript:shield();");
             //Concordance提交按钮点击事件
             btnSubmitforCorpus.Click += BtnSubmitforCorpus_Click;
             btnSubmitforCorpus.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             //WordList控件事件绑定
             btnBacktoQuery.Click += BtnBacktoQuery_Click;
+            btnBacktoQuery.Attributes.Add("onclick", "javascript:shield();");
             btnSubmitForLemma.Click += BtnSubmitForLemma_Click;//WordList提交按钮点击事件
             btnSubmitForLemma.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnBackLemma.Click += BtnBackLemma_Click;
+            btnBackLemma.Attributes.Add("onclick", "javascript:shield();");
 
             rbltxtFrom.SelectedIndexChanged += RbltxtFrom_SelectedIndexChanged;
             btnQueryforWordlist.Click += BtnQueryforWordlist_Click;
+            btnQueryforWordlist.Attributes.Add("onclick", "javascript:shield();");
             gvCorpusforWordList.RowDataBound += GvCorpusforWordList_RowDataBound;
             gvCorpusforWordList.PageIndexChanging += GvCorpusforWordList_PageIndexChanging;
             btnLemmaAll.Click += BtnLemmaAll_Click;
+            btnLemmaAll.Attributes.Add("onclick", "javascript:shield();");
             clearBtn.Click += clearBtn_OnClick;
+            clearBtn.Attributes.Add("onclick", "javascript:shield();");
 
             //Concordance 内的控件事件绑定
             btnSubmitConcordance.Click += BtnSubmitConcordance_Click;
             btnSubmitConcordance.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnReConc.Click += BtnReConc_Click;
+            btnReConc.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             gvConcordance.RowDataBound += GvConcordance_RowDataBound;
             gvConcordance.PageIndexChanging += GvConcordance_PageIndexChanging;
             gvConcordance.RowCommand += GvConcordance_RowCommand;
@@ -62,6 +68,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             btnSubmitCollocate.Click += BtnSubmitCollocate_Click;
             btnSubmitCollocate.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnReColl.Click += BtnReColl_Click;
+            btnReColl.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
+
             gvCollocate.RowDataBound += GvCollocate_RowDataBound;
             gvCollocate.PageIndexChanging += GvCollocate_PageIndexChanging;
             gvCollocate.RowCommand += GvCollocate_RowCommand;
@@ -70,13 +78,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCollComputed.PageIndexChanging += GvCollComputed_PageIndexChanging;
             gvCollComputed.RowDataBound += GvCollComputed_RowDataBound;
             btnCloseColl.Click += BtnCloseColl_Click;
+            btnCloseColl.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnViewColl.Click += BtnViewColl_Click;
             btnViewColl.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             //Compare提交按钮点击事件
             btnCompared.Click += BtnCompared_Click;
             btnCompared.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnBackToCompare.Click += BtnBackToCompare_Click;
-
+            btnBackToCompare.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             //词汇表选择
             rbVBS.SelectedIndexChanged += RbVBS_SelectedIndexChanged;
 
@@ -111,7 +120,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             for (int i = 0; i < dtSource.Rows.Count; i++)
             {
                 DataRow dr = dtSource.Rows[i];
-                string strContext = FSCDLL.DAL.SystemDataExtension.GetString(dr, keyCol);
+                string strContext = SystemDataExtension.GetString(dr, keyCol);
                 if (strContext != string.Empty)
                 {
                     sb.AppendLine(strContext);
@@ -124,8 +133,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string libName = rbVBS.SelectedValue;
             string txtToLemma = ViewState["LemmaContext"].ToString();
-            string kWords = ViewState["KeyWords"].ToString();
-            TextLemma(txtToLemma, kWords, libName);
+            string lastViewIndex = hdfvwIndex.Value;
+            ShowContext(null, txtToLemma, libName, lastViewIndex);
         }
 
         #endregion
@@ -189,7 +198,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
 
 
-        public StringBuilder GetCopusContext(IEnumerable<List<string>> showWordsList, string keyWords)
+        public StringBuilder GetHighlightContext(IEnumerable<List<string>> showWordsList, string keyWords)
         {
             StringBuilder sb = new StringBuilder();
             string[] strENLevels = new string[7] { "UN", "C1", "C2", "A1", "A2", "B1", "B2" };//级别英文简称，主要用于样式表对应
@@ -408,9 +417,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtSummary.Columns.Add("wstandard");
             dtSummary.Columns.Add("pAvglength");
             dtSummary.Columns.Add("pstandard");
-            List<string> listFK = listFKs;
-            listFK.Remove(fkid);//删除本次针对性的元素
-            foreach (string fk in listFK)
+            listFKs.Remove(fkid);//删除本次针对性的元素
+            foreach (string fk in listFKs)
             {
                 dtSummary.Columns.Add(fk);
             }
@@ -425,8 +433,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             drSummary[6] = "mean word length standard deviation";
             drSummary[7] = "mean in words";
             drSummary[8] = "standard deviation";
-            drSummary[9] = listFK[0].Replace("ID", "s");
-            drSummary[10] = listFK[1].Replace("ID", "s");
+            drSummary[9] = listFKs[0].Replace("ID", "s");
+            drSummary[10] = listFKs[1].Replace("ID", "s");
             dtSummary.Rows.Add(drSummary);
             #endregion 构造汇总表
 
@@ -463,13 +471,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                                     listWords.Add(wd);//获取单词长度
                                 }
                             }
-                            string strFks = dr[listFK[0]].ToString();
+                            string strFks = dr[listFKs[0]].ToString();
                             if (!fk1.Contains(strFks))
                             {
                                 fk1.Add(strFks);
                             }
 
-                            strFks = dr[listFK[1]].ToString();
+                            strFks = dr[listFKs[1]].ToString();
                             if (!fk2.Contains(strFks))
                             {
                                 fk2.Add(strFks);
@@ -524,10 +532,60 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     dtSummary.Rows.Add(drSummary);
                 }
             }
-            listFK.Add(fkid);//将数组删除的元素还原
+            listFKs.Add(fkid);//将数组删除的元素还原
             return dtSummary;
         }
 
+
+        /// <summary>
+        /// 获取文本的统计信息
+        /// </summary>
+        /// <param name="paraContext">文本内容</param>
+        private Dictionary<int, string> GetTextRange(string paraContext)
+        {
+            Dictionary<int, string> dictRange = new Dictionary<int, string>();
+            List<string> listWords = new List<string>();
+            List<int> listParaLength = new List<int>();
+            Dictionary<int, List<string>> dictPara = Common.ParseSentences(paraContext);//对本类别下的语篇进行句子拆分，生成句子序列和句子对应的单词词组
+            foreach (int key in dictPara.Keys)
+            {
+                listParaLength.Add(dictPara[key].Count);
+                foreach (string wd in dictPara[key])
+                {
+                    listWords.Add(wd);//获取单词长度
+                }
+            }
+            double avg = listParaLength.Average();
+            dictRange.Add(5, string.Format("<th>mean in words</th><td>{0}</td>", avg.ToString("0.00")));//平均句长 mean in words
+            double sum = listParaLength.Sum(d => Math.Pow(d - avg, 2));//计算各数值与平均数的差值的平方，然后求和
+            //除以数量，然后开方
+            double standard = Math.Sqrt(sum / listParaLength.Count);
+            dictRange.Add(6, string.Format("<th>standard deviation</th><td>{0}</td>", standard.ToString("0.00")));//句长标准差
+
+
+            int tokens = listWords.Count;
+            List<int> listWordLength = new List<int>();
+            foreach (string wd in listWords)
+            {
+                listWordLength.Add(wd.Length);
+            }
+            avg = listWordLength.Average();
+            dictRange.Add(3, string.Format("<th>mean word length (in characters)</th><td>{0}</td>", avg.ToString("0.00")));//平均词长
+            sum = listWordLength.Sum(d => Math.Pow(d - avg, 2));
+            standard = Math.Sqrt(sum / tokens);
+            dictRange.Add(4, string.Format("<th>mean word length standard deviation</th><td>{0}</td>", standard.ToString("0.00")));//词长标准差
+
+
+            dictRange.Add(1, string.Format("<th>tokens</th><td>{0}</td>", tokens));//单词总数 tokens
+
+            listWords = listWords.Distinct().ToList();
+            int types = listWords.Count;
+            dictRange.Add(0, string.Format("<th>types</th><td>{0}</td>", types));//去重复后单词数 types
+            double ttr = Convert.ToDouble(types) / Convert.ToDouble(tokens);
+            dictRange.Add(2, string.Format("<th>TTR</th><td>{0}</td>", ttr.ToString("0.00%")));//TTR
+
+            return dictRange;
+        }
 
         /// <summary>
         /// 显示检索结果表数据
@@ -896,11 +954,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             DataTable dtConcordance = (DataTable)ViewState["dtConcordance"];
             string strContext = ContactContextinTable(dtConcordance, "OriginalText");
-            string keyWord = ViewState["KeyWords"].ToString();
-            ViewState["LemmaContext"] = strContext;
-            mvNeulc.ActiveViewIndex = 6;
-            hdfvwIndex.Value = "1";
-            TextLemma(strContext, keyWord, "CECR");
+            ShowContext(null, strContext, "CECR", "1");
 
         }
 
@@ -918,17 +972,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 dtCorpusExtend = (ViewState["dtCorpusExtend"] as DataTable).Copy();
             }
-            DataTable dt = Common.GetCorpusByID(long.Parse(cpId), CorpusName, dtCorpusExtend);
-            if (dt != null)
+            DataTable dtSource = Common.GetCorpusByID(long.Parse(cpId), CorpusName, dtCorpusExtend);
+            if (dtSource != null)
             {
-                DataRow dr = dt.Rows[0];
-                string txtStr = FSCDLL.DAL.SystemDataExtension.GetString(dr, "OriginalText");
+                DataRow drSource = dtSource.Rows[0];
                 string kWords = ViewState["KeyWords"].ToString();
-                ViewState["LemmaContext"] = txtStr;
-                mvNeulc.ActiveViewIndex = 6;
-                hdfvwIndex.Value = "1";
-                TextLemma(txtStr, kWords, "CECR");//缺省第一次采用CECR词汇表计算
-                ShowContextInfo(dr, kWords);
+                ShowContext(drSource, "", "CECR", "1");
             }
             else
             {
@@ -939,48 +988,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
 
-        private void ShowContextInfo(DataRow dr, string kWords)
-        {
-            if (dr != null)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("<table>");
-                sb.AppendLine("<tr><th>Title:</th>");
-                sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Title")));
-                sb.AppendLine("<tr><th>Created:</th>");
-                sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Created")));
-                sb.AppendLine("<tr><th>Source:</th>");
-                sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Source")));
 
-                if (CorpusName == "NEULC")
-                {
-                    sb.AppendLine("<tr><th>Topic:</th>");
-                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Topic")));
-                    sb.AppendLine("<tr><th>Genre:</th>");
-                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Genre")));
-                    sb.AppendLine("<tr><th>Level:</th>");
-                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Level")));
-                }
-                else
-                {
-                    sb.AppendLine("<tr><th>Major:</th>");
-                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Major")));
-                    sb.AppendLine("<tr><th>Journal:</th>");
-                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Journal")));
-                    sb.AppendLine("<tr><th>Year:</th>");
-                    sb.AppendLine(string.Format("<td>{0}</td></tr>", SystemDataExtension.GetString(dr, "Year")));
-
-                }
-                sb.AppendLine("<tr><th>KeyWord:</th>");
-                sb.AppendLine(string.Format("<td>{0}</td></tr>", kWords));
-                sb.AppendLine("</table>");
-                divContextInfo.InnerHtml = sb.ToString();
-            }
-            else
-            {
-                divContextInfo.InnerHtml = "";
-            }
-        }
 
         private void GvConcordance_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -998,6 +1006,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
                 //当鼠标离开的时候 将背景颜色还原的以前的颜色
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+                if (e.Row.FindControl("lnkBtn") != null)
+                {
+                    LinkButton lnkBtn = (LinkButton)e.Row.FindControl("lnkBtn");
+                    lnkBtn.Attributes.Add("onclick", "javascript:shield();");
+                }
             }
 
             if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
@@ -1018,6 +1031,74 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #endregion Concordance事件
 
         #region Concordance方法
+
+        /// <summary>
+        /// 获取语料信息
+        /// </summary>
+        /// <param name="dr">数据行</param>
+        /// <param name="dr">要处理的正文</param>
+        /// <param name="kWords">关键词</param>
+        /// <param name="libName">词汇表名称</param>
+        private StringBuilder GetContextInfo(DataRow dr, string strContext, string kWords, string libName)
+        {
+            StringBuilder sb = new StringBuilder();
+            string txtStr = strContext;
+            sb.AppendLine("<fieldset id='fdsCInfo'><legend><span>Context Infomation</span></legend>");
+            sb.AppendLine("<table class='infoTable'>");
+            if (dr != null)
+            {
+                txtStr = SystemDataExtension.GetString(dr, "OriginalText");
+                sb.AppendLine("<tr>");
+                sb.AppendLine(string.Format("<th>Title</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Title")));
+                sb.AppendLine(string.Format("<th>Created</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Created")));
+                sb.AppendLine("</tr>");
+                sb.AppendLine("<tr>");
+                sb.AppendLine(string.Format("<th>Source</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Source")));
+
+                if (CorpusName == "NEULC")
+                {
+                    sb.AppendLine(string.Format("<th>Topic</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Topic")));
+                    sb.AppendLine("</tr>");
+                    sb.AppendLine("<tr>");
+                    sb.AppendLine(string.Format("<th>Genre</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Genre")));
+                    sb.AppendLine(string.Format("<th>Level</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Level")));
+                }
+                else
+                {
+                    sb.AppendLine(string.Format("<th>Major</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Major")));
+                    sb.AppendLine("</tr>");
+                    sb.AppendLine("<tr>");
+                    sb.AppendLine(string.Format("<th>Journal</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Journal")));
+                    sb.AppendLine(string.Format("<th>Year</th><td>{0}</td>", SystemDataExtension.GetString(dr, "Year")));
+                }
+                sb.AppendLine("</tr>");
+            }
+            if (kWords != "")
+            {
+                sb.AppendLine("<tr>");
+                sb.AppendLine(string.Format("<th>KeyWord</th><td><strong>{0}</strong></td>", kWords));
+                sb.AppendLine(string.Format("<th>The number of KeyWord in this corpus</th><td>{0}</td>", Regex.Matches(txtStr, kWords).Count));
+                sb.AppendLine("</tr>");
+            }
+
+            Dictionary<int, string> dictRange = GetTextRange(txtStr);
+            var dictSort = from objDic in dictRange orderby objDic.Key ascending select objDic;
+            sb.AppendLine("<tr>");
+            foreach (KeyValuePair<int, string> kvp in dictSort)
+            {
+                if (kvp.Key % 2 == 0)
+                {
+                    sb.AppendLine("</tr>");
+                    sb.AppendLine("<tr>");
+                }
+                sb.AppendLine(kvp.Value);
+            }
+            sb.AppendLine(string.Format("<th>vocabulary</th><td>{0}</td>", libName));
+            sb.AppendLine("</tr>");
+            sb.AppendLine("</table>");
+            sb.AppendLine("</fieldset>");
+            return sb;
+        }
 
         /// <summary>
         /// 从单词位置标记下拉框和单词匹配数，获取匹配项的左右各要匹配的单词数
@@ -1139,17 +1220,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             DataTable dtCollFilter = (DataTable)ViewState["dtCollFilter"];
             string strContext = ContactContextinTable(dtCollFilter, "OriginalText");
-            string keyWord = ViewState["KeyWords"].ToString();
-            ViewState["LemmaContext"] = strContext;
-            mvNeulc.ActiveViewIndex = 6;
-            hdfvwIndex.Value = "2";
-            TextLemma(strContext, keyWord, "CECR");
+            ShowContext(null, strContext, "CECR", "2");
         }
 
         private void GvCollocate_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Page") return;
             string cpId = e.CommandArgument.ToString();
+
             DataTable dtCorpusExtend;
             if (ViewState["dtCorpusExtend"] == null)
             {
@@ -1166,11 +1244,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 DataRow dr = dt.Rows[0];
                 string txtStr = SystemDataExtension.GetString(dr, "OriginalText");
                 ViewState["LemmaContext"] = txtStr;
-                mvNeulc.ActiveViewIndex = 6;
-                hdfvwIndex.Value = "2";
-                string kWords = ViewState["KeyWords"].ToString();
-                TextLemma(txtStr, kWords, "CECR");//缺省第一次采用CECR词汇表计算
-                ShowContextInfo(dr, kWords);
+                ShowContext(dr, "", "CECR", "2");//缺省第一次采用CECR词汇表计算
             }
             else
             {
@@ -1188,6 +1262,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
                 //当鼠标离开的时候 将背景颜色还原的以前的颜色
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+                if (e.Row.FindControl("lnkBtn") != null)
+                {
+                    LinkButton lnkBtn = (LinkButton)e.Row.FindControl("lnkBtn");
+                    lnkBtn.Attributes.Add("onclick", "javascript:shield();");
+                }
             }
         }
 
@@ -1244,6 +1323,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
                 //当鼠标离开的时候 将背景颜色还原的以前的颜色
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+                if (e.Row.FindControl("lnkBtn") != null)
+                {
+                    LinkButton lnkBtn = (LinkButton)e.Row.FindControl("lnkBtn");
+                    lnkBtn.Attributes.Add("onclick", "javascript:shield();");
+                }
             }
             if (e.Row.RowType == DataControlRowType.DataRow || e.Row.RowType == DataControlRowType.Header)
             {
@@ -1513,8 +1597,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 string txtfrom = hdftxtFrom.Value;
                 if (txtfrom == "0")//用户输入的文本处理
                 {
-                    #region  保存要处理的文本
-                    //仅有处理非语料库内的文本时才做保存采集操作
+                    #region  保存要处理的文本：仅有处理非语料库内的文本时才做保存采集操作
+                    DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
+                    //DataView dv = dtCorpus.DefaultView;
+                    //string sqlFilter= string.Format(" OriginalText = '{0}'", txtStr);
+                    //DataTable dtSelect =FSCDLL.DAL.Corpus.GetCorpusByFilterString(sqlFilter).Tables[0];
+                    //if (dtSelect.Rows.Count <= 0)//本次处理的文本没有保存过
+                    //{
                     int userId = FSCDLL.Common.Users.UserID;
                     DateTime dtNow = DateTime.Now;
                     string nowStr = string.Format("{0:yyyyMMddHHmmssffff}", dtNow);//时间格式字符串：年月日时分秒4位毫秒
@@ -1533,41 +1622,25 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     {
                         titleStr = string.Format("{0}-{1}", txt_Title.Value.Trim(), authorName);//标题
                     }
-
-                    DataTable dtCorpus = FSCDLL.DAL.Corpus.GetCorpus().Tables[0];
-                    DataView dv = dtCorpus.DefaultView;
-                    dv.RowFilter = string.Format(" OriginalText = '{0}'", txtStr);
-                    //筛选可使用通配符%,*实现
-                    dv.RowFilter = string.Format("OriginalText like '%{0}%'", txtStr);
-                    //将查得的数据转换为DataTable
-                    DataTable dtSelect = dv.ToTable();
-                    if (dtSelect.Rows.Count <= 0)//本次处理的文本没有保存过
+                    DataRow drCorpus = dtCorpus.Rows.Add();
+                    drCorpus["Title"] = titleStr;
+                    drCorpus["OriginalText"] = txtStr;
+                    drCorpus["Created"] = dtNow;
+                    drCorpus["Author"] = userId;
+                    string splitStr = "";
+                    if (CorpusName == "NEULC")
                     {
-                        DataRow drCorpus = dtCorpus.NewRow();
-                        drCorpus["Title"] = titleStr;
-                        drCorpus["OriginalText"] = txtStr;
-                        drCorpus["Created"] = dtNow;
-                        drCorpus["Author"] = userId;
-                        string splitStr = "";
-                        if (CorpusName == "NEULC")
-                        {
-                            splitStr = ";";
-                        }
-                        drCorpus["Source"] = string.Format("{0}-{1}", CorpusName, authorName);//用户录入的材料，标记来源为语料库名称＋authorName
-                        drCorpus["TopicID"] = splitStr + ddlTopics.SelectedValue + splitStr;
-                        drCorpus["Flag"] = 3;
-                        FSCDLL.DAL.Corpus.InsertCorpus(null, drCorpus);
-                        dtCorpus.Rows.Add(drCorpus);
-                        dtCorpus.AcceptChanges();
+                        splitStr = ";";
                     }
-                    #endregion  保存要处理的文本
-
-                    ViewState["LemmaContext"] = txtStr;
-                    mvNeulc.ActiveViewIndex = 6;
-                    hdfvwIndex.Value = "3";
-
+                    drCorpus["Source"] = string.Format("{0}-{1}", CorpusName, authorName);//用户录入的材料，标记来源为语料库名称＋authorName
+                    drCorpus["TopicID"] = splitStr + ddlTopics.SelectedValue + splitStr;
+                    drCorpus["Flag"] = 3;
+                    FSCDLL.DAL.Corpus.InsertCorpus(null, drCorpus);
+                    dtCorpus.AcceptChanges();
+                    //}
+                    #endregion  保存要处理的文本：仅有处理非语料库内的文本时才做保存采集操作
                     ViewState["KeyWords"] = "";
-                    TextLemma(txtStr, "", "CECR");//缺省第一次采用CECR词汇表计算
+                    ShowContext(null, txtStr, "CECR", "3");//缺省第一次采用CECR词汇表计算
                 }
             }
 
@@ -1580,7 +1653,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// 返回WordList处理前界面
         /// </summary>
         /// <param name="isClear">是否清空</param>
-        private void ReLemma(int isClear)
+        private void BacktoWordList(int isClear)
         {
             string txtFrom = hdftxtFrom.Value;
             if (txtFrom == "0")//本次处理的是用户输入的文本，则仍返回用户输入界面
@@ -1607,7 +1680,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     rbVBS.ClearSelection();
                 }
             }
-            divContext.InnerHtml = "等待处理结果中...";
+            divContextHighLight.InnerHtml = "等待处理结果中...";
             dlChart.InnerHtml = "等待处理结果中...";
         }
 
@@ -1624,12 +1697,23 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
 
         /// <summary>
-        /// 对语料或用户文本执行级别标记输出
+        /// 获取语料或用户文本的基本信息并执行级别标记输出
         /// </summary>
-        /// <param name="txtStr">要处理的文本</param>
-        private void TextLemma(string txtStr, string kWords, string libName)
+        /// <param name="drSource">包含正文的数据行</param>
+        /// <param name="strContext">要处理的文本</param>
+        /// <param name="libName">词库名称</param>
+        /// <param name="lastViewIndex">处理前的视图索引号</param>
+        private void ShowContext(DataRow drSource, string strContext, string libName, string lastViewIndex)
         {
+            dlChart.InnerHtml = "";
+            divContextHighLight.InnerHtml = "";
+            divContextInfo.InnerHtml = "";
             #region 0 先过滤掉网址等干扰文本
+            string txtStr = strContext;
+            if (drSource != null)
+            {
+                txtStr = SystemDataExtension.GetString(drSource, "OriginalText");
+            }
             const string regEx = @"((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\&%_\./-~-]*)?";
             txtStr = Regex.Replace(txtStr, regEx, ";");//正则表达式排除文中的网址
             #endregion 0 先过滤掉网址等干扰文本
@@ -1649,6 +1733,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             #endregion 1 过滤文本判断是否包含有英文单词
             else
             {
+                lbErr.Text = "";
                 #region 2 参照词库选择
                 int maxIndex = 4;
                 string libFile = string.Format("{0}words/{1}.txt", dbPath, libName);//包含原型与变型以及对应等级的词汇表
@@ -1661,18 +1746,28 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 #region 4 WordList和结果输出
                 if (allwordsList.Count > 0)
                 {
-                    var showWordsList = (List<List<string>>)allwordsList[0];//文本处理后包含的级别及每个级别词频的列表集合
-                    DataTable dt = OutputResult.InitWordsAnalysisTable(showWordsList, maxIndex, symbolFile);
+                    hdfvwIndex.Value = lastViewIndex;
+                    mvNeulc.ActiveViewIndex = 6;
+                    List<List<string>> showWordsList = (List<List<string>>)allwordsList[0];//文本处理后包含的级别及每个级别词频的列表集合
+                    DataTable dtWordsAnalysisTable = OutputResult.InitWordsAnalysisTable(showWordsList, maxIndex, symbolFile);
 
                     StringBuilder sb = new StringBuilder();
-                    for (int k = 0; k < dt.Rows.Count; k++)
+                    for (int k = 0; k < dtWordsAnalysisTable.Rows.Count; k++)
                     {
-                        DataRow dr = dt.Rows[k];
-                        sb.Append(GetLegend(dr[0].ToString(), int.Parse(dr[1].ToString()), txtlist.Count));
+                        DataRow drWordsAnalysis = dtWordsAnalysisTable.Rows[k];
+                        sb.Append(GetLegend(drWordsAnalysis[0].ToString(), int.Parse(drWordsAnalysis[1].ToString()), txtlist.Count));
                     }
 
                     dlChart.InnerHtml = sb.ToString();
-                    divContext.InnerHtml = GetCopusContext(showWordsList, kWords).ToString();
+                    string kWords = ViewState["KeyWords"].ToString();
+                    divContextHighLight.InnerHtml = GetHighlightContext(showWordsList, kWords).ToString();
+                    ViewState["LemmaContext"] = txtStr;
+                    divContextInfo.InnerHtml = GetContextInfo(drSource, txtStr, kWords, libName).ToString();
+                }
+                else
+                {
+                    lbErr.Text = "语料中不包含英文单词，无法处理！";
+                    return;
                 }
                 #endregion 4 WordList和结果输出
             }
@@ -1689,7 +1784,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
 
 
-        #endregion WordList方法
+        #endregion
 
         #endregion 6 WordList：将语料库或者用户输入文本按照词汇登记表标记文本中各个级别单词的分布
 
