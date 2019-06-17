@@ -917,7 +917,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     gvConcordance.PageSize = int.Parse(pageSize);
                     showLimit = string.Format("{0} matches with <strong>{1}</strong> per page", showLimit, pageSize);
 
-                    spConcCount.InnerHtml = string.Format("Total number of matches with \"<strong>{0}</strong>\" is <strong>{1}</strong> ; {2}", keyConc, rCount, showLimit);
+                    spConcCount.InnerHtml = string.Format("Total number of matches with <strong>\"{0}\"</strong> is <strong>{1}</strong> ; {2}", keyConc, rCount, showLimit);
                     GVBind(gvConcordance, dtConcordance);
 
                     ViewState["dtConcordance"] = dtConcordance;
@@ -926,7 +926,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     divConcTips.Visible = true;
                     if (dispCount > 100)
                     {
-                        spConcTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context;The \"View All\" Button is disabled because Total number of matches with \"<strong>{0}</strong>\" is larger than 100.", keyConc);
+                        spConcTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context;The \"View All\" Button is disabled because Total number of matches with <strong>\"{0}\"</strong> is larger than 100.", keyConc);
                         btnViewConc.Enabled = false;
                     }
                     else
@@ -1043,7 +1043,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             StringBuilder sb = new StringBuilder();
             string txtStr = strContext;
-            sb.AppendLine("<fieldset id='fdsCInfo'><legend><span>Context Infomation</span></legend>");
+            sb.AppendLine("<fieldset id='fdsCInfo'><legend><span style='font-size:14px;font-weight:bold;'>Context Infomation</span></legend>");
             sb.AppendLine("<table class='infoTable'>");
             if (dr != null)
             {
@@ -1174,7 +1174,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         dtCollComputed.DefaultView.Sort = "totalTimes desc";
                         dtCollComputed.TableName = "Table-CollComputed";
                         ViewState["dtCollComputed"] = dtCollComputed;
-                        spCoLLComputedCount.InnerHtml = string.Format("Total number of matches with \"<strong>{0}</strong>\" is <strong>{1}</strong>", matchKey, dtCollComputed.Rows.Count);
+                        spCoLLComputedCount.InnerHtml = string.Format("Total number of matches with <strong>\"{0}\"</strong> is <strong>{1}</strong>", matchKey, dtCollComputed.Rows.Count);
 
                         GVBind(gvCollComputed, dtCollComputed);
                         ViewState["dtCollocate"] = dtCollocate;
@@ -1289,11 +1289,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             ViewState["dtCollFilter"] = dtFilter;
 
             divCollView.Visible = true;
-            spCoLLCount.InnerHtml = string.Format("Total number of matches with \"<strong>{0}</strong>\" is <strong>{1}</strong>", e.CommandArgument, dtFilter.Rows.Count);
+            spCoLLCount.InnerHtml = string.Format("Total number of matches with <strong>\"{0}\"</strong> is <strong>{1}</strong>", e.CommandArgument, dtFilter.Rows.Count);
 
             if (dtFilter.Rows.Count > 100)
             {
-                spCollTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context;The \"View All\" Button is disabled because Total number of matches with \"<strong>{0}</strong>\" is larger than 100.", e.CommandArgument);
+                spCollTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context;The <strong>\"View All\"</strong> Button is disabled because Total number of matches with <strong>\"{0}\"</strong> is larger than 100.", e.CommandArgument);
                 btnViewColl.Enabled = false;
             }
             else

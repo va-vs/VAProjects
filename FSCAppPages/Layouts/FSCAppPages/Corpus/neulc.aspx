@@ -369,7 +369,7 @@
 }
 		.infoTable td {
 	padding: 10px;
-	text-align: center;
+	text-align: left;
 }
 		.infoTable tr:nth-of-type(odd) {
 	border: 1pt solid #d1e0fb;
@@ -1040,7 +1040,7 @@
                             <%-- 这是文本的基本信息 --%>
                         </div>
                         <fieldset>
-                            <legend>Expanded context</legend>
+                            <legend><span style="font-size:14px;font-weight:bold;">Expanded context</span></legend>
 						<div class="divmain">
 							<table>
 								<tr>
