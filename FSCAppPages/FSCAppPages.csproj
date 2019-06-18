@@ -149,6 +149,7 @@
     <Content Include="Layouts\FSCAppPages\Corpus\index.aspx" />
     <Content Include="Layouts\FSCAppPages\Corpus\neuac.aspx" />
     <Content Include="Layouts\FSCAppPages\Corpus\neulc.aspx" />
+    <Content Include="Layouts\FSCAppPages\css\pageStyle.css" />
     <Content Include="Layouts\FSCAppPages\css\style.css" />
     <Content Include="Layouts\FSCAppPages\css\stylelc.css" />
     <Content Include="Layouts\FSCAppPages\css\tab.css" />

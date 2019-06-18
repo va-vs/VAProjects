@@ -13,6 +13,7 @@
 
 <asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
 	<link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets/css/stylelc.css" type="text/css" />
+    <link rel="Stylesheet" href="../css/pageStyle.css" type="text/css" /> 
 	<link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets/css/highlight.css" type="text/css" />
 	<link rel="stylesheet" href="../css/tab.css" type="text/css" />
 	<script type="text/javascript">
@@ -688,7 +689,7 @@
 							<SortedAscendingHeaderStyle BackColor="#6D95E1" />
 							<SortedDescendingCellStyle BackColor="#E9EBEF" />
 							<SortedDescendingHeaderStyle BackColor="#4870BE" />
-							<PagerStyle Font-Bold="False" Font-Size="Medium" Font-Underline="True" HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" />
+							<PagerStyle BackColor="#507CD1" Font-Bold="false" Font-Size="Medium" Font-Underline="True" HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" CssClass="pagination" />
 						</asp:GridView>
 						<div id="divConcTips" runat="server" style="width: 98%; padding: 10px;" visible="false">
 							<span id="spConcTips" class="gvtips" runat="server">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
@@ -780,7 +781,7 @@
 								<AlternatingRowStyle BackColor="White" />
 								<FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
 								<HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
-								<PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+								<PagerStyle BackColor="#507CD1" HorizontalAlign="Center" CssClass="pagination" />
 								<RowStyle BackColor="#EFF3FB" />
 								<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
 								<SortedAscendingCellStyle BackColor="#F5F7FB" />
@@ -836,7 +837,7 @@
 								<EditRowStyle BackColor="#2461BF" />
 								<FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
 								<HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
-								<PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+								<PagerStyle BackColor="#507CD1" HorizontalAlign="Center" CssClass="pagination" />
 								<RowStyle BackColor="#EFF3FB" />
 								<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
 								<SortedAscendingCellStyle BackColor="#F5F7FB" />
