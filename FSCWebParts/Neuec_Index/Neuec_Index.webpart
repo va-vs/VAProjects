@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="FSCWebParts.Neuec_Index.Neuec_Index, $SharePoint.Project.AssemblyFullName$" />
+      <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="Title" type="string">NEUEC首页</property>
+        <property name="Description" type="string">东北大学英语语料库系统首页</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>

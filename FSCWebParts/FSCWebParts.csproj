@@ -69,6 +69,7 @@
     <Compile Include="Corpus\CorpusUserControl.ascx.designer.cs">
       <DependentUpon>CorpusUserControl.ascx.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataTableReader.cs" />
     <Compile Include="ListItemNav\ListItemNav.cs" />
     <Compile Include="ListItemNav\ListItemNavUserControl.ascx.cs">
       <DependentUpon>ListItemNavUserControl.ascx</DependentUpon>
@@ -76,6 +77,13 @@
     </Compile>
     <Compile Include="ListItemNav\ListItemNavUserControl.ascx.designer.cs">
       <DependentUpon>ListItemNavUserControl.ascx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Neuec_Index\Neuec_IndexUserControl.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Neuec_Index\Neuec_Index.cs" />
+    <Compile Include="Neuec_Index\Neuec_IndexUserControl.ascx.designer.cs">
+      <DependentUpon>Neuec_IndexUserControl.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="PerformanceSummary\PerformanceSummary.cs" />
     <Compile Include="PerformanceSummary\PerformanceSummaryUserControl.ascx.cs">
@@ -108,6 +116,10 @@
     <None Include="ListItemNav\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{b52492a7-9327-418d-9db8-4fd408ceb3e1}</SharePointProjectItemId>
     </None>
+    <None Include="Neuec_Index\Neuec_Index.webpart" />
+    <None Include="Neuec_Index\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{e98e4800-c574-43a6-a7fb-bc697183c37b}</SharePointProjectItemId>
+    </None>
     <None Include="Package\Package.package">
       <PackageId>{9639c998-747f-44e5-b82e-fe2e86f7433c}</PackageId>
     </None>
@@ -132,6 +144,8 @@
     </Content>
     <Content Include="ListItemNav\Elements.xml" />
     <Content Include="ListItemNav\ListItemNavUserControl.ascx" />
+    <Content Include="Neuec_Index\Elements.xml" />
+    <Content Include="Neuec_Index\Neuec_IndexUserControl.ascx" />
     <Content Include="PerformanceSummary\Elements.xml" />
     <Content Include="PerformanceSummary\PerformanceSummaryUserControl.ascx" />
   </ItemGroup>
