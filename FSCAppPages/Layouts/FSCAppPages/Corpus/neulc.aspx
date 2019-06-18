@@ -13,7 +13,7 @@
 
 <asp:Content ID="PageHead" ContentPlaceHolderID="PlaceHolderAdditionalPageHead" runat="server">
 	<link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets/css/stylelc.css" type="text/css" />
-    <link rel="Stylesheet" href="../css/pageStyle.css" type="text/css" /> 
+    <link rel="Stylesheet" href="../css/pageStyle.css" type="text/css" />
 	<link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets/css/highlight.css" type="text/css" />
 	<link rel="stylesheet" href="../css/tab.css" type="text/css" />
 	<script type="text/javascript">
@@ -680,16 +680,16 @@
 									<ItemStyle HorizontalAlign="left" />
 								</asp:TemplateField>
 							</Columns>
-							<EditRowStyle BackColor="#2461BF" />
-							<FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-							<HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+							<EditRowStyle BackColor="#036cb4" />
+							<FooterStyle Font-Bold="True"/>
+							<HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
 							<RowStyle BackColor="#EFF3FB" />
 							<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
 							<SortedAscendingCellStyle BackColor="#F5F7FB" />
 							<SortedAscendingHeaderStyle BackColor="#6D95E1" />
 							<SortedDescendingCellStyle BackColor="#E9EBEF" />
-							<SortedDescendingHeaderStyle BackColor="#4870BE" />
-							<PagerStyle BackColor="#507CD1" Font-Bold="false" Font-Size="Medium" Font-Underline="True" HorizontalAlign="Center" VerticalAlign="Middle" Width="20px" CssClass="pagination" />
+							<SortedDescendingHeaderStyle BackColor="#036cb4" />
+							<PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
 						</asp:GridView>
 						<div id="divConcTips" runat="server" style="width: 98%; padding: 10px;" visible="false">
 							<span id="spConcTips" class="gvtips" runat="server">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
@@ -778,16 +778,16 @@
 										<ItemStyle HorizontalAlign="center" />
 									</asp:TemplateField>
 								</Columns>
-								<AlternatingRowStyle BackColor="White" />
-								<FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-								<HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
-								<PagerStyle BackColor="#507CD1" HorizontalAlign="Center" CssClass="pagination" />
-								<RowStyle BackColor="#EFF3FB" />
-								<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-								<SortedAscendingCellStyle BackColor="#F5F7FB" />
-								<SortedAscendingHeaderStyle BackColor="#6D95E1" />
-								<SortedDescendingCellStyle BackColor="#E9EBEF" />
-								<SortedDescendingHeaderStyle BackColor="#4870BE" />
+								<EditRowStyle BackColor="#036cb4" />
+							<FooterStyle Font-Bold="True" Height="25px"/>
+							<HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center"  Height="25px"/>
+							<RowStyle BackColor="#EFF3FB" />
+							<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+							<SortedAscendingCellStyle BackColor="#F5F7FB" />
+							<SortedAscendingHeaderStyle BackColor="#6D95E1" />
+							<SortedDescendingCellStyle BackColor="#E9EBEF" />
+							<SortedDescendingHeaderStyle BackColor="#036cb4" />
+							<PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
 							</asp:GridView>
 							<div id="divCollComputedTips" runat="server" style="width: 98%; padding: 10px;">
 								<span class="gvtips">Click on the <strong>"Match"</strong> in each row of the list to view the corpus with the match</span>
@@ -834,16 +834,16 @@
 										<ItemStyle HorizontalAlign="left" />
 									</asp:TemplateField>
 								</Columns>
-								<EditRowStyle BackColor="#2461BF" />
-								<FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-								<HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
-								<PagerStyle BackColor="#507CD1" HorizontalAlign="Center" CssClass="pagination" />
-								<RowStyle BackColor="#EFF3FB" />
-								<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-								<SortedAscendingCellStyle BackColor="#F5F7FB" />
-								<SortedAscendingHeaderStyle BackColor="#6D95E1" />
-								<SortedDescendingCellStyle BackColor="#E9EBEF" />
-								<SortedDescendingHeaderStyle BackColor="#4870BE" />
+								<EditRowStyle BackColor="#036cb4" />
+							<FooterStyle Font-Bold="True" Height="25px"/>
+							<HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" Height="25px" />
+							<RowStyle BackColor="#EFF3FB" />
+							<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+							<SortedAscendingCellStyle BackColor="#F5F7FB" />
+							<SortedAscendingHeaderStyle BackColor="#6D95E1" />
+							<SortedDescendingCellStyle BackColor="#E9EBEF" />
+							<SortedDescendingHeaderStyle BackColor="#036cb4" />
+							<PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
 
 							</asp:GridView>
 							<div id="divCollTips" style="width: 98%; padding: 10px;" runat="server">
@@ -932,8 +932,8 @@
 									</asp:TemplateField>
 								</Columns>
 								<EditRowStyle BackColor="#2461BF" />
-								<FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
-								<HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+								<FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"  Height="25px"/>
+								<HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"  Height="25px"/>
 								<PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
 								<RowStyle BackColor="#EFF3FB" />
 								<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />

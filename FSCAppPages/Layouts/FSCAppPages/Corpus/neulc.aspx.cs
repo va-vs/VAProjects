@@ -926,7 +926,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     divConcTips.Visible = true;
                     if (dispCount > 100)
                     {
-                        spConcTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context;The \"View All\" Button is disabled because Total number of matches with <strong>\"{0}\"</strong> is larger than 100.", keyConc);
+                        spConcTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context", keyConc);
                         btnViewConc.Enabled = false;
                     }
                     else
