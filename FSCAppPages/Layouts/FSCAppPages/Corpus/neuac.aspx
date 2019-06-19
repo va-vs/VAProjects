@@ -18,15 +18,27 @@
 		}
 
 		.qfld fieldset {
-			border: 1px solid #808080;
-			margin: 5px;
-			line-height: 30px;
+            background: rgba(255,255,255,.3);
+            border-color: rgba(255,255,255,.6);
+            border-style: solid;
+            border-width: 1px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -khtml-border-radius: 5px;
+            border-radius: 5px;
+            line-height: 30px;
+            list-style: none;
+            padding: 5px 10px;
+            margin-bottom: 5px;
 		}
 
 		.qfld fieldset legend {
 			text-align: left;
 			font-weight: bold;
 			font-size: 15px;
+            color:#302A2A;
+            font: bold 16px/2 Verdana, Geneva, sans-serif;
+            text-shadow: 2px 2px 2px rgb(88, 126, 156);
 		}
         .qfld fieldset legend input{
 			margin-left:5em;
@@ -143,7 +155,7 @@
         }
     </style>
     <script type="text/javascript">
-		
+
 		function HighLightthis(val) {
 			var setValue = val.getAttribute("data-Level");
 			var obj = js("<%=divContext.ClientID%>");
@@ -190,7 +202,7 @@
 				}
 			}
 		}
-	
+
 	</script>
 </asp:Content>
 

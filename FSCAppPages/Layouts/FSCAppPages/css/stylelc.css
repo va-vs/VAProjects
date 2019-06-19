@@ -152,6 +152,56 @@
 }
 
 
+.qfld {
+			border: none;
+			line-height: 25px;
+		}
+
+		.qfld fieldset {
+            background: rgba(255,255,255,.3);
+            border-color: rgba(255,255,255,.6);
+            border-style: solid;
+            border-width: 1px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -khtml-border-radius: 5px;
+            border-radius: 5px;
+            line-height: 30px;
+            list-style: none;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+		}
+
+		.qfld fieldset legend {
+			text-align: left;
+			font-weight: bold;
+			font-size: 15px;
+            color:#302A2A;
+            font: bold 16px/2 Verdana, Geneva, sans-serif;
+            text-shadow: 2px 2px 2px rgb(88, 126, 156);
+		}
+        .qfld fieldset legend input{
+			margin-left:5em;
+		}
+        .qfld fieldset legend label{
+			font-weight:normal;
+		}
+        .qfld table{
+            width:100%;
+            margin:5px;
+            border:none;
+        }
+        .qfld table tr{
+            padding:5px;
+        }
+        .qfld table tr th{
+            padding:5px;
+            text-align:right;
+        }
+        .qfld table tr td{
+            padding:5px;
+            text-align:left;
+        }
 
 
 .resultDiv {
@@ -474,6 +524,13 @@ span.MW {
 					color: red;
 					text-decoration: none;
 				}
+                .sptips{
+	padding: 5px;
+	font-size: 13px;
+	background-color: #CCCCCC;
+	color: #333333;
+	border-color:#d7d889;
+	}
 /*admin*/
 .addBtn {
 	font-weight: bold;
