@@ -150,7 +150,44 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             //return dtTotals;
         }
         #endregion
-
+        #region Cluster
+        /// <summary>
+        /// 返回一段语料中的语族
+        /// </summary>
+        /// <param name="corpusContext">文本</param>
+        /// <param name="ClusterLength">词族的长度</param>
+        /// <returns></returns>
+        public static DataTable   GetClusterFromCorpus(string corpusContext,int ClusterLength)
+        {
+            DataTable dt = new DataTable();
+            List<string> words=ParseWords(corpusContext);
+            dt.Columns.Add("Cluster", typeof(string));
+            dt.Columns.Add("Count", typeof(int));
+            DataRow dr;
+            DataRow[] drs;
+            int i = 0;
+            string cluster;
+            while (i <= words.Count - ClusterLength)
+            {
+                cluster = GetPhrase(words, words[i], 0, ClusterLength-1,i);
+                drs = dt.Select("Cluster='" + cluster + "'");
+                if (drs.Length > 0)
+                {
+                    dr = drs[0];
+                    dr["Count"] = int.Parse(dr["Count"].ToString()) + 1;
+                }
+                else
+                {
+                    dr = dt.Rows.Add();
+                    dr["Cluster"] = cluster;
+                    dr["Count"] = 1;
+                }
+                i = i + 1;
+            }
+            return dt;
+            
+        }
+        #endregion
         #region 句子中检索单词
         /// <summary>
         /// 通过要查找的单词获取短语字符串
@@ -160,11 +197,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="leftWords">左边的单词个数</param>
         /// <param name="rightWords">右边的单词个数</param>
         /// <returns></returns>
-        private static string GetPhrase(List<string> words, string findWord, int leftWords, int rightWords)
+        private static string GetPhrase(List<string> words, string findWord, int leftWords, int rightWords,int startIndex=0 )
         {
             string phrase = "";
             if (leftWords == 0 && rightWords == 0) return phrase;
-            int wordIndex = words.FindIndex(word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
+            int wordIndex = words.FindIndex(startIndex, word => word == findWord);//要找的两个单词相距单词个数与参数个数相同
             if (wordIndex < 0) return phrase;
             int leftIndex = wordIndex - leftWords;
             int rightIndex = wordIndex + rightWords;
