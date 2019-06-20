@@ -28,6 +28,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             string txt = FSCDLL.DAL.Corpus.GetCorporaByID(1).Tables[0].Rows[0]["OriginalText"].ToString ()  ;  
             DataTable  dt= Common.GetClusterFromCorpus(txt,3);
+            DataRow[] drs=dt.Select ("");
+            drs.CopyToDataTable();
+            dt.AsEnumerable().Take(10).CopyToDataTable<DataRow>();
             GridView1.DataSource = dt.DefaultView ;
             GridView1.DataBind();
         }

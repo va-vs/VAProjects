@@ -31,20 +31,19 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtResults.Columns.Add("phraseTimes", typeof(int));
             DataTable dtMatchs = dtSearchResult.DefaultView.ToTable(true, "match");
             DataRow drNew;
-            DataSet dsTmp = new DataSet();
+            DataTable  dtTmp=null;
 
             string match;
             DataRow[] drs;
             foreach (DataRow drTmp in dtMatchs.Rows)
             {
-                dsTmp = new DataSet();
                 drNew = dtResults.Rows.Add();
                 match = drTmp["match"].ToString();
                 drNew["match"] = match;
                 drNew["totalTimes"] = dtSearchResult.Compute("count(match)", string.Format("match='{0}'", match));
                 drs = dtSearchResult.Select(string.Format("match='{0}'", match));
-                dsTmp.Merge(drs);
-                drNew["phraseTimes"] = dsTmp.Tables[0].DefaultView.ToTable(true, "CorpusID").Rows.Count;
+                dtTmp = drs.CopyToDataTable();
+                drNew["phraseTimes"] =dtTmp.DefaultView.ToTable(true, "CorpusID").Rows.Count;
                 dtResults.DefaultView.Sort = "totalTimes Desc";
             }
             return dtResults;
