@@ -13,58 +13,22 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
     public partial class neuac {
         
         /// <summary>
-        /// divOutput 控件。
+        /// GridView1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divOutput;
+        protected global::System.Web.UI.WebControls.GridView GridView1;
         
         /// <summary>
-        /// rbVBS 控件。
+        /// btnTest 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rbVBS;
-        
-        /// <summary>
-        /// divContext 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContext;
-        
-        /// <summary>
-        /// btnBackLemma 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBackLemma;
-        
-        /// <summary>
-        /// btnCloseLemma 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCloseLemma;
-        
-        /// <summary>
-        /// dlChart 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl dlChart;
+        protected global::System.Web.UI.WebControls.Button btnTest;
         
         /// <summary>
         /// lbErr 控件。
