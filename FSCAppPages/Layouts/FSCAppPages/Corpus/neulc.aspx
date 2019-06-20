@@ -451,12 +451,12 @@
 				<asp:View ID="vwCorpus" runat="server">
 					<%-- 语料库检索div --%>
 					<div id="divNEULC" runat="server">
-						<div class="qfld" style="font-size: 14px;">
+						<div class="qlfd" style="font-size: 14px;">
 							Select Corpus you need according to:
 						</div>
-						<div class="qfld">
+						<div class="qlfd">
 
-							<fieldset id="fdsLevel">
+							<fieldset>
 								<legend>
 									<span>Level </span>
 									<input id="cbforLevel" type="checkbox" onchange='checkOrNot("<%=cblLevel.ClientID%>", this)' />
@@ -500,12 +500,12 @@
 							</fieldset>
 						</div>
 
-						<div class="qfld" style="text-align: center; margin: 10px;">
+						<div class="qlfd" style="text-align: center; margin: 10px;">
 							<asp:Button ID="btnSubmitforCorpus" runat="server" Text="Submit" CssClass="outbtndiv-button" />
 						</div>
 					</div>
 
-					<div id="divNEUAC" class="qfld" runat="server" visible="false">
+					<div id="divNEUAC" runat="server" visible="false">
 						<fieldset>
 							<legend>
 								<span>Year </span>
@@ -540,7 +540,7 @@
 								</asp:ListItem>
 							</asp:CheckBoxList>
 						</fieldset>
-						<div class="qfld" style="text-align: center; margin: 10px;">
+						<div class="qlfd" style="text-align: center; margin: 10px;">
 							<asp:Button ID="btnSubmitforNEUAC" runat="server" Text="Submit" CssClass="outbtndiv-button" Enabled="false" />
 							<asp:Label ID="Label1" runat="server" Text=" NEUAC 暂不提供筛选和汇总计算..." ForeColor="red"></asp:Label>
 						</div>
@@ -589,7 +589,7 @@
 				</asp:View>
 				<%-- Concordance --%>
 				<asp:View ID="vwConcordance" runat="server">
-					<div id="divConcordanceQuery" runat="server" class="qfld">
+					<div id="divConcordanceQuery" runat="server" class="qlfd">
 						<fieldset>
 							<legend>Select Corpus you need according to:</legend>
 							<div class="flexbox_div">
@@ -649,7 +649,7 @@
 							<Columns>
 								<asp:TemplateField HeaderText="Title">
 									<ItemTemplate>
-										<div style="padding: 2px">
+										<div style="padding: 5px">
 											<asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
 											<asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
 										</div>
@@ -657,7 +657,7 @@
 								</asp:TemplateField>
 								<asp:TemplateField HeaderText="Left">
 									<ItemTemplate>
-										<div style="padding: 2px">
+										<div style="padding: 5px">
 											<asp:Label ID="lbLeft" runat="server" Text='<%# Bind("left")%>'></asp:Label>
 										</div>
 									</ItemTemplate>
@@ -665,7 +665,7 @@
 								</asp:TemplateField>
 								<asp:TemplateField HeaderText="Match">
 									<ItemTemplate>
-										<div style="padding: 2px">
+										<div style="padding: 5px">
 											<asp:Label ID="lbMatch" runat="server" Font-Bold="true" ForeColor="red" Text='<%# Bind("match")%>'></asp:Label>
 										</div>
 									</ItemTemplate>
@@ -673,7 +673,7 @@
 								</asp:TemplateField>
 								<asp:TemplateField HeaderText="Right">
 									<ItemTemplate>
-										<div style="padding: 2px">
+										<div style="padding: 5px">
 											<asp:Label ID="lbRight" runat="server" Text='<%# Bind("right")%>'></asp:Label>
 										</div>
 									</ItemTemplate>
@@ -700,7 +700,7 @@
 
 				<%-- Collocate --%>
 				<asp:View ID="vwCollocate" runat="server">
-					<div id="divCollocateQuery" runat="server" class="qfld">
+					<div id="divCollocateQuery" runat="server" class="qlfd">
 						<fieldset>
 							<legend>Search Corpus you need according to:</legend>
 							<div class="flexbox_div">
@@ -754,7 +754,7 @@
 								<Columns>
 									<asp:TemplateField HeaderText="Match">
 										<ItemTemplate>
-											<div style="padding:5px">
+											<div style="min-width:100px;padding:5px">
 												<asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("match")%>' Font-Bold="true" ForeColor="red" CommandArgument='<%# Bind("match")%>' ToolTip="View all the corpus contain this match "></asp:LinkButton>
 											</div>
 										</ItemTemplate>
@@ -762,7 +762,7 @@
 									</asp:TemplateField>
 									<asp:TemplateField HeaderText="Frequence">
 										<ItemTemplate>
-											<div style="padding: 5px">
+											<div style="padding: 5px;min-width:100px;">
 												<asp:Label ID="lbTotal" runat="server" Text='<%# Bind("totalTimes")%>'></asp:Label>
 											</div>
 										</ItemTemplate>
@@ -771,7 +771,7 @@
 
 									<asp:TemplateField HeaderText="Range">
 										<ItemTemplate>
-											<div style="padding: 5px">
+											<div style="padding: 5px;min-width:100px;">
 												<asp:Label ID="lbCorpora" runat="server" Text='<%# Bind("phraseTimes")%>'></asp:Label>
 											</div>
 										</ItemTemplate>
@@ -856,8 +856,157 @@
 
 				<%-- Cluster --%>
 				<asp:View ID="vwCluster" runat="server">
-					<h2>Cluster</h2>
-				</asp:View>
+					<div id="divSetCluster" runat="server">
+                        <div class="flexbox_div">
+                            Input or Set the word count for Cluster:
+                        <a href="#" onclick='sub("<%=txtClusterChars.ClientID%>",1,2)' class="flexbox_asub">-</a>
+								<input type="text" id="txtClusterChars" name="contextsize" size="40" value="2" runat="server" class="flexbox_text" title="Input the word count for Cluster" placeholder="Type a integer number between 2 to 5" />
+								<a href="#" onclick='add("<%=txtClusterChars.ClientID%>",1,5)' class="flexbox_a">+</a>&nbsp;
+                            <asp:Button ID="btnSetCluster" runat="server" Text="Submit" CssClass="outbtndiv-button" />
+                        </div>
+                       <div id="divAllCluster" runat="server" visible="false">
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top;width:60%">
+                                        <fieldset>
+                                            <legend>Context</legend>
+                                            <div id="divCluterList" runat="server" style="min-width:300px;width:100%;line-height:25px;overflow-y: auto;">
+                                                 <asp:GridView ID="gvCorpusforCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
+                                    <AlternatingRowStyle BackColor="White" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Title">
+                                            <ItemTemplate>
+                                                <div style="padding: 5px">
+                                                    <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
+
+											        <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Text">
+                                            <ItemTemplate>
+                                                <div style="padding: 5px">
+                                                    <asp:Label ID="lbText" runat="server" Text='<%# Bind("OriginalText")%>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                    <EditRowStyle BackColor="#036cb4" />
+							        <FooterStyle Font-Bold="True"/>
+							        <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+							        <RowStyle BackColor="#EFF3FB" />
+							        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+							        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+							        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+							        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+							        <SortedDescendingHeaderStyle BackColor="#036cb4" />
+							        <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+                                </asp:GridView>
+                                            </div>
+                                        </fieldset>
+                                    </td>
+                                    <td style="vertical-align: top;width:40%">
+                                        <fieldset>
+                                            <legend>Cluster
+                                            </legend>
+                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y: auto;">
+                                                <asp:GridView ID="gvClusterAll" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Cluster">
+                                                        <ItemTemplate>
+                                                            <div style="min-width: 100px; padding: 5px">
+                                                                <asp:Label ID="lbCluster" runat="server" Text='<%# Bind("Cluster")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Count">
+                                                        <ItemTemplate>
+                                                            <div style="padding: 5px; min-width: 100px;">
+                                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("Count")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="right" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <EditRowStyle BackColor="#036cb4" />
+                                                <FooterStyle Font-Bold="True" Height="25px" />
+                                                <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" Height="25px" />
+                                                <RowStyle BackColor="#EFF3FB" />
+                                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                                <SortedDescendingHeaderStyle BackColor="#036cb4" />
+                                                <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+                                            </asp:GridView>
+                                            </div>
+
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+					</div>
+                    <div id="divShowCluster" runat="server" visible="false">
+                        <div id="divClusterTips" style="width: 98%; padding: 10px;" runat="server">
+                            <span id="spClusterTips" runat="server" class="sptips"></span>
+                            <asp:Button ID="btnResetCluster" runat="server" Text=" Back " CssClass="outbtndiv-button" />
+                        </div>
+                        <div>
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top;width:60%">
+                                        <fieldset>
+                                            <legend>Context</legend>
+                                            <div id="divCluterContext" runat="server" style="height: 400px;min-width:300px;width:100%;background-color:#dcdcdc ;line-height:25px;font-size:13px; overflow-y: auto;"></div>
+                                        </fieldset>
+                                    </td>
+                                    <td style="vertical-align: top;width:40%">
+                                        <fieldset>
+                                            <legend>Cluster
+                                            </legend>
+                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y: auto;">
+                                                <asp:GridView ID="gvCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Cluster">
+                                                        <ItemTemplate>
+                                                            <div style="min-width: 100px; padding: 5px">
+                                                                <asp:Label ID="lbCluster" runat="server" Text='<%# Bind("Cluster")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Count">
+                                                        <ItemTemplate>
+                                                            <div style="padding: 5px; min-width: 100px;">
+                                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("Count")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="right" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <EditRowStyle BackColor="#036cb4" />
+                                                <FooterStyle Font-Bold="True" Height="25px" />
+                                                <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" Height="25px" />
+                                                <RowStyle BackColor="#EFF3FB" />
+                                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                                <SortedDescendingHeaderStyle BackColor="#036cb4" />
+                                                <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+                                            </asp:GridView>
+                                            </div>
+
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </asp:View>
 
 				<%-- Compare Frequencies --%>
 				<asp:View ID="vwCompare" runat="server">
@@ -894,7 +1043,7 @@
 							</tr>
 						</table>
 					</div>
-					<div id="divforCompareResult" runat="server" visible="false" class="qfld">
+					<div id="divforCompareResult" runat="server" visible="false" class="qlfd">
 						<div style="width:100%;padding:5px;">
 							<asp:Button ID="btnBackToCompare" runat="server" Text=" Close " CssClass="outbtndiv-button" />
 						</div>
@@ -986,13 +1135,13 @@
 					</div>
 
 					<%-- 文本来源于语料库 --%>
-                    <div id="divGradedFromCorpus" runat="server" class="wbdiv" visible="false">
+                    <div id="divGradedFromCorpus" runat="server" visible="false">
                         <%-- 语料库检索div --%>
-                        <div id="divQueryGraded" runat="server">
-                            <div class="qfld" style="font-size: 14px;">
+                        <div id="divQueryGraded" runat="server" class="wbdiv">
+                            <div style="font-size: 14px;">
                                 Select Corpus you need according to:
                             </div>
-                            <div class="qfld">
+                            <div>
                                 <fieldset>
                                     <legend>
                                         <asp:Label ID="lbgdLevel" runat="server" Text="Level"></asp:Label>
@@ -1040,11 +1189,11 @@
                                 </div>
                             </div>
 
-                            <div class="qfld" style="text-align: center; margin: 10px;">
+                            <div style="text-align: center; margin: 10px;">
                                 <asp:Button ID="btnSubmitforGraded" runat="server" Text="Submit" CssClass="outbtndiv-button" />
                             </div>
                         </div>
-                        <div id="divQueryGradedResult" runat="server" class="qfld">
+                        <div id="divQueryGradedResult" runat="server">
                             <div style="width: 98%; padding: 10px;">
                                 <span id="spGradedCount" class="sptips" runat="server"></span>
                                 <asp:Button ID="btnReGraded" runat="server" Text=" Back " CssClass="outbtndiv-button" />
@@ -1056,7 +1205,8 @@
                                         <asp:TemplateField HeaderText="Title">
                                             <ItemTemplate>
                                                 <div style="padding: 5px">
-                                                    <asp:Label ID="lbTitle" runat="server" Text='<%# Bind("Title")%>'></asp:Label>
+                                                    <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
+											        <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
                                                 </div>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -1068,16 +1218,16 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
-                                    <EditRowStyle BackColor="#2461BF" />
-                                    <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" Height="25px" />
-                                    <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" Height="25px" />
-                                    <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-                                    <RowStyle BackColor="#EFF3FB" />
-                                    <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-                                    <SortedAscendingCellStyle BackColor="#F5F7FB" />
-                                    <SortedAscendingHeaderStyle BackColor="#6D95E1" />
-                                    <SortedDescendingCellStyle BackColor="#E9EBEF" />
-                                    <SortedDescendingHeaderStyle BackColor="#4870BE" />
+                                    <EditRowStyle BackColor="#036cb4" />
+							        <FooterStyle Font-Bold="True"/>
+							        <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+							        <RowStyle BackColor="#EFF3FB" />
+							        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+							        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+							        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+							        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+							        <SortedDescendingHeaderStyle BackColor="#036cb4" />
+							        <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
                                 </asp:GridView>
                                 <asp:Button ID="btnLemmaAll" runat="server" Text="View All" CssClass="outbtndiv-button" />
                             </div>

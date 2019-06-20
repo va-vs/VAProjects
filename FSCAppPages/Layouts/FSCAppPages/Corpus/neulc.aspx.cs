@@ -48,6 +48,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             btnSubmitforGraded.Click += BtnSubmitforGraded_Click;
             btnSubmitforGraded.Attributes.Add("onclick", "javascript:shield();");
             gvCorpusforGraded.RowDataBound += gvCorpusforGraded_RowDataBound;
+            gvCorpusforGraded.RowCommand += GvCorpusforGraded_RowCommand;
             gvCorpusforGraded.PageIndexChanging += gvCorpusforGraded_PageIndexChanging;
             btnLemmaAll.Click += BtnLemmaAll_Click;
             btnLemmaAll.Attributes.Add("onclick", "javascript:shield();");
@@ -69,7 +70,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             btnSubmitCollocate.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnReColl.Click += BtnReColl_Click;
             btnReColl.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
-
             gvCollocate.RowDataBound += GvCollocate_RowDataBound;
             gvCollocate.PageIndexChanging += GvCollocate_PageIndexChanging;
             gvCollocate.RowCommand += GvCollocate_RowCommand;
@@ -81,6 +81,18 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             btnCloseColl.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
             btnViewColl.Click += BtnViewColl_Click;
             btnViewColl.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
+
+
+            //Cluster事件绑定
+            gvCorpusforCluster.RowDataBound += GvCorpusforCluster_RowDataBound;
+            gvCorpusforCluster.RowCommand += GvCorpusforCluster_RowCommand;
+            gvCorpusforCluster.PageIndexChanging += GvCorpusforCluster_PageIndexChanging;
+            btnSetCluster.Click += BtnSetCluster_Click;
+            btnSetCluster.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
+
+            gvCluster.RowDataBound += GvCluster_RowDataBound;
+            btnResetCluster.Click += BtnResetCluster_Click;
+
             //Compare提交按钮点击事件
             btnCompared.Click += BtnCompared_Click;
             btnCompared.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
@@ -112,7 +124,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             }
 
         }
-
 
 
         private string ContactContextinTable(DataTable dtSource, string keyCol)
@@ -1017,9 +1028,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         }
 
+
+
         private void GvConcordance_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName == "Page") return;
+            if (e.CommandName == "Page")
+            {
+                return;
+            }
+
             string cpId = e.CommandArgument.ToString();
             DataTable dtCorpusExtend;
             if (ViewState["dtCorpusExtend"] == null)
@@ -1035,7 +1052,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (dtSource != null)
             {
                 DataRow drSource = dtSource.Rows[0];
-                string kWords = ViewState["KeyWords"].ToString();
                 ShowContext(drSource, "", "CECR", "1");
             }
             else
@@ -1454,13 +1470,202 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         #region 5 Cluster
 
-        #region Cluster事件
+        #region Cluster事件
+        private void BtnResetCluster_Click(object sender, EventArgs e)
+        {
+            divShowCluster.Visible = false;
+            DataTable dtCluster = null;
+            GVBind(gvCluster, dtCluster);
+            divSetCluster.Visible = true;
+        }
 
+        private void GvCluster_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //添加鼠标效果，当鼠标移动到行上时，变颜色
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
+                //当鼠标离开的时候 将背景颜色还原的以前的颜色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+                if (e.Row.FindControl("lnkBtn") != null)
+                {
+                    LinkButton lnkBtn = (LinkButton)e.Row.FindControl("lnkBtn");
+                    lnkBtn.Attributes.Add("onclick", "javascript:shield();");
+                }
+            }
+        }
+
+        private void BtnSetCluster_Click(object sender, EventArgs e)
+        {
+            if (txtClusterChars.Value.Trim() != "")
+            {
+                string strLenth = txtClusterChars.Value.Trim();
+                string pattern = "^[0-9]*$";
+                Regex rx = new Regex(pattern);
+                if (rx.IsMatch(strLenth))
+                {
+                    divAllCluster.Visible = true;
+                    lbErr.Text = "";
+                    int intLenth = int.Parse(strLenth);
+                    if (intLenth > 5)
+                    {
+                        intLenth = 5;
+                    }
+
+                    if (intLenth < 2)
+                    {
+                        intLenth = 2;
+                    }
+
+                    ViewState["ClusterLength"] = intLenth;
+                    string filterStr = string.Format("Source = '{0}'", CorpusName);
+                    if (ViewState["filterExp"] != null)
+                    {
+                        filterStr = ViewState["filterExp"].ToString();
+                    }
+                    ViewState["pageIndex"] = 0;
+                    DataTable dt = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
+                    GVBind(gvCorpusforCluster, dt);
+
+                    int rCount = dt.Rows.Count;
+                    if (rCount > 5000)
+                    {
+                        rCount = 5000;
+                    }
+                    DataTable dtCluster = new DataTable();
+                    dtCluster.Columns.Add("Cluster", typeof(string));
+                    dtCluster.Columns.Add("Count", typeof(int));
+                    for (int i = 0; i < rCount; i++)
+                    {
+                        DataRow dr = dt.Rows[i];
+                        string strContext = SystemDataExtension.GetString(dr, "OriginalText");
+                        int ClusterLength = 2;
+                        if (ViewState["ClusterLength"] != null)
+                        {
+                            ClusterLength = int.Parse(ViewState["ClusterLength"].ToString());
+                        }
+                        DataTable dtTemp = Common.GetClusterFromCorpus(strContext, ClusterLength);
+                        Common.ComBindDT(dtTemp, ref dtCluster, "Cluster", "Count");
+                    }
+
+                    dtCluster.DefaultView.Sort = "Count Desc";
+                    GVBind(gvClusterAll, dtCluster);
+
+                }
+                else
+                {
+                    divAllCluster.Visible = false;
+                    lbErr.Text = "The number of words that you input or set for Cluster is invalid,it must be a integer number between 2 to 5!";
+                    txtClusterChars.Focus();
+                    return;
+                }
+            }
+            else
+            {
+                divAllCluster.Visible = false;
+                lbErr.Text = "You must input or set the number of words for Cluster first,and it must be a integer number between 2 to 5!!";
+                txtClusterChars.Focus();
+                return;
+            }
+        }
+
+        private void GvCorpusforCluster_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            ViewState["pageIndex"] = e.NewPageIndex;
+            string filterStr = string.Format("Source = '{0}'", CorpusName);
+            if (ViewState["filterExp"] != null)
+            {
+                filterStr = ViewState["filterExp"].ToString();
+            }
+
+            DataTable dt = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
+            GVBind(gvCorpusforCluster, dt);
+        }
+
+        private void GvCorpusforCluster_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Page")
+            {
+                return;
+            }
+
+            string cpId = e.CommandArgument.ToString();
+            DataTable dtSource = FSCDLL.DAL.Corpus.GetCorporaByID(long.Parse(cpId)).Tables[0];
+
+            if (dtSource != null)
+            {
+                DataRow drSource = dtSource.Rows[0];
+                string strContext = SystemDataExtension.GetString(drSource, "OriginalText");
+                int ClusterLength = 2;
+                if (ViewState["ClusterLength"] != null)
+                {
+                    ClusterLength = int.Parse(ViewState["ClusterLength"].ToString());
+                }
+                DataTable dtCluster = Common.GetClusterFromCorpus(strContext, ClusterLength);
+                ShowCluster(dtCluster);
+                divCluterContext.InnerHtml = strContext;
+            }
+            else
+            {
+                mvNeulc.ActiveViewIndex = 1;
+                hdfvwIndex.Value = "0";
+                lbErr.Text = "语料库中不存在该条语料或已删除！";
+            }
+
+        }
+
+
+        private void GvCorpusforCluster_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                if (((Label)e.Row.FindControl("lbText")) != null)
+                {
+                    Label lbText = (Label)(e.Row.FindControl("lbText"));
+                    string strContext = lbText.Text;
+                    const string ignore = "[\r\n\t\"]";//需要替换的符号
+                    strContext = Regex.Replace(strContext, ignore, "");
+
+                    string[] paraWords = strContext.Split(' ');
+                    int wordDisp = 15;
+                    if (paraWords.Length < wordDisp)
+                    {
+                        wordDisp = paraWords.Length;
+
+                    }
+                    string temp = "";
+                    for (int i = 0; i < wordDisp; i++)
+                    {
+                        temp += paraWords[i] + " ";
+                    }
+                    lbText.Text = temp.TrimEnd() + "...";
+                    lbText.ToolTip = strContext;
+                }
+                if (e.Row.FindControl("lnkBtn") != null)
+                {
+                    LinkButton lnkBtn = (LinkButton)e.Row.FindControl("lnkBtn");
+                    lnkBtn.Attributes.Add("onclick", "javascript:shield();");
+                }
+                //添加鼠标效果，当鼠标移动到行上时，变颜色
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
+                //当鼠标离开的时候 将背景颜色还原的以前的颜色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
+        }
         #endregion
 
         #region Cluster方法
 
-        #endregion
+
+        private void ShowCluster(DataTable dtCluster)
+        {
+            divShowCluster.Visible = true;
+            int rCount = dtCluster.Rows.Count;
+            spClusterTips.InnerHtml = string.Format("All Cluster count is： <strong>{0}</strong>", rCount);
+            GVBind(gvCluster, dtCluster);
+            divSetCluster.Visible = false;
+        }
+        #endregion Cluster方法
 
         #endregion
 
@@ -1469,7 +1674,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #region Graded事件
         private void BtnLemmaAll_Click(object sender, EventArgs e)
         {
-            string filterStr = ViewState["filterExp"].ToString();
+            string filterStr = string.Format("Source = '{0}'", CorpusName);
+            if (ViewState["SQLforGraded"] != null)
+            {
+                filterStr = ViewState["SQLforGraded"].ToString();
+            }
             DataTable dtCorpusforWordList = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
             StringBuilder sb = new StringBuilder();
 
@@ -1477,7 +1686,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 sb.AppendLine(dr["OriginalText"].ToString());
             }
-            txtcontent.Value = sb.ToString();
+            ShowContext(null, sb.ToString(), "CECR", "5");
         }
 
 
@@ -1514,29 +1723,69 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
             }
         }
-        //分页事件
-        private void gvCorpusforGraded_PageIndexChanging(object sender, GridViewPageEventArgs e)
+
+        private void GvCorpusforGraded_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            gvCorpusforGraded.PageIndex = e.NewPageIndex;
-            ViewState["pageIndex"] = e.NewPageIndex;
-            Requery();
-        }
-        //重新绑定数据视图,分页时和加载时调用
-        private void Requery()
-        {
-            string filterStr = ViewState["filterExp"].ToString();
-            DataTable dt = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
-            GVBind(gvCorpusforGraded, dt);
+            if (e.CommandName == "Page")
+            {
+                return;
+            }
+
+            string cpId = e.CommandArgument.ToString();
+            DataTable dtCorpusExtend;
+            if (ViewState["dtCorpusExtend"] == null)
+            {
+                dtCorpusExtend = FSCDLL.DAL.Corpus.GetCopusExtendByTypes(null).Tables[0];
+                ViewState["dtCorpusExtend"] = dtCorpusExtend.Copy();
+            }
+            else
+            {
+                dtCorpusExtend = (ViewState["dtCorpusExtend"] as DataTable).Copy();
+            }
+            DataTable dtSource = Common.GetCorpusByID(long.Parse(cpId), CorpusName, dtCorpusExtend);
+            if (dtSource != null)
+            {
+                DataRow drSource = dtSource.Rows[0];
+                ViewState["KeyWords"] = "";
+                ShowContext(drSource, "", "CECR", "5");
+            }
+            else
+            {
+                mvNeulc.ActiveViewIndex = 1;
+                hdfvwIndex.Value = "0";
+                lbErr.Text = "语料库中不存在该条语料或已删除！";
+            }
+
         }
 
 
         /// <summary>
-        /// 清空按钮
+        /// gvCorpusforGraded 分页事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void gvCorpusforGraded_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            ViewState["pageIndex"] = e.NewPageIndex;
+            string filterStr = string.Format("Source = '{0}'", CorpusName);
+            if (ViewState["SQLforGraded"] != null)
+            {
+                filterStr = ViewState["SQLforGraded"].ToString();
+            }
+
+            DataTable dt = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
+            GVBind(gvCorpusforGraded, dt);
+        }
+
+        /// <summary>
+        /// 用户输入界面的清空按钮事件
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void clearBtn_OnClick(object sender, EventArgs e)
         {
+            txt_Author.Value = "";
+            txt_Title.Value = "";
             txtcontent.Value = "";
         }        /// <summary>
         /// 关闭按钮
@@ -1626,6 +1875,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             {
                 strSql = string.Format("{0} And {1}", strSql, strQuery);
             }
+            ViewState["SQLforGraded"] = strSql;
             DataSet dsResult = FSCDLL.DAL.Corpus.GetCorpusByFilterString(strSql);
             ViewState["pageIndex"] = 0;
             DataTable dtResult = dsResult.Tables[0];
@@ -1722,7 +1972,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     //}
                     #endregion  保存要处理的文本：仅有处理非语料库内的文本时才做保存采集操作
                     ViewState["KeyWords"] = "";
-                    ShowContext(null, txtStr, "CECR", "3");//缺省第一次采用CECR词汇表计算
+                    ShowContext(null, txtStr, "CECR", "5");//缺省第一次采用CECR词汇表计算
                 }
             }
 
