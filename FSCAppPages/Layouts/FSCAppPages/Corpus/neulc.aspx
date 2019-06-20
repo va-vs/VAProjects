@@ -415,7 +415,7 @@
 					</td>
 					<td>
 						<div id="divCPTips" runat="server" visible="false">
-							<span class="gvtips">
+							<span class="sptips">
 								You haven't chosen corpus yet,so you can use all corpus for other operations or click the <strong>"Corpus"</strong> Menu to  select the corpus first.
 							</span>
 						</div>
@@ -431,9 +431,9 @@
 					<asp:MenuItem Text="Corpus" Value="Corpus"></asp:MenuItem>
 					<asp:MenuItem Text="Concordance" Value="Concordance"></asp:MenuItem>
 					<asp:MenuItem Text="Collocate" Value="Collocate"></asp:MenuItem>
-					<asp:MenuItem Text="WordList" Value="WordList"></asp:MenuItem>
 					<asp:MenuItem Text="Cluster" Value="Cluster"></asp:MenuItem>
 					<asp:MenuItem Text="Compare" Value="Compare"></asp:MenuItem>
+                    <asp:MenuItem Text="Graded" Value="Graded"></asp:MenuItem>
 				</Items>
 				<StaticSelectedStyle Font-Bold="true" HorizontalPadding="10" VerticalPadding="4" ForeColor="red" />
 				<StaticMenuItemStyle HorizontalPadding="10" VerticalPadding="4" />
@@ -456,7 +456,7 @@
 						</div>
 						<div class="qfld">
 
-							<fieldset id="fdsLevel">
+							<fieldset>
 								<legend>
 									<span>Level </span>
 									<input id="cbforLevel" type="checkbox" onchange='checkOrNot("<%=cblLevel.ClientID%>", this)' />
@@ -505,7 +505,7 @@
 						</div>
 					</div>
 
-					<div id="divNEUAC" class="qfld" runat="server" visible="false">
+					<div id="divNEUAC" runat="server" visible="false">
 						<fieldset>
 							<legend>
 								<span>Year </span>
@@ -641,7 +641,7 @@
 					</div>
 					<div id="divConcordanceResult" runat="server" visible="false">
 						<div style="width: 98%; padding: 10px;">
-							<span id="spConcCount" class="gvtips" runat="server"></span>
+							<span id="spConcCount" class="sptips" runat="server"></span>
 							<asp:Button ID="btnReConc" runat="server" Text=" Back " CssClass="outbtndiv-button" />
 						</div>
 						<asp:GridView ID="gvConcordance" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
@@ -649,7 +649,7 @@
 							<Columns>
 								<asp:TemplateField HeaderText="Title">
 									<ItemTemplate>
-										<div style="padding: 2px">
+										<div style="padding: 5px">
 											<asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
 											<asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
 										</div>
@@ -657,7 +657,7 @@
 								</asp:TemplateField>
 								<asp:TemplateField HeaderText="Left">
 									<ItemTemplate>
-										<div style="padding: 2px">
+										<div style="padding: 5px">
 											<asp:Label ID="lbLeft" runat="server" Text='<%# Bind("left")%>'></asp:Label>
 										</div>
 									</ItemTemplate>
@@ -665,15 +665,15 @@
 								</asp:TemplateField>
 								<asp:TemplateField HeaderText="Match">
 									<ItemTemplate>
-										<div style="padding: 2px">
-											<asp:Label ID="lbMatch" runat="server" Text='<%# Bind("match")%>'></asp:Label>
+										<div style="padding: 5px">
+											<asp:Label ID="lbMatch" runat="server" Font-Bold="true" ForeColor="red" Text='<%# Bind("match")%>'></asp:Label>
 										</div>
 									</ItemTemplate>
 									<ItemStyle HorizontalAlign="center" />
 								</asp:TemplateField>
 								<asp:TemplateField HeaderText="Right">
 									<ItemTemplate>
-										<div style="padding: 2px">
+										<div style="padding: 5px">
 											<asp:Label ID="lbRight" runat="server" Text='<%# Bind("right")%>'></asp:Label>
 										</div>
 									</ItemTemplate>
@@ -692,7 +692,7 @@
 							<PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
 						</asp:GridView>
 						<div id="divConcTips" runat="server" style="width: 98%; padding: 10px;" visible="false">
-							<span id="spConcTips" class="gvtips" runat="server">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
+							<span id="spConcTips" class="sptips" runat="server">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
 							<asp:Button ID="btnViewConc" runat="server" Text="View All" CssClass="outbtndiv-button" />
 						</div>
 					</div>
@@ -747,31 +747,31 @@
 					<div id="divCollocateResult" runat="server">
 						<div id="divCollComputed" runat="server" visible="false">
 							<div style="width: 98%; padding: 10px;">
-								<span id="spCoLLComputedCount" class="gvtips" runat="server"></span>
+								<span id="spCoLLComputedCount" class="sptips" runat="server"></span>
 								<asp:Button ID="btnReColl" runat="server" Text=" Back "  CssClass="outbtndiv-button"/>
 							</div>
 							<asp:GridView ID="gvCollComputed" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="match" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
 								<Columns>
 									<asp:TemplateField HeaderText="Match">
 										<ItemTemplate>
-											<div style="padding:5px">
-												<asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("match")%>' CommandArgument='<%# Bind("match")%>' ToolTip="View all the corpus contain this match "></asp:LinkButton>
+											<div style="min-width:100px;padding:5px">
+												<asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("match")%>' Font-Bold="true" ForeColor="red" CommandArgument='<%# Bind("match")%>' ToolTip="View all the corpus contain this match "></asp:LinkButton>
 											</div>
 										</ItemTemplate>
 										<ItemStyle HorizontalAlign="left" />
 									</asp:TemplateField>
-									<asp:TemplateField HeaderText="Total number of matches in Corpus">
+									<asp:TemplateField HeaderText="Frequence">
 										<ItemTemplate>
-											<div style="padding: 5px">
+											<div style="padding: 5px;min-width:100px;">
 												<asp:Label ID="lbTotal" runat="server" Text='<%# Bind("totalTimes")%>'></asp:Label>
 											</div>
 										</ItemTemplate>
 										<ItemStyle HorizontalAlign="center" />
 									</asp:TemplateField>
 
-									<asp:TemplateField HeaderText="Total number of corpus that contain the match">
+									<asp:TemplateField HeaderText="Range">
 										<ItemTemplate>
-											<div style="padding: 5px">
+											<div style="padding: 5px;min-width:100px;">
 												<asp:Label ID="lbCorpora" runat="server" Text='<%# Bind("phraseTimes")%>'></asp:Label>
 											</div>
 										</ItemTemplate>
@@ -790,12 +790,12 @@
 							<PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
 							</asp:GridView>
 							<div id="divCollComputedTips" runat="server" style="width: 98%; padding: 10px;">
-								<span class="gvtips">Click on the <strong>"Match"</strong> in each row of the list to view the corpus with the match</span>
+								<span class="sptips">Click on the <strong>"Match"</strong> in each row of the list to view the context with the match</span>
 							</div>
 						</div>
 						<div id="divCollView" runat="server" visible="false">
 							<div style="width: 98%; padding: 10px;">
-								<span id="spCoLLCount" class="gvtips" runat="server"></span>
+								<span id="spCoLLCount" class="sptips" runat="server"></span>
 								<asp:Button ID="btnCloseColl" runat="server" Text=" Back "  CssClass="outbtndiv-button"/>
 							</div>
 							<asp:GridView ID="gvCollocate" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
@@ -820,7 +820,7 @@
 									<asp:TemplateField HeaderText="Match">
 										<ItemTemplate>
 											<div style="padding: 5px">
-												<asp:Label ID="lbMatch" runat="server" Text='<%# Bind("match")%>'></asp:Label>
+												<asp:Label ID="lbMatch" runat="server"  Font-Bold="true" ForeColor="red" Text='<%# Bind("match")%>'></asp:Label>
 											</div>
 										</ItemTemplate>
 										<ItemStyle HorizontalAlign="center" />
@@ -847,132 +847,166 @@
 
 							</asp:GridView>
 							<div id="divCollTips" style="width: 98%; padding: 10px;" runat="server">
-								<span id="spCollTips" runat="server" class="gvtips">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
+								<span id="spCollTips" runat="server" class="sptips">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
 								<asp:Button ID="btnViewColl" runat="server" Text="View All" CssClass="outbtndiv-button" />
 							</div>
 						</div>
 					</div>
 				</asp:View>
 
-				<%-- WordList --%>
-				<asp:View ID="vwWordList" runat="server">
-
-					<%-- 文本来源选择 --%>
-					<div id="divtxtFrom">
-						<asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList" Visible="false">
-							<asp:ListItem Value="0" Selected="true">Fill Text by Yourself </asp:ListItem>
-							<asp:ListItem Value="1" Enabled="false">Get Text From Corpus </asp:ListItem>
-						</asp:RadioButtonList>
-						<asp:HiddenField ID="hdftxtFrom" Value="0" runat="server" />
-					</div>
-
-					<%-- 文本来源于个人输入 --%>
-					<div id="divfromshuru" class="wbdiv" runat="server">
-						<table class="wbtable">
-							<tr>
-								<th>Title：
-								</th>
-								<td>
-									<input type="text" value="" size="80" style="width: 200px" class="input-text" id="txt_Title" placeholder="Type the title" runat="server" />
-								</td>
-								<th>Author：
-								</th>
-								<td>
-									<input type="text" value="" size="80" style="width: 200px" class="input-text" id="txt_Author" placeholder="Type the Author's Name" runat="server" />
-								</td>
-								<th>Topic：
-								</th>
-								<td>
-									<asp:DropDownList ID="ddlTopics" runat="server" Width="200px"></asp:DropDownList>
-								</td>
-							</tr>
-							<tr>
-								<th>Text File：
-								</th>
-								<td>
-									<input type="file" onchange="upload(this)" style="width: 200px;" />
-								</td>
-								<td colspan="4">你可以使用左边的文件控件从文本文件的导入内容，或者你可以在下方文本框中输入或者粘贴要处理的文本!
-								</td>
-							</tr>
-						</table>
-					</div>
-
-					<%-- 文本来源于语料库 --%>
-					<div id="divFromCorpus" runat="server" class="wbdiv" visible="false">
-						<input type="text" class="input-text" value="" id="txtKeyWordsforWordlist" style="width: 300px; height: 25px; border: 1px solid #808080; border-radius: 5px 5px 5px 5px;" placeholder="Type the KeyWords" runat="server" title="Type the KeyWords" />
-						<asp:Button ID="btnQueryforWordlist" runat="server" Text=" 检 索 " CssClass="outbtndiv-button" />
-						<div id="divCorpusforWordList" runat="server" visible="false">
-							<hr />
-							<script type="text/javascript">
-								function fillTextfromRow(txt) {
-									var txtCtrl = document.getElementById('<%=txtcontent.ClientID%>');
-									txtCtrl.value = txt;
-								}
-							</script>
-							点击下面数据行，可以处理该行语料文本，点击后面的处理所有按钮，将处理筛选出的所有语料&nbsp;&nbsp;
-							<asp:Button ID="btnLemmaAll" runat="server" Text="处理所有" CssClass="outbtndiv-button" />
-							<br />
-							<asp:GridView ID="gvCorpusforWordList" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
-								<AlternatingRowStyle BackColor="White" />
-								<Columns>
-									<asp:TemplateField HeaderText="Title">
-										<ItemTemplate>
-											<div style="padding: 5px">
-												<asp:Label ID="lbTitle" runat="server" Text='<%# Bind("Title")%>'></asp:Label>
-											</div>
-										</ItemTemplate>
-									</asp:TemplateField>
-									<asp:TemplateField HeaderText="Text">
-										<ItemTemplate>
-											<div style="padding: 5px">
-												<asp:Label ID="lbText" runat="server" Text='<%# Bind("OriginalText")%>'></asp:Label>
-											</div>
-										</ItemTemplate>
-									</asp:TemplateField>
-								</Columns>
-								<EditRowStyle BackColor="#2461BF" />
-								<FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"  Height="25px"/>
-								<HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White"  Height="25px"/>
-								<PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
-								<RowStyle BackColor="#EFF3FB" />
-								<SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
-								<SortedAscendingCellStyle BackColor="#F5F7FB" />
-								<SortedAscendingHeaderStyle BackColor="#6D95E1" />
-								<SortedDescendingCellStyle BackColor="#E9EBEF" />
-								<SortedDescendingHeaderStyle BackColor="#4870BE" />
-							</asp:GridView>
-						</div>
-					</div>
-
-					<%-- 文本框与词汇表选择，及Lemma按钮 --%>
-					<div id="divTexts" class="wbdiv" runat="server" visible="false">
-						<div>
-							<textarea cols="100" id="txtcontent" v-model="body" onkeyup="wordStatic(this);" onchange="wordStatic(this);" onblur="wordStatic(this);" runat="server" rows="100" class="ta" placeholder="Type the English text you want to process here !"></textarea>
-						</div>
-						<div id="txtInfo" class="qlfd">
-							<table style="width: 100%;">
-								<tr>
-									<td style="text-align: left; width: 70%; padding: 5px;">
-										<span style="color: blue">Limit: 100,000 Words&nbsp;&nbsp;</span>
-										<span id="mywords" style="display: none;">(<span id="wcount" style="color: red">Entered：0 Words;</span>
-											<span id="lcount" style="color: green">Remaining: 30,000 Words</span>)
-										</span>
-									</td>
-									<td style="text-align: right; width: 30%; min-width: 200px; padding: 5px;">
-										<asp:Button ID="clearBtn" runat="server" Text="Clear" CssClass="outbtndiv-button" ToolTip="Clear the Texts" />
-										<asp:Button ID="btnSubmitForLemma" runat="server" Text="Submit" CssClass="outbtndiv-button" ToolTip="Submit to Process" />
-									</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</asp:View>
-
 				<%-- Cluster --%>
 				<asp:View ID="vwCluster" runat="server">
-					<h2>Cluster</h2>
-				</asp:View>
+					<div id="divSetCluster" runat="server">
+                        <div class="flexbox_div">
+                            Input or Set the word count for Cluster:
+                        <a href="#" onclick='sub("<%=txtClusterChars.ClientID%>",1,2)' class="flexbox_asub">-</a>
+								<input type="text" id="txtClusterChars" name="contextsize" size="40" value="2" runat="server" class="flexbox_text" title="Input the word count for Cluster" placeholder="Type a integer number between 2 to 5" />
+								<a href="#" onclick='add("<%=txtClusterChars.ClientID%>",1,5)' class="flexbox_a">+</a>&nbsp;
+                            <asp:Button ID="btnSetCluster" runat="server" Text="Submit" CssClass="outbtndiv-button" />
+                        </div>
+                       <div id="divAllCluster" runat="server" visible="false">
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top;width:60%">
+                                        <fieldset>
+                                            <legend>Context</legend>
+                                            <div id="divCluterList" runat="server" style="min-width:300px;width:100%;line-height:25px;overflow-y: auto;">
+                                                 <asp:GridView ID="gvCorpusforCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
+                                    <AlternatingRowStyle BackColor="White" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Title">
+                                            <ItemTemplate>
+                                                <div style="padding: 5px">
+                                                    <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
+
+											        <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Text">
+                                            <ItemTemplate>
+                                                <div style="padding: 5px">
+                                                    <asp:Label ID="lbText" runat="server" Text='<%# Bind("OriginalText")%>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                    <EditRowStyle BackColor="#036cb4" />
+							        <FooterStyle Font-Bold="True"/>
+							        <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+							        <RowStyle BackColor="#EFF3FB" />
+							        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+							        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+							        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+							        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+							        <SortedDescendingHeaderStyle BackColor="#036cb4" />
+							        <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+                                </asp:GridView>
+                                            </div>
+                                        </fieldset>
+                                    </td>
+                                    <td style="vertical-align: top;width:40%">
+                                        <fieldset>
+                                            <legend>Cluster
+                                            </legend>
+                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y: auto;">
+                                                <asp:GridView ID="gvClusterAll" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Cluster">
+                                                        <ItemTemplate>
+                                                            <div style="min-width: 100px; padding: 5px">
+                                                                <asp:Label ID="lbCluster" runat="server" Text='<%# Bind("Cluster")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Count">
+                                                        <ItemTemplate>
+                                                            <div style="padding: 5px; min-width: 100px;">
+                                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("Count")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="right" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <EditRowStyle BackColor="#036cb4" />
+                                                <FooterStyle Font-Bold="True" Height="25px" />
+                                                <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" Height="25px" />
+                                                <RowStyle BackColor="#EFF3FB" />
+                                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                                <SortedDescendingHeaderStyle BackColor="#036cb4" />
+                                                <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+                                            </asp:GridView>
+                                            </div>
+
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+					</div>
+                    <div id="divShowCluster" runat="server" visible="false">
+                        <div id="divClusterTips" style="width: 98%; padding: 10px;" runat="server">
+                            <span id="spClusterTips" runat="server" class="sptips"></span>
+                            <asp:Button ID="btnResetCluster" runat="server" Text=" Back " CssClass="outbtndiv-button" />
+                        </div>
+                        <div>
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top;width:60%">
+                                        <fieldset>
+                                            <legend>Context</legend>
+                                            <div id="divCluterContext" runat="server" style="height: 400px;min-width:300px;width:100%;background-color:#dcdcdc ;line-height:25px;font-size:13px; overflow-y: auto;"></div>
+                                        </fieldset>
+                                    </td>
+                                    <td style="vertical-align: top;width:40%">
+                                        <fieldset>
+                                            <legend>Cluster
+                                            </legend>
+                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y:auto;">
+                                                <asp:GridView ID="gvCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Cluster">
+                                                        <ItemTemplate>
+                                                            <div style="min-width: 100px; padding: 5px">
+                                                                <asp:Label ID="lbCluster" runat="server" Text='<%# Bind("Cluster")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Count">
+                                                        <ItemTemplate>
+                                                            <div style="padding: 5px; min-width: 100px;">
+                                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("Count")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="right" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <EditRowStyle BackColor="#036cb4" />
+                                                <FooterStyle Font-Bold="True" Height="25px" />
+                                                <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" Height="25px" />
+                                                <RowStyle BackColor="#EFF3FB" />
+                                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                                <SortedDescendingHeaderStyle BackColor="#036cb4" />
+                                                <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+                                            </asp:GridView>
+                                            </div>
+
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </asp:View>
 
 				<%-- Compare Frequencies --%>
 				<asp:View ID="vwCompare" runat="server">
@@ -1034,9 +1068,178 @@
 					</div>
 				</asp:View>
 
+                <%-- WordList --%>
+				<asp:View ID="vwWordList" runat="server">
+
+					<%-- 文本来源选择 --%>
+					<div id="divtxtFrom">
+						<asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList">
+							<asp:ListItem Value="0" Selected="true">Fill Text by Yourself </asp:ListItem>
+							<asp:ListItem Value="1" Enabled="true">Get Text From Corpus </asp:ListItem>
+						</asp:RadioButtonList>
+						<asp:HiddenField ID="hdftxtFrom" Value="0" runat="server" />
+					</div>
+
+					<%-- 文本来源于个人输入 --%>
+					<div id="divGradedfromshuru" class="wbdiv" runat="server">
+						<table class="wbtable">
+							<tr>
+								<th>Title：
+								</th>
+								<td>
+									<input type="text" value="" size="80" style="width: 200px" class="input-text" id="txt_Title" placeholder="Type the title" runat="server" />
+								</td>
+								<th>Author：
+								</th>
+								<td>
+									<input type="text" value="" size="80" style="width: 200px" class="input-text" id="txt_Author" placeholder="Type the Author's Name" runat="server" />
+								</td>
+								<th>Topic：
+								</th>
+								<td>
+									<asp:DropDownList ID="ddlTopics" runat="server" Width="200px"></asp:DropDownList>
+								</td>
+							</tr>
+							<tr>
+								<th>Text File：
+								</th>
+								<td>
+									<input type="file" onchange="upload(this)" style="width: 200px;" />
+								</td>
+								<td colspan="4">你可以使用左边的文件控件从文本文件的导入内容，或者你可以在下方文本框中输入或者粘贴要处理的文本!
+								</td>
+							</tr>
+						</table>
+                        <%-- 文本框与词汇表选择，及Lemma按钮 --%>
+                        <div id="divTexts" class="wbdiv" runat="server">
+						<div>
+							<textarea cols="100" id="txtcontent" v-model="body" onkeyup="wordStatic(this);" onchange="wordStatic(this);" onblur="wordStatic(this);" runat="server" rows="100" class="ta" placeholder="Type the English text you want to process here !"></textarea>
+						</div>
+						<div id="txtInfo" class="qfld">
+							<table style="width: 100%;">
+								<tr>
+									<td style="text-align: left; width: 70%; padding: 5px;">
+										<span style="color: blue">Limit: 100,000 Words&nbsp;&nbsp;</span>
+										<span id="mywords" style="display: none;">(<span id="wcount" style="color: red">Entered：0 Words;</span>
+											<span id="lcount" style="color: green">Remaining: 30,000 Words</span>)
+										</span>
+									</td>
+									<td style="text-align: right; width: 30%; min-width: 200px; padding: 5px;">
+										<asp:Button ID="clearBtn" runat="server" Text="Clear" CssClass="outbtndiv-button" ToolTip="Clear the Texts" />
+										<asp:Button ID="btnSubmitForLemma" runat="server" Text="Submit" CssClass="outbtndiv-button" ToolTip="Submit to Process" />
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					</div>
+
+					<%-- 文本来源于语料库 --%>
+                    <div id="divGradedFromCorpus" runat="server" visible="false">
+                        <%-- 语料库检索div --%>
+                        <div id="divQueryGraded" runat="server" class="wbdiv">
+                            <div style="font-size: 14px;">
+                                Select Corpus you need according to:
+                            </div>
+                            <div>
+                                <fieldset>
+                                    <legend>
+                                        <asp:Label ID="lbgdLevel" runat="server" Text="Level"></asp:Label>
+                                        <input id="cbforLevel1" type="checkbox" onchange='checkOrNot("<%=cblgdLevel.ClientID%>", this)' />
+                                        <label for="cbforLevel1" style="font-weight: normal">Select All</label>
+                                    </legend>
+                                    <asp:CheckBoxList ID="cblgdLevel" runat="server" RepeatDirection="Horizontal"
+                                        RepeatLayout="Flow" CssClass="cb" RepeatColumns="6">
+                                        <asp:ListItem Value="1">L1(freshmen)</asp:ListItem>
+                                        <asp:ListItem Value="2">L2(sophomores)</asp:ListItem>
+                                        <asp:ListItem Value="3">L3(juniors)</asp:ListItem>
+                                        <asp:ListItem Value="4">L4(seniors)</asp:ListItem>
+                                    </asp:CheckBoxList>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>
+                                        <asp:Label ID="lbgdTopic" runat="server" Text=" Topic "></asp:Label>
+                                        <input id="cbgdforTopic" type="checkbox" onchange='checkOrNot("<%=cblgdTopic.ClientID%>", this)' />
+                                        <label for="cbgdforTopic" style="font-weight: normal">Select All</label>
+                                    </legend>
+                                    <asp:CheckBoxList ID="cblgdTopic" runat="server" RepeatDirection="Horizontal"
+                                        RepeatLayout="Flow" RepeatColumns="6" CssClass="cb">
+                                        <asp:ListItem Value="1">Culture</asp:ListItem>
+                                        <asp:ListItem Value="2">Science & Technology</asp:ListItem>
+                                        <asp:ListItem Value="3">Humanity</asp:ListItem>
+                                        <asp:ListItem Value="4">Society</asp:ListItem>
+                                    </asp:CheckBoxList>
+                                </fieldset>
+                                <div id="divgdFLd3" runat="server">
+                                    <fieldset>
+                                        <legend>
+                                            <span>Genre </span>
+                                            <input id="cbgdforGenre" type="checkbox" onchange='checkOrNot("<%=cblgdGenre.ClientID%>", this)' />
+                                            <label for="cbgdforGenre" style="font-weight: normal">Select All</label>
+                                        </legend>
+                                        <asp:CheckBoxList ID="cblgdGenre" runat="server" RepeatDirection="Horizontal"
+                                            RepeatLayout="Flow" CssClass="cb" RepeatColumns="6">
+                                            <asp:ListItem Value="1">Argumentation</asp:ListItem>
+                                            <asp:ListItem Value="2">Narration</asp:ListItem>
+                                            <asp:ListItem Value="3">Exposition</asp:ListItem>
+                                            <asp:ListItem Value="4">Applied Writing</asp:ListItem>
+                                        </asp:CheckBoxList>
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <div style="text-align: center; margin: 10px;">
+                                <asp:Button ID="btnSubmitforGraded" runat="server" Text="Submit" CssClass="outbtndiv-button" />
+                            </div>
+                        </div>
+                        <div id="divQueryGradedResult" runat="server">
+                            <div style="width: 98%; padding: 10px;">
+                                <span id="spGradedCount" class="sptips" runat="server"></span>
+                                <asp:Button ID="btnReGraded" runat="server" Text=" Back " CssClass="outbtndiv-button" />
+                            </div>
+                            <div style="width: 98%; padding: 10px;">
+                                <asp:GridView ID="gvCorpusforGraded" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
+                                    <AlternatingRowStyle BackColor="White" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Title">
+                                            <ItemTemplate>
+                                                <div style="padding: 5px">
+                                                    <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
+											        <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Text">
+                                            <ItemTemplate>
+                                                <div style="padding: 5px">
+                                                    <asp:Label ID="lbText" runat="server" Text='<%# Bind("OriginalText")%>'></asp:Label>
+                                                </div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                    <EditRowStyle BackColor="#036cb4" />
+							        <FooterStyle Font-Bold="True"/>
+							        <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" />
+							        <RowStyle BackColor="#EFF3FB" />
+							        <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+							        <SortedAscendingCellStyle BackColor="#F5F7FB" />
+							        <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+							        <SortedDescendingCellStyle BackColor="#E9EBEF" />
+							        <SortedDescendingHeaderStyle BackColor="#036cb4" />
+							        <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+                                </asp:GridView>
+                                <asp:Button ID="btnLemmaAll" runat="server" Text="View All" CssClass="outbtndiv-button" />
+                            </div>
+                        </div>
+                    </div>
+
+				</asp:View>
+
+                <%-- 公用的Graded结果界面 --%>
 				<asp:View ID="vwLemma" runat="server">
 					<%-- 输出处理结果 --%>
-					<div id="divLemma" runat="server" class="qlfd">
+					<div id="divLemma" runat="server" class="qfld">
                         <div id="divContextInfo" runat="server">
                             <%-- 这是文本的基本信息 --%>
                         </div>
@@ -1066,7 +1269,12 @@
 							</table>
 						</div>
 						<div class="divmain">
-							<table>
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top">
+                                        <fieldset>
+                                            <legend>Graded</legend>
+                                            <table>
 								<tr>
 									<td style="vertical-align: top">
 										<div id="divContextHighLight" class="it-ec-textdiv" runat="server">
@@ -1115,8 +1323,55 @@
 											</dl>
 										</div>
 									</td>
+
 								</tr>
 							</table>
+                                        </fieldset>
+                                    </td>
+                                    <td style="vertical-align: top">
+                                        <fieldset>
+                                            <legend>
+                                                WordList
+                                            </legend>
+                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y:auto;">
+                                            <asp:GridView ID="gvWordList" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Word">
+                                                        <ItemTemplate>
+                                                            <div style="min-width: 100px; padding: 5px">
+                                                                <asp:Label ID="lbCluster" runat="server" Text='<%# Bind("Cluster")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Frequence">
+                                                        <ItemTemplate>
+                                                            <div style="padding: 5px; min-width: 100px;">
+                                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("Count")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="right" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <EditRowStyle BackColor="#036cb4" />
+                                                <FooterStyle Font-Bold="True" Height="25px" />
+                                                <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" Height="25px" />
+                                                <RowStyle BackColor="#EFF3FB" />
+                                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                                <SortedDescendingHeaderStyle BackColor="#036cb4" />
+                                                <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+
+                                            </asp:GridView>
+                                                </div>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                            </table>
+
+
 						</div>
 						<div class="divbr"></div>
                             </fieldset>

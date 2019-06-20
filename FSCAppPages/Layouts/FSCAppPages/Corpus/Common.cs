@@ -1,16 +1,12 @@
 ﻿
+using FSCDLL.DAL;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web.UI.WebControls;
-using FSCDLL;
-using FSCDLL.DAL;
-using FSCDLL.Common;
 
 namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 {
@@ -42,10 +38,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 drNew["match"] = match;
                 drNew["totalTimes"] = dtSearchResult.Compute("count(match)", string.Format("match='{0}'", match));
                 drs = dtSearchResult.Select(string.Format("match='{0}'", match));
-                dtTmp = drs.CopyToDataTable();
-                drNew["phraseTimes"] =dtTmp.DefaultView.ToTable(true, "CorpusID").Rows.Count;
+                dsTmp.Merge(drs);
+                drNew["phraseTimes"] = dsTmp.Tables[0].DefaultView.ToTable(true, "CorpusID").Rows.Count;
                 dtResults.DefaultView.Sort = "totalTimes Desc";
             }
+            dtResults.DefaultView.Sort = "totalTimes Desc";
             return dtResults;
         }
         /// <summary>
@@ -156,10 +153,10 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="corpusContext">文本</param>
         /// <param name="ClusterLength">词族的长度</param>
         /// <returns></returns>
-        public static DataTable   GetClusterFromCorpus(string corpusContext,int ClusterLength)
+        public static DataTable GetClusterFromCorpus(string corpusContext, int ClusterLength)
         {
             DataTable dt = new DataTable();
-            List<string> words=ParseWords(corpusContext);
+            List<string> words = ParseWords(corpusContext);
             dt.Columns.Add("Cluster", typeof(string));
             dt.Columns.Add("Count", typeof(int));
             DataRow dr;
@@ -168,7 +165,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string cluster;
             while (i <= words.Count - ClusterLength)
             {
-                cluster = GetPhrase(words, words[i], 0, ClusterLength-1,i);
+                cluster = GetPhrase(words, words[i], 0, ClusterLength - 1, i);
                 drs = dt.Select("Cluster='" + cluster + "'");
                 if (drs.Length > 0)
                 {
@@ -183,8 +180,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
                 i = i + 1;
             }
+            dt.DefaultView.Sort = "Count Desc";
             return dt;
-            
+
         }
         #endregion
         #region 句子中检索单词
@@ -196,7 +194,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="leftWords">左边的单词个数</param>
         /// <param name="rightWords">右边的单词个数</param>
         /// <returns></returns>
-        private static string GetPhrase(List<string> words, string findWord, int leftWords, int rightWords,int startIndex=0 )
+        private static string GetPhrase(List<string> words, string findWord, int leftWords, int rightWords, int startIndex = 0)
         {
             string phrase = "";
             if (leftWords == 0 && rightWords == 0) return phrase;
@@ -574,7 +572,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="TopItem">前N条数据</param>
         /// <param name="oDT">源DataTable</param>
         /// <returns></returns>
-        public static DataTable DtSelectTop(int TopItem, DataTable oDT)
+        public static DataTable SelectTopNRowsInDT(int TopItem, DataTable oDT)
         {
             if (oDT.Rows.Count < TopItem)
             {
@@ -630,6 +628,37 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             return dtResult;
         }
 
+
+        public static void ComBindDT(DataTable dtSource, ref DataTable dtResult, string queryCol, string computeCol)
+        {
+            if (dtSource != null)
+            {
+                foreach (DataRow dr in dtSource.Rows)
+                {
+                    string queryValue = SystemDataExtension.GetString(dr, queryCol);
+                    string rowFilter = string.Format("{0} = '{1}'", queryCol, queryValue);
+                    DataRow[] drs = dtResult.Select(rowFilter);
+                    if (drs.Length > 0)
+                    {
+                        DataRow drResult = drs[0];
+                        drResult.BeginEdit();
+                        drResult[computeCol] = SystemDataExtension.GetInt32(dr, computeCol) + SystemDataExtension.GetInt32(drResult, computeCol);
+                        drResult.EndEdit();
+                        drResult.AcceptChanges();
+                    }
+                    else
+                    {
+                        DataRow drResult = dtResult.Rows.Add();
+                        drResult.BeginEdit();
+                        drResult[queryCol] = SystemDataExtension.GetString(dr, queryCol);
+                        drResult[computeCol] = SystemDataExtension.GetInt32(dr, computeCol);
+                        drResult.EndEdit();
+                        drResult.AcceptChanges();
+                    }
+                }
+                dtResult.AcceptChanges();
+            }
+        }
         #endregion DataTable方法
     }
 }
