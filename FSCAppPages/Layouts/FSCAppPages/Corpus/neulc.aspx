@@ -451,10 +451,10 @@
 				<asp:View ID="vwCorpus" runat="server">
 					<%-- 语料库检索div --%>
 					<div id="divNEULC" runat="server">
-						<div class="qlfd" style="font-size: 14px;">
+						<div class="qfld" style="font-size: 14px;">
 							Select Corpus you need according to:
 						</div>
-						<div class="qlfd">
+						<div class="qfld">
 
 							<fieldset>
 								<legend>
@@ -500,7 +500,7 @@
 							</fieldset>
 						</div>
 
-						<div class="qlfd" style="text-align: center; margin: 10px;">
+						<div class="qfld" style="text-align: center; margin: 10px;">
 							<asp:Button ID="btnSubmitforCorpus" runat="server" Text="Submit" CssClass="outbtndiv-button" />
 						</div>
 					</div>
@@ -540,7 +540,7 @@
 								</asp:ListItem>
 							</asp:CheckBoxList>
 						</fieldset>
-						<div class="qlfd" style="text-align: center; margin: 10px;">
+						<div class="qfld" style="text-align: center; margin: 10px;">
 							<asp:Button ID="btnSubmitforNEUAC" runat="server" Text="Submit" CssClass="outbtndiv-button" Enabled="false" />
 							<asp:Label ID="Label1" runat="server" Text=" NEUAC 暂不提供筛选和汇总计算..." ForeColor="red"></asp:Label>
 						</div>
@@ -589,7 +589,7 @@
 				</asp:View>
 				<%-- Concordance --%>
 				<asp:View ID="vwConcordance" runat="server">
-					<div id="divConcordanceQuery" runat="server" class="qlfd">
+					<div id="divConcordanceQuery" runat="server" class="qfld">
 						<fieldset>
 							<legend>Select Corpus you need according to:</legend>
 							<div class="flexbox_div">
@@ -700,7 +700,7 @@
 
 				<%-- Collocate --%>
 				<asp:View ID="vwCollocate" runat="server">
-					<div id="divCollocateQuery" runat="server" class="qlfd">
+					<div id="divCollocateQuery" runat="server" class="qfld">
 						<fieldset>
 							<legend>Search Corpus you need according to:</legend>
 							<div class="flexbox_div">
@@ -967,7 +967,7 @@
                                         <fieldset>
                                             <legend>Cluster
                                             </legend>
-                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y: auto;">
+                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y:auto;">
                                                 <asp:GridView ID="gvCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
                                                 <Columns>
                                                     <asp:TemplateField HeaderText="Cluster">
@@ -1043,7 +1043,7 @@
 							</tr>
 						</table>
 					</div>
-					<div id="divforCompareResult" runat="server" visible="false" class="qlfd">
+					<div id="divforCompareResult" runat="server" visible="false" class="qfld">
 						<div style="width:100%;padding:5px;">
 							<asp:Button ID="btnBackToCompare" runat="server" Text=" Close " CssClass="outbtndiv-button" />
 						</div>
@@ -1115,7 +1115,7 @@
 						<div>
 							<textarea cols="100" id="txtcontent" v-model="body" onkeyup="wordStatic(this);" onchange="wordStatic(this);" onblur="wordStatic(this);" runat="server" rows="100" class="ta" placeholder="Type the English text you want to process here !"></textarea>
 						</div>
-						<div id="txtInfo" class="qlfd">
+						<div id="txtInfo" class="qfld">
 							<table style="width: 100%;">
 								<tr>
 									<td style="text-align: left; width: 70%; padding: 5px;">
@@ -1239,7 +1239,7 @@
                 <%-- 公用的Graded结果界面 --%>
 				<asp:View ID="vwLemma" runat="server">
 					<%-- 输出处理结果 --%>
-					<div id="divLemma" runat="server" class="qlfd">
+					<div id="divLemma" runat="server" class="qfld">
                         <div id="divContextInfo" runat="server">
                             <%-- 这是文本的基本信息 --%>
                         </div>
@@ -1269,7 +1269,12 @@
 							</table>
 						</div>
 						<div class="divmain">
-							<table>
+                            <table>
+                                <tr>
+                                    <td style="vertical-align: top">
+                                        <fieldset>
+                                            <legend>Graded</legend>
+                                            <table>
 								<tr>
 									<td style="vertical-align: top">
 										<div id="divContextHighLight" class="it-ec-textdiv" runat="server">
@@ -1318,8 +1323,55 @@
 											</dl>
 										</div>
 									</td>
+
 								</tr>
 							</table>
+                                        </fieldset>
+                                    </td>
+                                    <td style="vertical-align: top">
+                                        <fieldset>
+                                            <legend>
+                                                WordList
+                                            </legend>
+                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y:auto;">
+                                            <asp:GridView ID="gvWordList" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
+                                                <Columns>
+                                                    <asp:TemplateField HeaderText="Word">
+                                                        <ItemTemplate>
+                                                            <div style="min-width: 100px; padding: 5px">
+                                                                <asp:Label ID="lbCluster" runat="server" Text='<%# Bind("Cluster")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="left" />
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField HeaderText="Frequence">
+                                                        <ItemTemplate>
+                                                            <div style="padding: 5px; min-width: 100px;">
+                                                                <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("Count")%>'></asp:Label>
+                                                            </div>
+                                                        </ItemTemplate>
+                                                        <ItemStyle HorizontalAlign="right" />
+                                                    </asp:TemplateField>
+                                                </Columns>
+                                                <EditRowStyle BackColor="#036cb4" />
+                                                <FooterStyle Font-Bold="True" Height="25px" />
+                                                <HeaderStyle BackColor="#036cb4" Font-Bold="True" ForeColor="White" HorizontalAlign="center" Height="25px" />
+                                                <RowStyle BackColor="#EFF3FB" />
+                                                <SelectedRowStyle BackColor="#D1DDF1" Font-Bold="True" ForeColor="#333333" />
+                                                <SortedAscendingCellStyle BackColor="#F5F7FB" />
+                                                <SortedAscendingHeaderStyle BackColor="#6D95E1" />
+                                                <SortedDescendingCellStyle BackColor="#E9EBEF" />
+                                                <SortedDescendingHeaderStyle BackColor="#036cb4" />
+                                                <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
+
+                                            </asp:GridView>
+                                                </div>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                            </table>
+
+
 						</div>
 						<div class="divbr"></div>
                             </fieldset>

@@ -157,20 +157,18 @@
 			line-height: 25px;
 		}
 
-		.qfld fieldset {
-            background: rgba(255,255,255,.3);
-            border-color: rgba(255,255,255,.6);
-            border-style: solid;
-            border-width: 1px;
-            -moz-border-radius: 5px;
-            -webkit-border-radius: 5px;
-            -khtml-border-radius: 5px;
-            border-radius: 5px;
-            line-height: 30px;
-            list-style: none;
-            padding: 5px 10px;
-            margin-bottom: 5px;
-		}
+    .qfld fieldset {
+        border-width: 1px;
+        border: 1px solid #ddd;
+        line-height: 30px;
+        list-style: none;
+        padding: 5px 10px;
+        margin-bottom: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        -khtml-border-radius: 5px;
+    }
 
 		.qfld fieldset legend {
 			text-align: left;

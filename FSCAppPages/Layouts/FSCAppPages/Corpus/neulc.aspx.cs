@@ -1316,11 +1316,16 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             DataTable dtCollFilter = (DataTable)ViewState["dtCollFilter"];
             string strContext = ContactContextinTable(dtCollFilter, "OriginalText");
             ShowContext(null, strContext, "CECR", "2");
+
         }
 
         private void GvCollocate_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName == "Page") return;
+            if (e.CommandName == "Page")
+            {
+                return;
+            }
+
             string cpId = e.CommandArgument.ToString();
 
             DataTable dtCorpusExtend;
@@ -2187,6 +2192,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     divContextHighLight.InnerHtml = GetHighlightContext(showWordsList, kWords).ToString();
                     ViewState["LemmaContext"] = txtStr;
                     divContextInfo.InnerHtml = GetContextInfo(drSource, txtStr, kWords, libName).ToString();
+                    ShowWordList(txtStr);
                 }
                 else
                 {
@@ -2196,6 +2202,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 #endregion 4 WordList和结果输出
             }
 
+        }
+
+        private void ShowWordList(string txtStr)
+        {
+            DataTable dt = Common.GetClusterFromCorpus(txtStr, 1);
+            gvWordList.DataSource = dt;
+            gvWordList.DataBind();
         }
 
         private string GetDbPath()
