@@ -38,8 +38,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 drNew["match"] = match;
                 drNew["totalTimes"] = dtSearchResult.Compute("count(match)", string.Format("match='{0}'", match));
                 drs = dtSearchResult.Select(string.Format("match='{0}'", match));
-                dsTmp.Merge(drs);
-                drNew["phraseTimes"] = dsTmp.Tables[0].DefaultView.ToTable(true, "CorpusID").Rows.Count;
+                dtTmp =drs.CopyToDataTable();
+                 drNew["phraseTimes"] = dtTmp.DefaultView.ToTable(true, "CorpusID").Rows.Count;
                 dtResults.DefaultView.Sort = "totalTimes Desc";
             }
             dtResults.DefaultView.Sort = "totalTimes Desc";
@@ -204,7 +204,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             int rightIndex = wordIndex + rightWords;
             if (leftIndex < 0) leftIndex = 0;
             if (rightIndex > words.Count - 1) rightIndex = words.Count - 1;
-            if (leftIndex == rightIndex) return phrase;
+            //if (leftIndex == rightIndex) return phrase;
             while (leftIndex <= rightIndex)
             {
                 phrase = phrase + words[leftIndex] + " ";
