@@ -1544,12 +1544,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     {
                         DataRow dr = dt.Rows[i];
                         string strContext = SystemDataExtension.GetString(dr, "OriginalText");
-                        int ClusterLength = 2;
-                        if (ViewState["ClusterLength"] != null)
-                        {
-                            ClusterLength = int.Parse(ViewState["ClusterLength"].ToString());
-                        }
-                        DataTable dtTemp = Common.GetClusterFromCorpus(strContext, ClusterLength);
+                       
+                        DataTable dtTemp = Common.GetClusterFromCorpus(strContext, intLenth );
                         Common.ComBindDT(dtTemp, ref dtCluster, "Cluster", "Count");
                     }
 
@@ -2207,6 +2203,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         private void ShowWordList(string txtStr)
         {
             DataTable dt = Common.GetClusterFromCorpus(txtStr, 1);
+            dt.DefaultView.Sort = "Count desc";
             gvWordList.DataSource = dt;
             gvWordList.DataBind();
         }

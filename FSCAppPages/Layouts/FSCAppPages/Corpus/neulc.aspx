@@ -1239,7 +1239,7 @@
                 <%-- 公用的Graded结果界面 --%>
 				<asp:View ID="vwLemma" runat="server">
 					<%-- 输出处理结果 --%>
-					<div id="divLemma" runat="server" class="qfld">
+					<div id="divLemma" runat="server">
                         <div id="divContextInfo" runat="server">
                             <%-- 这是文本的基本信息 --%>
                         </div>
@@ -1273,7 +1273,7 @@
                                 <tr>
                                     <td style="vertical-align: top">
                                         <fieldset>
-                                            <legend>Graded</legend>
+                                            <legend>Grading</legend>
                                             <table>
 								<tr>
 									<td style="vertical-align: top">
@@ -1333,24 +1333,22 @@
                                             <legend>
                                                 WordList
                                             </legend>
-                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y:auto;">
+                                            <div style="height: 400px;min-width:300px;width:100%;overflow-y:auto;">
                                             <asp:GridView ID="gvWordList" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
                                                 <Columns>
                                                     <asp:TemplateField HeaderText="Word">
                                                         <ItemTemplate>
-                                                            <div style="min-width: 100px; padding: 5px">
+                                                            <div style=" padding:0 5px;min-width:125px">
                                                                 <asp:Label ID="lbCluster" runat="server" Text='<%# Bind("Cluster")%>'></asp:Label>
                                                             </div>
                                                         </ItemTemplate>
-                                                        <ItemStyle HorizontalAlign="left" />
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField HeaderText="Frequence">
+                                                    <asp:TemplateField HeaderText="Frequence"  >
                                                         <ItemTemplate>
-                                                            <div style="padding: 5px; min-width: 100px;">
+                                                            <div style="padding:0 5px;min-width:125px ">
                                                                 <asp:Label ID="lbTotal" runat="server" Text='<%# Bind("Count")%>'></asp:Label>
                                                             </div>
                                                         </ItemTemplate>
-                                                        <ItemStyle HorizontalAlign="right" />
                                                     </asp:TemplateField>
                                                 </Columns>
                                                 <EditRowStyle BackColor="#036cb4" />

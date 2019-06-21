@@ -165,7 +165,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string cluster;
             while (i <= words.Count - ClusterLength)
             {
-                cluster = GetPhrase(words, words[i], 0, ClusterLength - 1, i);
+                cluster = GetPhrase(words,i, ClusterLength  );
                 drs = dt.Select("Cluster='" + cluster + "'");
                 if (drs.Length > 0)
                 {
@@ -185,6 +185,19 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
         #endregion
         #region 句子中检索单词
+        private static string GetPhrase(List<string> words, int startIndex,int length)
+        {
+            string phrage = "";
+            int i = 0;
+            while (i<length )
+            {
+                phrage =phrage + " " + words[startIndex+ i];
+                i =i+ 1;
+            }
+            return phrage.Trim();
+
+        }
+
         /// <summary>
         /// 通过要查找的单词获取短语字符串
         /// </summary>
