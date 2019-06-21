@@ -343,7 +343,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         mvNeulc.ActiveViewIndex = 4;
                         break;
                     }
-                case "Graded"://Graded
+                case "Grading"://Graded
                     {
                         mvNeulc.ActiveViewIndex = 5;
                         break;

@@ -180,7 +180,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 }
                 i = i + 1;
             }
-            dt.DefaultView.Sort = "Count Desc";
             return dt;
 
         }

@@ -433,7 +433,7 @@
 					<asp:MenuItem Text="Collocate" Value="Collocate"></asp:MenuItem>
 					<asp:MenuItem Text="Cluster" Value="Cluster"></asp:MenuItem>
 					<asp:MenuItem Text="Compare" Value="Compare"></asp:MenuItem>
-                    <asp:MenuItem Text="Graded" Value="Graded"></asp:MenuItem>
+                    <asp:MenuItem Text="Grading" Value="Grading"></asp:MenuItem>
 				</Items>
 				<StaticSelectedStyle Font-Bold="true" HorizontalPadding="10" VerticalPadding="4" ForeColor="red" />
 				<StaticMenuItemStyle HorizontalPadding="10" VerticalPadding="4" />
