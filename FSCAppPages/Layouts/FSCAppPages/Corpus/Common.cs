@@ -153,32 +153,54 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="corpusContext">文本</param>
         /// <param name="ClusterLength">词族的长度</param>
         /// <returns></returns>
-        public static DataTable GetClusterFromCorpus(string corpusContext, int ClusterLength)
+        public static void GetClusterFromCorpus (string corpusContext, int ClusterLength,ref Dictionary<string, int> dts)
         {
-            DataTable dt = new DataTable();
-            List<string> words = ParseWords(corpusContext);
-            dt.Columns.Add("Cluster", typeof(string));
-            dt.Columns.Add("Count", typeof(int));
-            DataRow dr;
-            DataRow[] drs;
+            List<string> sentences= SplitSentences(corpusContext);
+            List<string> words;
+             string cluster = "";
+            foreach (string sentence in sentences)
+            {
+                words = ParseWords(sentence);
+                for (int i = 0; i <= words.Count - ClusterLength; i++)
+                {
+                    cluster = GetPhrase(words, 0, ClusterLength);
+                    if (dts.ContainsKey(cluster))
+                    {
+                        dts[cluster] = dts[cluster] + 1;
+                    }
+                    else
+                    {
+                        dts.Add(cluster, 1);
+                    }
+                    
+                }
+            }
+            
+        }
+        
+        public static Dictionary<string, int> GetClusterFromCorpus(string corpusContext, int ClusterLength)
+        {
+            Dictionary<string, int> dt = new Dictionary<string, int>();
             int i = 0;
             string cluster;
-            while (i <= words.Count - ClusterLength)
+            List<string> sentences = SplitSentences(corpusContext);
+            foreach (string sentence in sentences)
             {
-                cluster = GetPhrase(words,i, ClusterLength  );
-                drs = dt.Select("Cluster='" + cluster + "'");
-                if (drs.Length > 0)
+                List<string> words = ParseWords(corpusContext);
+
+                while (i <= words.Count - ClusterLength)
                 {
-                    dr = drs[0];
-                    dr["Count"] = int.Parse(dr["Count"].ToString()) + 1;
+                    cluster = GetPhrase(words, i, ClusterLength);
+                    if (dt.ContainsKey(cluster))
+                    {
+                        dt[cluster] = dt[cluster] + 1;
+                    }
+                    else
+                    {
+                        dt.Add(cluster, 1);
+                    }
+                    i = i + 1;
                 }
-                else
-                {
-                    dr = dt.Rows.Add();
-                    dr["Cluster"] = cluster;
-                    dr["Count"] = 1;
-                }
-                i = i + 1;
             }
             return dt;
 

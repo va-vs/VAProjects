@@ -862,14 +862,14 @@
                         <a href="#" onclick='sub("<%=txtClusterChars.ClientID%>",1,2)' class="flexbox_asub">-</a>
 								<input type="text" id="txtClusterChars" name="contextsize" size="40" value="2" runat="server" class="flexbox_text" title="Input the word count for Cluster" placeholder="Type a integer number between 2 to 5" />
 								<a href="#" onclick='add("<%=txtClusterChars.ClientID%>",1,5)' class="flexbox_a">+</a>&nbsp;
-                            <asp:Button ID="btnSetCluster" runat="server" Text="Submit" CssClass="outbtndiv-button" />
+                            <asp:Button ID="btnSetCluster" runat="server" Text="Submit" CssClass="outbtndiv-button" /><span runat="server"  style="padding-left:200px;"  id="spanMsg" ></span>
                         </div>
                        <div id="divAllCluster" runat="server" visible="false">
                             <table>
                                 <tr>
                                     <td style="vertical-align: top;width:60%">
                                         <fieldset>
-                                            <legend>Context</legend>
+                                            <legend>Corpus</legend>
                                             <div id="divCluterList" runat="server" style="min-width:300px;width:100%;line-height:25px;overflow-y: auto;">
                                                  <asp:GridView ID="gvCorpusforCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
                                     <AlternatingRowStyle BackColor="White" />
@@ -909,7 +909,7 @@
                                         <fieldset>
                                             <legend>Cluster
                                             </legend>
-                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y: auto;">
+                                            <div style="height:460px;min-width:300px;width:100%;overflow-y: auto;">
                                                 <asp:GridView ID="gvClusterAll" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
                                                 <Columns>
                                                     <asp:TemplateField HeaderText="Cluster">
@@ -967,7 +967,7 @@
                                         <fieldset>
                                             <legend>Cluster
                                             </legend>
-                                            <div style="height: 400px;width:40%;min-width:300px;width:100%;overflow-y:auto;">
+                                            <div style="height: 400px;min-width:300px;width:100%;overflow-y:auto;">
                                                 <asp:GridView ID="gvCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
                                                 <Columns>
                                                     <asp:TemplateField HeaderText="Cluster">
@@ -1236,7 +1236,7 @@
 
 				</asp:View>
 
-                <%-- 公用的Graded结果界面 --%>
+                <%-- 公用的Grading结果界面 --%>
 				<asp:View ID="vwLemma" runat="server">
 					<%-- 输出处理结果 --%>
 					<div id="divLemma" runat="server">

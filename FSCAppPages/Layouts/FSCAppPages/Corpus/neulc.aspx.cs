@@ -171,7 +171,24 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gv.DataSource = dtSource;
             gv.DataBind();
         }
-
+        /// <summary>
+        /// 将数据绑定到GridView控件
+        /// </summary>
+        /// <param name="gv">数据控件</param>
+        /// <param name="dtSource">数据源</param>
+        private void BindGridViewCluster(GridView gv, Dictionary<string,int>  dtSource)
+        {
+            dtSource = (from entry in dtSource
+                   orderby entry.Value descending
+                   select entry).ToDictionary(pair => pair.Key, pair => pair.Value);
+            gv.DataSource = (from v in dtSource
+                                       select new
+                                       {
+                                           Cluster = v.Key,
+                                           Count = v.Value
+                                       }).ToArray();
+            gv.DataBind();
+        }
         /// <summary>
         /// 页面提醒
         /// </summary>
@@ -319,7 +336,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
 
             lbErr.Text = "";
-            ViewState["filterExp"] = null;
+            //ViewState["filterExp"] = null;
             switch (muNeulc.SelectedValue)
             {
                 case "Concordance"://Concordance
@@ -1532,25 +1549,21 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     DataTable dt = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
                     GVBind(gvCorpusforCluster, dt);
 
-                    int rCount = dt.Rows.Count;
+                    int rCount =  dt.Rows.Count;
                     if (rCount > 5000)
                     {
                         rCount = 5000;
                     }
-                    DataTable dtCluster = new DataTable();
-                    dtCluster.Columns.Add("Cluster", typeof(string));
-                    dtCluster.Columns.Add("Count", typeof(int));
+                    Dictionary<string, int> dts=new Dictionary<string, int> ();
                     for (int i = 0; i < rCount; i++)
                     {
                         DataRow dr = dt.Rows[i];
                         string strContext = SystemDataExtension.GetString(dr, "OriginalText");
-                       
-                        DataTable dtTemp = Common.GetClusterFromCorpus(strContext, intLenth );
-                        Common.ComBindDT(dtTemp, ref dtCluster, "Cluster", "Count");
+                        Common.GetClusterFromCorpus (strContext, intLenth ,ref dts  );
                     }
-
-                    dtCluster.DefaultView.Sort = "Count Desc";
-                    GVBind(gvClusterAll, dtCluster);
+                    
+                    BindGridViewCluster(gvClusterAll, dts);
+                    spanMsg.InnerHtml = string.Format("All Cluster count is： <strong>{0}</strong>", dts.Count.ToString ());
 
                 }
                 else
@@ -1602,7 +1615,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     ClusterLength = int.Parse(ViewState["ClusterLength"].ToString());
                 }
-                DataTable dtCluster = Common.GetClusterFromCorpus(strContext, ClusterLength);
+                Dictionary<string,int>  dtCluster = Common.GetClusterFromCorpus(strContext, ClusterLength);
                 ShowCluster(dtCluster);
                 divCluterContext.InnerHtml = strContext;
             }
@@ -1656,14 +1669,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         #endregion
 
         #region Cluster方法
-
-
-        private void ShowCluster(DataTable dtCluster)
+        private void ShowCluster(Dictionary<string,int> dtCluster)
         {
             divShowCluster.Visible = true;
-            int rCount = dtCluster.Rows.Count;
+            int rCount = dtCluster.Count;
             spClusterTips.InnerHtml = string.Format("All Cluster count is： <strong>{0}</strong>", rCount);
-            GVBind(gvCluster, dtCluster);
+            BindGridViewCluster (gvCluster, dtCluster);
             divSetCluster.Visible = false;
         }
         #endregion Cluster方法
@@ -2202,10 +2213,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void ShowWordList(string txtStr)
         {
-            DataTable dt = Common.GetClusterFromCorpus(txtStr, 1);
-            dt.DefaultView.Sort = "Count desc";
-            gvWordList.DataSource = dt;
-            gvWordList.DataBind();
+            Dictionary<string,int> dt = Common.GetClusterFromCorpus(txtStr, 1);
+            BindGridViewCluster(gvWordList, dt);
         }
 
         private string GetDbPath()
