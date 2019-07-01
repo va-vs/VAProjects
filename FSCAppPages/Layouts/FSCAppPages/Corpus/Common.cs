@@ -27,7 +27,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             dtResults.Columns.Add("phraseTimes", typeof(int));
             DataTable dtMatchs = dtSearchResult.DefaultView.ToTable(true, "match");
             DataRow drNew;
-            DataTable  dtTmp=null;
+            DataTable dtTmp = null;
 
             string match;
             DataRow[] drs;
@@ -38,8 +38,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 drNew["match"] = match;
                 drNew["totalTimes"] = dtSearchResult.Compute("count(match)", string.Format("match='{0}'", match));
                 drs = dtSearchResult.Select(string.Format("match='{0}'", match));
-                dtTmp =drs.CopyToDataTable();
-                 drNew["phraseTimes"] = dtTmp.DefaultView.ToTable(true, "CorpusID").Rows.Count;
+                dtTmp = drs.CopyToDataTable();
+                drNew["phraseTimes"] = dtTmp.DefaultView.ToTable(true, "CorpusID").Rows.Count;
                 dtResults.DefaultView.Sort = "totalTimes Desc";
             }
             dtResults.DefaultView.Sort = "totalTimes Desc";
@@ -153,11 +153,11 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="corpusContext">文本</param>
         /// <param name="ClusterLength">词族的长度</param>
         /// <returns></returns>
-        public static void GetClusterFromCorpus (string corpusContext, int ClusterLength,ref Dictionary<string, int> dts)
+        public static void GetClusterFromCorpus(string corpusContext, int ClusterLength, ref Dictionary<string, int> dts)
         {
-            List<string> sentences= SplitSentences(corpusContext);
+            List<string> sentences = SplitSentences(corpusContext);
             List<string> words;
-             string cluster = "";
+            string cluster = "";
             foreach (string sentence in sentences)
             {
                 words = ParseWords(sentence);
@@ -172,12 +172,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     {
                         dts.Add(cluster, 1);
                     }
-                    
+
                 }
             }
-            
+
         }
-        
+
         public static Dictionary<string, int> GetClusterFromCorpus(string corpusContext, int ClusterLength)
         {
             Dictionary<string, int> dt = new Dictionary<string, int>();
@@ -207,14 +207,14 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         }
         #endregion
         #region 句子中检索单词
-        private static string GetPhrase(List<string> words, int startIndex,int length)
+        private static string GetPhrase(List<string> words, int startIndex, int length)
         {
             string phrage = "";
             int i = 0;
-            while (i<length )
+            while (i < length)
             {
-                phrage =phrage + " " + words[startIndex+ i];
-                i =i+ 1;
+                phrage = phrage + " " + words[startIndex + i];
+                i = i + 1;
             }
             return phrage.Trim();
 
@@ -406,7 +406,8 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <returns></returns>
         public static List<string> ParseWords(string sentence)
         {
-            Regex reg = new Regex(@"\b\w+\b");
+            string regStr = @"\b\w+\b";//\b\w+\b
+            Regex reg = new Regex(regStr);
             MatchCollection mc = reg.Matches(sentence);
             List<string> words = new List<string>();
             foreach (Match m in mc)

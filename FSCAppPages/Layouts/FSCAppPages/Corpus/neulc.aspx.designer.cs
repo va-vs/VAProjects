@@ -688,6 +688,24 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAllCluster;
         
         /// <summary>
+        /// gvClusterAll 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvClusterAll;
+        
+        /// <summary>
+        /// spCClusterTips 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spCClusterTips;
+        
+        /// <summary>
         /// divCluterList 控件。
         /// </summary>
         /// <remarks>
@@ -704,15 +722,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvCorpusforCluster;
-        
-        /// <summary>
-        /// gvClusterAll 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvClusterAll;
         
         /// <summary>
         /// divShowCluster 控件。

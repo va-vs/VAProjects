@@ -87,6 +87,9 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             gvCorpusforCluster.RowDataBound += GvCorpusforCluster_RowDataBound;
             gvCorpusforCluster.RowCommand += GvCorpusforCluster_RowCommand;
             gvCorpusforCluster.PageIndexChanging += GvCorpusforCluster_PageIndexChanging;
+            gvClusterAll.RowDataBound += GvClusterAll_RowDataBound;
+            gvClusterAll.RowCommand += GvClusterAll_RowCommand;
+
             btnSetCluster.Click += BtnSetCluster_Click;
             btnSetCluster.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
 
@@ -176,17 +179,17 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// </summary>
         /// <param name="gv">数据控件</param>
         /// <param name="dtSource">数据源</param>
-        private void BindGridViewCluster(GridView gv, Dictionary<string,int>  dtSource)
+        private void BindGridViewCluster(GridView gv, Dictionary<string, int> dtSource)
         {
             dtSource = (from entry in dtSource
-                   orderby entry.Value descending
-                   select entry).ToDictionary(pair => pair.Key, pair => pair.Value);
+                        orderby entry.Value descending
+                        select entry).ToDictionary(pair => pair.Key, pair => pair.Value);
             gv.DataSource = (from v in dtSource
-                                       select new
-                                       {
-                                           Cluster = v.Key,
-                                           Count = v.Value
-                                       }).ToArray();
+                             select new
+                             {
+                                 Cluster = v.Key,
+                                 Count = v.Value
+                             }).ToArray();
             gv.DataBind();
         }
         /// <summary>
@@ -1496,8 +1499,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         private void BtnResetCluster_Click(object sender, EventArgs e)
         {
             divShowCluster.Visible = false;
-            DataTable dtCluster = null;
-            GVBind(gvCluster, dtCluster);
+            GVBind(gvCluster, null);
             divSetCluster.Visible = true;
         }
 
@@ -1522,8 +1524,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             if (txtClusterChars.Value.Trim() != "")
             {
                 string strLenth = txtClusterChars.Value.Trim();
-                string pattern = "^[0-9]*$";
-                Regex rx = new Regex(pattern);
+                Regex rx = new Regex("^[0-9]*$");
                 if (rx.IsMatch(strLenth))
                 {
                     divAllCluster.Visible = true;
@@ -1547,23 +1548,25 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     }
                     ViewState["pageIndex"] = 0;
                     DataTable dt = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr).Tables[0];
+
                     GVBind(gvCorpusforCluster, dt);
 
-                    int rCount =  dt.Rows.Count;
+                    int rCount = dt.Rows.Count;
+                    spCClusterTips.InnerHtml = "";
                     if (rCount > 5000)
                     {
                         rCount = 5000;
                     }
-                    Dictionary<string, int> dts=new Dictionary<string, int> ();
+                    Dictionary<string, int> dts = new Dictionary<string, int>();
                     for (int i = 0; i < rCount; i++)
                     {
                         DataRow dr = dt.Rows[i];
                         string strContext = SystemDataExtension.GetString(dr, "OriginalText");
-                        Common.GetClusterFromCorpus (strContext, intLenth ,ref dts  );
+                        Common.GetClusterFromCorpus(strContext, intLenth, ref dts);
                     }
-                    
+
                     BindGridViewCluster(gvClusterAll, dts);
-                    spanMsg.InnerHtml = string.Format("All Cluster count is： <strong>{0}</strong>", dts.Count.ToString ());
+                    spanMsg.InnerHtml = string.Format("All Cluster count is： <strong>{0}</strong>", dts.Count.ToString());
 
                 }
                 else
@@ -1615,7 +1618,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 {
                     ClusterLength = int.Parse(ViewState["ClusterLength"].ToString());
                 }
-                Dictionary<string,int>  dtCluster = Common.GetClusterFromCorpus(strContext, ClusterLength);
+                Dictionary<string, int> dtCluster = Common.GetClusterFromCorpus(strContext, ClusterLength);
                 ShowCluster(dtCluster);
                 divCluterContext.InnerHtml = strContext;
             }
@@ -1666,15 +1669,57 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                 e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
             }
         }
+
+        private void GvClusterAll_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Page")
+            {
+                return;
+            }
+            string filterStr = string.Format("Source = '{0}'", CorpusName);
+            string clusterWords = e.CommandArgument.ToString();
+            filterStr += string.Format(" and OriginalText like '%{0}%'", clusterWords);
+            ViewState["filterExp"] = string.Format("OriginalText like '%{0}%'", clusterWords);
+            DataSet ds = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr);
+            DataTable dt = ds.Tables[0];
+            DataView dv = dt.DefaultView;
+            dv.Sort = "CorpusID ASC";
+            dt = dv.ToTable(true, "CorpusID", "Title", "OriginalText");
+            spCClusterTips.InnerHtml = string.Format("( Here are the context contains '<strong>{0}</strong>', The number of eligible materials is <strong>{1}</strong> )", clusterWords, dt.Rows.Count);
+            ViewState["clusterWords"] = clusterWords;
+            GVBind(gvCorpusforCluster, dt);
+        }
+
+        private void GvClusterAll_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                if (e.Row.FindControl("lnkBtn") != null)
+                {
+                    LinkButton lnkBtn = (LinkButton)e.Row.FindControl("lnkBtn");
+                    lnkBtn.Attributes.Add("onclick", "javascript:shield();");
+                    string clusterWords = ViewState["clusterWords"].ToString();
+                    if (lnkBtn.Text == clusterWords)
+                    {
+                        e.Row.Font.Bold = true;
+                        e.Row.ForeColor = Color.Red;
+                    }
+                }
+                //添加鼠标效果，当鼠标移动到行上时，变颜色
+                e.Row.Attributes.Add("onmouseover", "currentcolor=this.style.backgroundColor;this.style.backgroundColor='#ccddff',this.style.cursor='pointer';");
+                //当鼠标离开的时候 将背景颜色还原的以前的颜色
+                e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor=currentcolor,this.style.fontWeight='';");
+            }
+        }
         #endregion
 
         #region Cluster方法
-        private void ShowCluster(Dictionary<string,int> dtCluster)
+        private void ShowCluster(Dictionary<string, int> dtCluster)
         {
             divShowCluster.Visible = true;
             int rCount = dtCluster.Count;
             spClusterTips.InnerHtml = string.Format("All Cluster count is： <strong>{0}</strong>", rCount);
-            BindGridViewCluster (gvCluster, dtCluster);
+            BindGridViewCluster(gvCluster, dtCluster);
             divSetCluster.Visible = false;
         }
         #endregion Cluster方法
@@ -2213,7 +2258,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
         private void ShowWordList(string txtStr)
         {
-            Dictionary<string,int> dt = Common.GetClusterFromCorpus(txtStr, 1);
+            Dictionary<string, int> dt = Common.GetClusterFromCorpus(txtStr, 1);
             BindGridViewCluster(gvWordList, dt);
         }
 
