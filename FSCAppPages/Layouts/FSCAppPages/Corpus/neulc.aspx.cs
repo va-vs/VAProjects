@@ -1679,7 +1679,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             string filterStr = string.Format("Source = '{0}'", CorpusName);
             string clusterWords = e.CommandArgument.ToString();
             filterStr += string.Format(" and OriginalText like '%{0}%'", clusterWords);
-            ViewState["filterExp"] = string.Format("OriginalText like '%{0}%'", clusterWords);
+            ViewState["filterExp"] = filterStr;
             DataSet ds = FSCDLL.DAL.Corpus.GetCorpusByFilterString(filterStr);
             DataTable dt = ds.Tables[0];
             DataView dv = dt.DefaultView;
