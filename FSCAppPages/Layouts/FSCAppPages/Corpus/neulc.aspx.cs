@@ -1139,7 +1139,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             StringBuilder sb = new StringBuilder();
             string txtStr = strContext;
-            sb.AppendLine("<fieldset id='fdsCInfo'><legend><span style='font-size:14px;font-weight:bold;'>Context Infomation</span></legend>");
+            sb.AppendLine("<fieldset id='fdsCInfo' class='elemfield'><legend><span style='font-size:14px;font-weight:bold;'>Context Infomation</span></legend>");
             sb.AppendLine("<table class='infoTable'>");
             if (dr != null)
             {
@@ -1564,15 +1564,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                         string strContext = SystemDataExtension.GetString(dr, "OriginalText");
                         Common.GetClusterFromCorpus(strContext, intLenth, ref dts);
                     }
-
+                    ViewState["clusterWords"] = "";
                     BindGridViewCluster(gvClusterAll, dts);
-                    spanMsg.InnerHtml = string.Format("All Cluster count is： <strong>{0}</strong>", dts.Count.ToString());
+                    spanMsg.InnerHtml = string.Format("All Word Chunk count is： <strong>{0}</strong>", dts.Count.ToString());
 
                 }
                 else
                 {
                     divAllCluster.Visible = false;
-                    lbErr.Text = "The number of words that you input or set for Cluster is invalid,it must be a integer number between 2 to 5!";
+                    lbErr.Text = "The number of words that you input or set for Word Chunk is invalid,it must be a integer number between 2 to 5!";
                     txtClusterChars.Focus();
                     return;
                 }
@@ -1580,7 +1580,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             else
             {
                 divAllCluster.Visible = false;
-                lbErr.Text = "You must input or set the number of words for Cluster first,and it must be a integer number between 2 to 5!!";
+                lbErr.Text = "You must input or set the number of words for Word Chunk first,and it must be a integer number between 2 to 5!!";
                 txtClusterChars.Focus();
                 return;
             }
@@ -1685,7 +1685,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             DataView dv = dt.DefaultView;
             dv.Sort = "CorpusID ASC";
             dt = dv.ToTable(true, "CorpusID", "Title", "OriginalText");
-            spCClusterTips.InnerHtml = string.Format("( Here are the context contains '<strong>{0}</strong>', The number of eligible materials is <strong>{1}</strong> )", clusterWords, dt.Rows.Count);
+            spCClusterTips.InnerHtml = string.Format("<label>( Here are the context contains '<strong>{0}</strong>', The number of eligible texts is <strong>{1}</strong> )</label>", clusterWords, dt.Rows.Count);
             ViewState["clusterWords"] = clusterWords;
             GVBind(gvCorpusforCluster, dt);
         }

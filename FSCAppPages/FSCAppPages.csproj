@@ -145,6 +145,7 @@
   <ItemGroup>
     <Content Include="Layouts\FSCAppPages\AllMentors.aspx" />
     <Content Include="Layouts\FSCAppPages\Corpus\admin.aspx" />
+    <Content Include="Layouts\FSCAppPages\Corpus\checkbox.css" />
     <Content Include="Layouts\FSCAppPages\Corpus\CorpusInfo.aspx" />
     <Content Include="Layouts\FSCAppPages\Corpus\index.aspx" />
     <Content Include="Layouts\FSCAppPages\Corpus\neuac.aspx" />
