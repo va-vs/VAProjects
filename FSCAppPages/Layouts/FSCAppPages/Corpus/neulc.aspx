@@ -19,44 +19,44 @@
     <script type="text/javascript">
         function shield() {
             var s = document.getElementById("<%=divLoadingBG.ClientID%>");
-		    s.style.display = "block";
+            s.style.display = "block";
 
-		    var l = document.getElementById("<%=divLoading.ClientID%>");
-			l.style.display = "block";
-			$('body').css("overflow", "hidden");
+            var l = document.getElementById("<%=divLoading.ClientID%>");
+		    l.style.display = "block";
+		    $('s4-workspace').css("overflow", "hidden");
         }
 
         function cancel_shield() {
             var s = document.getElementById("<%=divLoadingBG.ClientID%>");
-		    s.style.display = "none";
+            s.style.display = "none";
 
-		    var l = document.getElementById("<%=divLoading.ClientID%>");
-			l.style.display = "none";
-			$('body').css("overflow", "auto");
+            var l = document.getElementById("<%=divLoading.ClientID%>");
+		    l.style.display = "none";
+		    $('s4-workspace').css("overflow", "auto");
         }
 
         function HighLightthis(val) {
             var setValue = val.getAttribute("data-Level");
             var obj = js("<%=divContextHighLight.ClientID%>");
-			var oldClass = "";
-			var newClass = "";
-			for (i in obj) {
-			    oldClass = obj[i].className;
-			    var classArr = oldClass.trim().split(/\s+/);
-			    if (classArr.indexOf(setValue) > -1) {
-			        if (classArr.indexOf("highlight") > -1) { //已经是加颜色,本次操作将去掉颜色
-			            newClass = oldClass.replace("highlight", "");
-			            obj[i].classList.remove("highlight");
-			            document.getElementById("btnLight").setAttribute("data-i", "1");
-			            document.getElementById("btnLight").setAttribute("value", "HighLight");
-			        } else { //未颜色,本次操作将增加颜色
-			            newClass = oldClass + "highlight";
-			            obj[i].classList.add("highlight");
-			            document.getElementById("btnLight").setAttribute("data-i", "0");
-			            document.getElementById("btnLight").setAttribute("value", "Clear");
-			        }
-			    }
-			}
+            var oldClass = "";
+            var newClass = "";
+            for (i in obj) {
+                oldClass = obj[i].className;
+                var classArr = oldClass.trim().split(/\s+/);
+                if (classArr.indexOf(setValue) > -1) {
+                    if (classArr.indexOf("highlight") > -1) { //已经是加颜色,本次操作将去掉颜色
+                        newClass = oldClass.replace("highlight", "");
+                        obj[i].classList.remove("highlight");
+                        document.getElementById("btnLight").setAttribute("data-i", "1");
+                        document.getElementById("btnLight").setAttribute("value", "HighLight");
+                    } else { //未颜色,本次操作将增加颜色
+                        newClass = oldClass + "highlight";
+                        obj[i].classList.add("highlight");
+                        document.getElementById("btnLight").setAttribute("data-i", "0");
+                        document.getElementById("btnLight").setAttribute("value", "Clear");
+                    }
+                }
+            }
         }
 
         function js(id) {
@@ -66,97 +66,97 @@
         function HighLightAll(val) {
             var setValue = val.getAttribute("data-i");
             var obj = js("<%=divContextHighLight.ClientID%>");
-			if (setValue == 1) {
-			    val.setAttribute("data-i", "0");
-			    val.setAttribute("value", "Clear");
-			    for (i in obj) {
-			        obj[i].classList.add("highlight");
-			    }
-			}
-			else {
-			    val.setAttribute("data-i", "1");
-			    val.setAttribute("value", "HighLight");
-			    for (i in obj) {
-			        obj[i].classList.remove("highlight");
-			    }
-			}
+            if (setValue == 1) {
+                val.setAttribute("data-i", "0");
+                val.setAttribute("value", "Clear");
+                for (i in obj) {
+                    obj[i].classList.add("highlight");
+                }
+            }
+            else {
+                val.setAttribute("data-i", "1");
+                val.setAttribute("value", "HighLight");
+                for (i in obj) {
+                    obj[i].classList.remove("highlight");
+                }
+            }
         }
 
         function upload(input) {
             var txt = document.getElementById("<%=txtcontent.ClientID%>");
-		    //支持chrome IE10
-		    if (window.FileReader) {
-		        var file = input.files[0];
-		        filename = file.name.split(".")[0];
-		        var reader = new FileReader();
-		        reader.onload = function () {
-		            console.log(this.result)
-		            //alert(this.result);
-		            txt.value = this.result;
-		            wordStatic(txt);
-		        }
-		        reader.readAsText(file);
-		    }
-		        //支持IE 7 8 9 10
-		    else if (typeof window.ActiveXObject != 'undefined') {
-		        var xmlDoc;
-		        xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-		        xmlDoc.async = false;
-		        xmlDoc.load(input.value);
-		        //alert(xmlDoc.xml);
-		        txt.value = xmlDoc.xml;
-		        wordStatic(txt);
-		    }
-		        //支持FF
-		    else if (document.implementation && document.implementation.createDocument) {
-		        var xmlDoc;
-		        xmlDoc = document.implementation.createDocument("", "", null);
-		        xmlDoc.async = false;
-		        xmlDoc.load(input.value);
-		        //alert(xmlDoc.xml);
-		        txt.value = xmlDoc.xml;
-		        wordStatic(txt);
-		    }
-		    else {
-		        //alert('error');
-		        txt.value = "文件导入失败，请确认你是导入的文本文件！";
-		    }
-		}
+            //支持chrome IE10
+            if (window.FileReader) {
+                var file = input.files[0];
+                filename = file.name.split(".")[0];
+                var reader = new FileReader();
+                reader.onload = function () {
+                    console.log(this.result)
+                    //alert(this.result);
+                    txt.value = this.result;
+                    wordStatic(txt);
+                }
+                reader.readAsText(file);
+            }
+                //支持IE 7 8 9 10
+            else if (typeof window.ActiveXObject != 'undefined') {
+                var xmlDoc;
+                xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async = false;
+                xmlDoc.load(input.value);
+                //alert(xmlDoc.xml);
+                txt.value = xmlDoc.xml;
+                wordStatic(txt);
+            }
+                //支持FF
+            else if (document.implementation && document.implementation.createDocument) {
+                var xmlDoc;
+                xmlDoc = document.implementation.createDocument("", "", null);
+                xmlDoc.async = false;
+                xmlDoc.load(input.value);
+                //alert(xmlDoc.xml);
+                txt.value = xmlDoc.xml;
+                wordStatic(txt);
+            }
+            else {
+                //alert('error');
+                txt.value = "文件导入失败，请确认你是导入的文本文件！";
+            }
+        }
 
 
 
-		function add(txtId, diff, max) {
-		    var txt = document.getElementById(txtId);
-		    var a = parseInt(txt.value);
-		    a = a + diff;
-		    if (a > max) {
-		        a = max;
-		    }
-		    txt.value = a;
-		}
+        function add(txtId, diff, max) {
+            var txt = document.getElementById(txtId);
+            var a = parseInt(txt.value);
+            a = a + diff;
+            if (a > max) {
+                a = max;
+            }
+            txt.value = a;
+        }
 
-		function sub(txtId, diff, min) {
-		    var txt = document.getElementById(txtId);
-		    var a = parseInt(txt.value);
-		    a = a - diff;
-		    if (a < min) {
-		        a = min;
-		    }
-		    txt.value = a;
-		}
+        function sub(txtId, diff, min) {
+            var txt = document.getElementById(txtId);
+            var a = parseInt(txt.value);
+            a = a - diff;
+            if (a < min) {
+                a = min;
+            }
+            txt.value = a;
+        }
 
-		function Uncheck_All() {
-		    var cbl0 = document.getElementById("<%=cblGenre.ClientID%>");
+        function Uncheck_All() {
+            var cbl0 = document.getElementById("<%=cblGenre.ClientID%>");
 		    var input = cbl0.getElementsByTagName("input");
 		    for (var i = 0; i < input.length; i++) {
 		        input[i].checked = false;
 		    }
 		    var cbl1 = document.getElementById("<%=cblLevel.ClientID%>");
-			var input = cbl1.getElementsByTagName("input");
-			for (var i = 0; i < input.length; i++) {
-			    input[i].checked = false;
-			}
-			var cbl2 = document.getElementById("<%=cblTopic.ClientID%>");
+		    var input = cbl1.getElementsByTagName("input");
+		    for (var i = 0; i < input.length; i++) {
+		        input[i].checked = false;
+		    }
+		    var cbl2 = document.getElementById("<%=cblTopic.ClientID%>");
 			var input = cbl2.getElementsByTagName("input");
 			for (var i = 0; i < input.length; i++) {
 			    input[i].checked = false;
@@ -484,18 +484,140 @@
             padding: 10px 15px;
             line-height: 25px;
         }
-        .cbl{
-            border-collapse:collapse;
-            line-height:18px
+
+        .cbl {
+            border-collapse: collapse;
+            line-height:25px;
         }
-        .cbl td{
-            min-width:160px;
-            border:1px solid #F0F8FF;
-            padding-left:5px
+
+            .cbl input[type="checkbox"] {
+                display: none;
+            }
+
+                .cbl input[type="checkbox"]:checked + label {
+                    background-color: #F5F5F5;
+                    color: #EA5C64;
+                    padding: 2px 5px;
+                    border-radius: 5px;
+                    border: 1px solid #EA5C64;
+                }
+
+            .cbl input[type="radio"] {
+                display: none;
+            }
+
+                .cbl input[type="radio"]:checked + label {
+                    background-color: #F5F5F5;
+                    color: #EA5C64;
+                    padding: 2px 5px;
+                    border-radius: 5px;
+                    border: 1px solid #EA5C64;
+                }
+
+            .cbl label {
+                margin-left: 10px;
+                padding: 2px 5px;
+                border: 1px solid #CCC;
+                color: #777;
+                border-radius: 5px;
+            }
+
+                .cbl label:hover {
+                    color: #EA5C64;
+                    cursor: pointer;
+                }
+
+        .rbl {
+            border-collapse: collapse;
+            line-height: 25px;
         }
-        .cbl td:hover{
-            background-color:#f0f8ff;
+         .rbl input[type="radio"] {
+                display: none;
+            }
+
+                .rbl input[type="radio"]:checked + label {
+                    background-color: #F5F5F5;
+                    color: #EA5C64;
+                    padding: 2px 5px;
+                    border-radius: 5px;
+                    border: 1px solid #EA5C64;
+                    border-bottom:none;
+                    font-size:16px;
+                    font-weight:bold;
+                }
+
+            .rbl label {
+                margin-left: 10px;
+                padding: 2px 5px;
+                border: 1px solid #CCC;
+                color: #777;
+                border-radius: 5px;
+                font-size:14px;
+                font-weight:400;
+            }
+
+                .rbl label:hover {
+                    color: #EA5C64;
+                    cursor: pointer;
+                }
+        .lglabel {
+            margin-left: 10px;
+            font-size: 12px;
+            font-weight: 300;
+            padding: 2px 5px;
+            border: 1px solid #CCC;
+            color: #777;
+            border-radius: 5px;
         }
+
+            .lglabel:hover {
+                cursor: pointer;
+                color: #EA5C64;
+            }
+
+        input[type="checkbox"]:checked + .lglabel {
+            background-color: #F5F5F5;
+            color: #EA5C64;
+            padding: 0px 5px;
+            border-radius: 5px;
+            border: 1px solid #EA5C64;
+        }
+
+        .input-text {
+            border: 1px solid #808080;
+            border-radius: 5px 5px 5px 5px;
+            font-size: 13px;
+            height: 25px;
+            line-height: 25px;
+            margin-right: 10px;
+            padding-left: 5px;
+        }
+
+        .input-ddl {
+            border: 1px solid #808080;
+            border-radius: 5px 5px 5px 5px;
+            font-size: 13px;
+            height: 25px;
+            line-height: 25px;
+            margin-right: 10px;
+            padding-left: 5px;
+        }
+
+        .input-file {
+            border: 1px solid #808080;
+            border-radius: 5px 5px 5px 5px;
+            font-size: 13px;
+            height: 25px;
+            line-height: 25px;
+            margin-right: 10px;
+            padding-left: 5px;
+        }
+
+.wbdiv {
+	width: 100%;
+	line-height: 25px;
+	margin: 5px;
+}
     </style>
 </asp:Content>
 
@@ -573,11 +695,11 @@
                             <fieldset class="elemfield">
                                 <legend>
                                     <span>Level </span>
-                                    <input id="cbforLevel" type="checkbox" onchange='checkOrNot("<%=cblLevel.ClientID%>", this)' />
-                                    <label for="cbforLevel" style="font-weight: normal">Select All Levels</label>
+                                    <input id="cbforLevel" type="checkbox" onchange='checkOrNot("<%=cblLevel.ClientID%>", this)' hidden />
+                                    <label for="cbforLevel" class="lglabel">Select All Levels</label>
                                 </legend>
                                 <div class="fieldbox">
-                                    <asp:CheckBoxList ID="cblLevel" runat="server" RepeatDirection="Horizontal" RepeatColumns="6" RepeatLayout="Table" CssClass="cbl">
+                                    <asp:CheckBoxList ID="cblLevel" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbl">
                                         <asp:ListItem Value="1">L1(freshmen)</asp:ListItem>
                                         <asp:ListItem Value="2">L2(sophomores)</asp:ListItem>
                                         <asp:ListItem Value="3">L3(juniors)</asp:ListItem>
@@ -588,11 +710,11 @@
                             <fieldset class="elemfield">
                                 <legend>
                                     <span>Genre </span>
-                                    <input id="cbforGenre" type="checkbox" onchange='checkOrNot("<%=cblGenre.ClientID%>", this)' />
-                                    <label for="cbforGenre" style="font-weight: normal">Select All Genres</label>
+                                    <input id="cbforGenre" type="checkbox" onchange='checkOrNot("<%=cblGenre.ClientID%>", this)' hidden />
+                                    <label for="cbforGenre" class="lglabel">Select All Genres</label>
                                 </legend>
                                 <div class="fieldbox">
-                                    <asp:CheckBoxList ID="cblGenre" runat="server" RepeatDirection="Horizontal" RepeatColumns="6" RepeatLayout="Table" CssClass="cbl">
+                                    <asp:CheckBoxList ID="cblGenre" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbl">
                                         <asp:ListItem Value="1">Argumentation</asp:ListItem>
                                         <asp:ListItem Value="2">Narration</asp:ListItem>
                                         <asp:ListItem Value="3">Exposition</asp:ListItem>
@@ -603,11 +725,11 @@
                             <fieldset class="elemfield">
                                 <legend>
                                     <span>Topic </span>
-                                    <input id="cbforTopic" type="checkbox" onchange='checkOrNot("<%=cblTopic.ClientID%>", this)' />
-                                    <label for="cbforTopic" style="font-weight: normal">Select All Topics</label>
+                                    <input id="cbforTopic" type="checkbox" onchange='checkOrNot("<%=cblTopic.ClientID%>", this)' hidden />
+                                    <label for="cbforTopic" class="lglabel">Select All Topics</label>
                                 </legend>
                                 <div class="fieldbox">
-                                    <asp:CheckBoxList ID="cblTopic" runat="server" RepeatDirection="Horizontal" RepeatColumns="5" RepeatLayout="Table" CssClass="cbl">
+                                    <asp:CheckBoxList ID="cblTopic" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbl">
                                         <asp:ListItem Value="1">Culture</asp:ListItem>
                                         <asp:ListItem Value="2">Science & Technology</asp:ListItem>
                                         <asp:ListItem Value="3">Humanity</asp:ListItem>
@@ -626,11 +748,11 @@
                         <fieldset class="elemfield">
                             <legend>
                                 <span>Year </span>
-                                <input id="cbforYear" type="checkbox" onchange='checkOrNot("<%=cblYear.ClientID%>", this)' />
-                                <label for="cbforYear" style="font-weight: normal">Select All Years</label>
+                                <input id="cbforYear" type="checkbox" onchange='checkOrNot("<%=cblYear.ClientID%>", this)' hidden />
+                                <label for="cbforYear" class="lglabel">Select All Years</label>
                             </legend>
                             <div class="fieldbox">
-                                <asp:CheckBoxList ID="cblYear" runat="server" RepeatDirection="Horizontal" RepeatColumns="6"  RepeatLayout="Table" CssClass="cbl">
+                                <asp:CheckBoxList ID="cblYear" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbl">
                                     <asp:ListItem Value="1">2013</asp:ListItem>
                                     <asp:ListItem Value="2">2014</asp:ListItem>
                                 </asp:CheckBoxList>
@@ -639,11 +761,11 @@
                         <fieldset class="elemfield">
                             <legend>
                                 <span>Major </span>
-                                <input id="cbforMajor" type="checkbox" onchange='checkOrNot("<%=cblMajor.ClientID%>", this)' />
-                                <label for="cbforMajor" style="font-weight: normal">Select All Majors</label>
+                                <input id="cbforMajor" type="checkbox" onchange='checkOrNot("<%=cblMajor.ClientID%>", this)' hidden />
+                                <label for="cbforMajor" class="lglabel">Select All Majors</label>
                             </legend>
                             <div class="fieldbox">
-                                <asp:CheckBoxList ID="cblMajor" runat="server" RepeatDirection="Horizontal" RepeatColumns="6" RepeatLayout="Table" CssClass="cbl">
+                                <asp:CheckBoxList ID="cblMajor" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbl">
                                     <asp:ListItem Value="1">Computer</asp:ListItem>
                                     <asp:ListItem Value="2">Material</asp:ListItem>
                                 </asp:CheckBoxList>
@@ -652,11 +774,11 @@
                         <fieldset id="fldJournals" runat="server" class="elemfield">
                             <legend>
                                 <span>Journal </span>
-                                <input id="cbforJournal" type="checkbox" onchange='checkOrNot("<%=cblJournal.ClientID%>", this)' />
-                                <label for="cbforJournal" style="font-weight: normal">Select All Journals</label>
+                                <input id="cbforJournal" type="checkbox" onchange='checkOrNot("<%=cblJournal.ClientID%>", this)' hidden />
+                                <label for="cbforJournal" class="lglabel">Select All Journals</label>
                             </legend>
                             <div class="fieldbox">
-                                <asp:CheckBoxList ID="cblJournal" runat="server" RepeatLayout="Table" CssClass="cbl">
+                                <asp:CheckBoxList ID="cblJournal" runat="server" RepeatLayout="Flow" CssClass="cbl">
                                     <asp:ListItem Value="1">JOURNAL OF ALLOYS AND COMPOUNDS</asp:ListItem>
                                     <asp:ListItem Value="2">MATERIALS SCIENCE AND ENGINEERING A-STRUCTURAL MATERIALS PROPERTIES MICROSTRUCTURE AND PROCESSING
                                     </asp:ListItem>
@@ -1142,7 +1264,7 @@
                             <tr>
                                 <th>Compared in: </th>
                                 <td style="text-align: center;">
-                                    <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal">
+                                    <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal" CssClass="cbl">
                                         <asp:ListItem Value="All" Selected="true">All corpora</asp:ListItem>
                                         <asp:ListItem Value="Some" Enabled="false">Only selected corpra</asp:ListItem>
                                     </asp:RadioButtonList>
@@ -1200,45 +1322,41 @@
 
                     <%-- 文本来源选择 --%>
                     <div id="divtxtFrom">
-                        <asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="cblList">
+                        <asp:RadioButtonList ID="rbltxtFrom" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" AutoPostBack="true" CellPadding="10" CellSpacing="5" CssClass="rbl">
                             <asp:ListItem Value="0" Selected="true">Fill Text by Yourself </asp:ListItem>
                             <asp:ListItem Value="1" Enabled="true">Get Text From Corpus </asp:ListItem>
                         </asp:RadioButtonList>
                         <asp:HiddenField ID="hdftxtFrom" Value="0" runat="server" />
-                    </div>
+
 
                     <%-- 文本来源于个人输入 --%>
-                    <div id="divGradedfromshuru" class="wbdiv" runat="server">
+                    <div id="divGradedfromshuru" runat="server">
                         <table class="wbtable">
                             <tr>
-                                <th>Title：
-                                </th>
+                                <th>Title：</th>
                                 <td>
                                     <input type="text" value="" size="80" style="width: 200px" class="input-text" id="txt_Title" placeholder="Type the title" runat="server" />
                                 </td>
-                                <th>Author：
-                                </th>
+                                <th>Author：</th>
                                 <td>
                                     <input type="text" value="" size="80" style="width: 200px" class="input-text" id="txt_Author" placeholder="Type the Author's Name" runat="server" />
                                 </td>
-                                <th>Topic：
-                                </th>
+                                <th>Topic：</th>
                                 <td>
-                                    <asp:DropDownList ID="ddlTopics" runat="server" Width="200px"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlTopics" runat="server" Width="200px" CssClass="input-ddl"></asp:DropDownList>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Text File：
-                                </th>
+                                <th>Text File：</th>
                                 <td>
-                                    <input type="file" onchange="upload(this)" style="width: 200px;" />
+                                    <input type="file" onchange="upload(this)" style="width: 200px;" class="input-file" />
                                 </td>
                                 <td colspan="4">你可以使用左边的文件控件从文本文件的导入内容，或者你可以在下方文本框中输入或者粘贴要处理的文本!
                                 </td>
                             </tr>
                         </table>
                         <%-- 文本框与词汇表选择，及Lemma按钮 --%>
-                        <div id="divTexts" class="wbdiv" runat="server">
+                        <div id="divTexts" runat="server">
                             <div>
                                 <textarea cols="100" id="txtcontent" v-model="body" onkeyup="wordStatic(this);" onchange="wordStatic(this);" onblur="wordStatic(this);" runat="server" rows="100" class="ta" placeholder="Type the English text you want to process here !"></textarea>
                             </div>
@@ -1264,7 +1382,7 @@
                     <%-- 文本来源于语料库 --%>
                     <div id="divGradedFromCorpus" runat="server" visible="false">
                         <%-- 语料库检索div --%>
-                        <div id="divQueryGraded" runat="server" class="wbdiv">
+                        <div id="divQueryGraded" runat="server">
                             <div style="font-size: 14px;">
                                 Select Corpus you need according to:
                             </div>
@@ -1272,11 +1390,11 @@
                                 <fieldset class="elemfield">
                                     <legend>
                                         <asp:Label ID="lbgdLevel" runat="server" Text="Level"></asp:Label>
-                                        <input id="cbforLevel1" type="checkbox" onchange='checkOrNot("<%=cblgdLevel.ClientID%>", this)' />
-                                        <label for="cbforLevel1" style="font-weight: normal">Select All</label>
+                                        <input id="cbforLevel1" type="checkbox" onchange='checkOrNot("<%=cblgdLevel.ClientID%>", this)' hidden />
+                                        <label for="cbforLevel1" class="lglabel">Select All</label>
                                     </legend>
                                     <div class="fieldbox">
-                                        <asp:CheckBoxList ID="cblgdLevel" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" CssClass="cbl" RepeatColumns="6">
+                                        <asp:CheckBoxList ID="cblgdLevel" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbl">
                                             <asp:ListItem Value="1">L1(freshmen)</asp:ListItem>
                                             <asp:ListItem Value="2">L2(sophomores)</asp:ListItem>
                                             <asp:ListItem Value="3">L3(juniors)</asp:ListItem>
@@ -1288,11 +1406,11 @@
                                 <fieldset class="elemfield">
                                     <legend>
                                         <asp:Label ID="lbgdTopic" runat="server" Text=" Topic "></asp:Label>
-                                        <input id="cbgdforTopic" type="checkbox" onchange='checkOrNot("<%=cblgdTopic.ClientID%>", this)' />
-                                        <label for="cbgdforTopic" style="font-weight: normal">Select All</label>
+                                        <input id="cbgdforTopic" type="checkbox" onchange='checkOrNot("<%=cblgdTopic.ClientID%>", this)' hidden />
+                                        <label for="cbgdforTopic" class="lglabel">Select All</label>
                                     </legend>
                                     <div class="fieldbox">
-                                        <asp:CheckBoxList ID="cblgdTopic" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" CssClass="cbl" RepeatColumns="6">
+                                        <asp:CheckBoxList ID="cblgdTopic" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbl">
                                             <asp:ListItem Value="1">Culture</asp:ListItem>
                                             <asp:ListItem Value="2">Science & Technology</asp:ListItem>
                                             <asp:ListItem Value="3">Humanity</asp:ListItem>
@@ -1305,11 +1423,11 @@
                                     <fieldset class="elemfield">
                                         <legend>
                                             <span>Genre </span>
-                                            <input id="cbgdforGenre" type="checkbox" onchange='checkOrNot("<%=cblgdGenre.ClientID%>", this)' />
-                                            <label for="cbgdforGenre" style="font-weight: normal">Select All</label>
+                                            <input id="cbgdforGenre" type="checkbox" onchange='checkOrNot("<%=cblgdGenre.ClientID%>", this)' hidden />
+                                            <label for="cbgdforGenre" class="lglabel">Select All</label>
                                         </legend>
                                         <div class="fieldbox">
-                                            <asp:CheckBoxList ID="cblgdGenre" runat="server" RepeatDirection="Horizontal" RepeatLayout="Table" CssClass="cbl" RepeatColumns="6">
+                                            <asp:CheckBoxList ID="cblgdGenre" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="cbl">
                                                 <asp:ListItem Value="1">Argumentation</asp:ListItem>
                                                 <asp:ListItem Value="2">Narration</asp:ListItem>
                                                 <asp:ListItem Value="3">Exposition</asp:ListItem>
@@ -1360,11 +1478,11 @@
                                     <SortedDescendingHeaderStyle BackColor="#036cb4" />
                                     <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
                                 </asp:GridView>
-                                <asp:Button ID="btnLemmaAll" runat="server" Text="View All" CssClass="outbtndiv-button" Visible="false"/>
+                                <asp:Button ID="btnLemmaAll" runat="server" Text="View All" CssClass="outbtndiv-button" Visible="false" />
                             </div>
                         </div>
                     </div>
-
+                    </div>
                 </asp:View>
 
                 <%-- 公用的Grading结果界面 --%>

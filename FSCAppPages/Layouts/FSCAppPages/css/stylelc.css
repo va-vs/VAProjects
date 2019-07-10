@@ -29,27 +29,21 @@
 	line-height: 30px;
 }
 
-.wbdiv {
-	width: 98%;
-	line-height: 30px;
-	padding-left: 20px;
-	margin: 5px;
-}
 
 .wbtable {
-	width: 98%;
+	width: 100%;
 	line-height: 30px;
 }
 .wbtable tr{
-    line-height:25px;
-    word-break:keep-all;
+	line-height:25px;
+	word-break:keep-all;
 }
 
 	.wbtable tr th {
 		text-align: right;
 		padding: 5px;
-        vertical-align:top;
-        font-weight:600;
+		vertical-align:top;
+		font-weight:600;
 
 	}
 
@@ -164,15 +158,6 @@
 	border-radius: 15px;
 }
 
-.input-text {
-	border: 1px solid #808080;
-	border-radius: 5px 5px 5px 5px;
-	font-size: 13px;
-	height: 25px;
-	line-height: 25px;
-	margin-right: 10px;
-	padding-left: 5px;
-}
 
 .ta {
 	border-left: 1px solid #CCCCCC;
