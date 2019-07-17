@@ -17,23 +17,7 @@
     <link rel="stylesheet" href="http://202.118.11.33/NEU_EC/SiteAssets/css/highlight.css" type="text/css" />
     <link rel="stylesheet" href="../css/tab.css" type="text/css" />
     <script type="text/javascript">
-        function shield() {
-            var s = document.getElementById("<%=divLoadingBG.ClientID%>");
-            s.style.display = "block";
 
-            var l = document.getElementById("<%=divLoading.ClientID%>");
-		    l.style.display = "block";
-		    $('s4-workspace').css("overflow", "hidden");
-        }
-
-        function cancel_shield() {
-            var s = document.getElementById("<%=divLoadingBG.ClientID%>");
-            s.style.display = "none";
-
-            var l = document.getElementById("<%=divLoading.ClientID%>");
-		    l.style.display = "none";
-		    $('s4-workspace').css("overflow", "auto");
-        }
 
         function HighLightthis(val) {
             var setValue = val.getAttribute("data-Level");
@@ -206,29 +190,50 @@
 		}
 
     </script>
+
+     <script type="text/javascript">
+       function shield() {
+            var s = document.getElementById("divLoadingBG");
+            s.style.display = "block";
+
+            var l = document.getElementById("divLoading");
+            l.style.display = "block";
+            document.getElementById('s4-workspace').style.overflow = "hidden";
+        }
+
+        function cancel_shield() {
+            var s = document.getElementById("divLoadingBG");
+            s.style.display = "none";
+
+            var l = document.getElementById("divLoading");
+            l.style.display = "none";
+
+            document.getElementById('s4-workspace').style.overflow = "auto";
+        }
+   </script>
     <style type="text/css">
         /*遮罩层*/
 
-        .divLoadingBG {
+        #divLoadingBG {
             width: 100%;
             height: 100%;
             background-color: #000;
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            z-index: 2;
-            opacity: 0.5;
+            z-index:999;
+            opacity: 0.2;
             /*兼容IE8及以下版本浏览器*/
-            filter: alpha(opacity=50);
+            filter: alpha(opacity=20);
         }
 
-        .divLoading {
+        #divLoading {
             width: 200px;
             height: 200px;
             text-align: center;
             margin: auto;
-            position: absolute;
-            z-index: 3;
+            position: fixed;
+            z-index:10000;
             top: 0;
             bottom: 0;
             left: 0;
@@ -355,39 +360,36 @@
         }
 
         .infoTable {
-            width: 100%;
             border: none;
             border-collapse: collapse;
-            margin: 0 auto;
+            line-height:15px;
+            font-size:13px;
         }
 
             .infoTable tr {
-                border-bottom: 1px solid #808080;
-                border-top: 1px solid #808080;
+                border:none;
             }
 
             .infoTable th {
-                color: #0066CC;
-                font-weight: bold;
-                padding: 10px;
+                color: #333;
+                font-weight:500;
+                padding:2px 5px;
                 text-align: right;
-                max-width: 200px;
+                min-width: 200px;
             }
 
             .infoTable td {
-                padding: 10px;
+                padding:2px 5px;
                 text-align: left;
+                color:#555;
             }
 
             .infoTable tr:nth-of-type(odd) {
-                border: 1pt solid #d1e0fb;
                 background: #F5FAFA;
-                border-bottom: 1px solid #808080;
-                border-top: 1px solid #808080;
             }
 
             .infoTable tr:hover {
-                background: #b6dede;
+                background: #D2DCF5;
             }
     </style>
 
@@ -636,14 +638,14 @@
                                 <asp:ImageButton ID="ibtnInfo" runat="server" ImageUrl="../images/Info.png" ImageAlign="Middle" Height="20" Width="20" PostBackUrl="#" ToolTip="About this Corpus" Enabled="false" />
                             </li>
                             <li>
-                                <asp:ImageButton ID="ibtnDownload" runat="server" ImageUrl="../images/Download.png" ImageAlign="Middle" Height="20" Width="20" PostBackUrl="#" ToolTip="DownLoad This Corpus" Enabled="false" />
+                                <asp:ImageButton ID="ibtnDownload" runat="server" ImageUrl="../images/Download.png" ImageAlign="Middle" Height="20" Width="20" PostBackUrl="#" ToolTip="DownLoad this text" Enabled="false" />
                             </li>
                             <li>
-                                <asp:ImageButton ID="ibtnUpload" runat="server" ImageUrl="../images/Upload.png" PostBackUrl="admin.aspx" ImageAlign="Middle" Height="20" Width="20" ToolTip="Upload a new Corpora" />
+                                <asp:ImageButton ID="ibtnUpload" runat="server" ImageUrl="../images/Upload.png" PostBackUrl="admin.aspx" ImageAlign="Middle" Height="20" Width="20" ToolTip="Upload a new text" />
 
                             </li>
                             <li>
-                                <asp:ImageButton ID="ibtnShare" runat="server" ImageUrl="../images/Share.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Share this Corpus" Enabled="false" />
+                                <asp:ImageButton ID="ibtnShare" runat="server" ImageUrl="../images/Share.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Share this text" Enabled="false" />
                             </li>
                             <li>
                                 <asp:ImageButton ID="ibtnGuide" runat="server" ImageUrl="../images/Guide.png" PostBackUrl="#" ImageAlign="Middle" Height="20" Width="20" ToolTip="Get Help" Enabled="false" />
@@ -898,7 +900,7 @@
                                     <ItemTemplate>
                                         <div style="padding: 5px">
                                             <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
-                                            <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this text"></asp:LinkButton>
                                         </div>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -939,7 +941,7 @@
                             <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
                         </asp:GridView>
                         <div id="divConcTips" runat="server" style="width: 98%; padding: 10px;" visible="false">
-                            <span id="spConcTips" class="sptips" runat="server">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
+                            <span id="spConcTips" class="sptips" runat="server">Click on the <strong>"Title"</strong> in each row of the list to view the text</span>
                             <asp:Button ID="btnViewConc" runat="server" Text="View All" CssClass="outbtndiv-button" />
                         </div>
                     </div>
@@ -1039,7 +1041,7 @@
                                 <PagerStyle HorizontalAlign="Center" VerticalAlign="Middle" CssClass="pagination" />
                             </asp:GridView>
                             <div id="divCollComputedTips" runat="server" style="width: 98%; padding: 10px;">
-                                <span class="sptips">Click on the <strong>"Match"</strong> in each row of the list to view the context with the match</span>
+                                <span class="sptips">Click on the <strong>"Match"</strong> in each row of the list to view the text with the match</span>
                             </div>
                         </div>
                         <div id="divCollView" runat="server" visible="false">
@@ -1054,7 +1056,7 @@
                                         <ItemTemplate>
                                             <div style="padding: 5px">
                                                 <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
-                                                <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                                <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this text"></asp:LinkButton>
                                             </div>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -1096,7 +1098,7 @@
 
                             </asp:GridView>
                             <div id="divCollTips" style="width: 98%; padding: 10px;" runat="server">
-                                <span id="spCollTips" runat="server" class="sptips">Click on the <strong>"Title"</strong> in each row of the list to view the corpus context</span>
+                                <span id="spCollTips" runat="server" class="sptips">Click on the <strong>"Title"</strong> in each row of the list to view the text</span>
                                 <asp:Button ID="btnViewColl" runat="server" Text="View All" CssClass="outbtndiv-button" />
                             </div>
                         </div>
@@ -1119,15 +1121,14 @@
                                 <tr>
                                     <td style="vertical-align: top;">
                                         <fieldset class="elemfield">
-                                            <legend>Cluster
-                                            </legend>
+                                            <legend>Word Chunk</legend>
                                             <div style="height: 460px; width: 100%; line-height: 25px; overflow-y: auto;">
                                                 <asp:GridView ID="gvClusterAll" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
                                                     <Columns>
                                                         <asp:TemplateField HeaderText="Word Chunk">
                                                             <ItemTemplate>
                                                                 <div style="min-width: 100px; padding: 5px">
-                                                                    <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Cluster")%>' CommandArgument='<%# Bind("Cluster")%>' ToolTip="Click here to view the corpus contains this Word Chunk in the right list"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Cluster")%>' CommandArgument='<%# Bind("Cluster")%>' ToolTip="Click here to view all the texts that contains this word chunk in the right list"></asp:LinkButton>
                                                                 </div>
                                                             </ItemTemplate>
                                                             <ItemStyle HorizontalAlign="left" />
@@ -1158,7 +1159,7 @@
                                     </td>
                                     <td style="vertical-align: top;">
                                         <fieldset class="elemfield">
-                                            <legend>Corpus<span id="spCClusterTips" runat="server" class="sptips"></span></legend>
+                                            <legend>Texts<span id="spCClusterTips" runat="server" class="sptips"></span></legend>
                                             <div id="divCluterList" runat="server" style="width: 100%; line-height: 25px; overflow-y: auto;">
                                                 <asp:GridView ID="gvCorpusforCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="CorpusID" Width="100%" AllowPaging="True" PageSize="10" PagerSettings-Mode="NumericFirstLast">
                                                     <AlternatingRowStyle BackColor="White" />
@@ -1167,7 +1168,7 @@
                                                             <ItemTemplate>
                                                                 <div style="padding: 5px">
                                                                     <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
-                                                                    <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this text"></asp:LinkButton>
                                                                 </div>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
@@ -1208,14 +1209,13 @@
                                 <tr>
                                     <td style="vertical-align: top; width: 60%">
                                         <fieldset class="elemfield">
-                                            <legend>Context</legend>
+                                            <legend>Text</legend>
                                             <div id="divCluterContext" runat="server" style="height: 400px; min-width: 300px; width: 100%; background-color: #dcdcdc; line-height: 25px; font-size: 13px; overflow-y: auto;"></div>
                                         </fieldset>
                                     </td>
                                     <td style="vertical-align: top; width: 40%">
                                         <fieldset class="elemfield">
-                                            <legend>Cluster
-                                            </legend>
+                                            <legend>Word Chunk</legend>
                                             <div style="height: 400px; min-width: 300px; width: 100%; overflow-y: auto;">
                                                 <asp:GridView ID="gvCluster" runat="server" AutoGenerateColumns="False" CellPadding="2" ForeColor="#333333" GridLines="None" DataKeyNames="Cluster">
                                                     <Columns>
@@ -1265,8 +1265,8 @@
                                 <th>Compared in: </th>
                                 <td style="text-align: center;">
                                     <asp:RadioButtonList ID="rblforCompare" runat="server" RepeatDirection="Horizontal" CssClass="cbl">
-                                        <asp:ListItem Value="All" Selected="true">All corpora</asp:ListItem>
-                                        <asp:ListItem Value="Some" Enabled="false">Only selected corpra</asp:ListItem>
+                                        <asp:ListItem Value="All" Selected="true">All texts in the corpus</asp:ListItem>
+                                        <asp:ListItem Value="Some" Enabled="false">Only selected texts</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </td>
                             </tr>
@@ -1455,7 +1455,7 @@
                                             <ItemTemplate>
                                                 <div style="padding: 5px">
                                                     <asp:HiddenField ID="hdfCorpusID" runat="server" Value='<%# Bind("CorpusID")%>' />
-                                                    <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this corpora"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkBtn" runat="server" Text='<%# Bind("Title")%>' CommandArgument='<%# Bind("CorpusID")%>' ToolTip="View this text"></asp:LinkButton>
                                                 </div>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -1493,7 +1493,7 @@
                             <%-- 这是文本的基本信息 --%>
                         </div>
                         <fieldset class="elemfield">
-                            <legend><span style="font-size: 14px; font-weight: bold;">Expanded context</span></legend>
+                            <legend>VocabProfile & Wordlist</legend>
                             <div class="divmain">
                                 <table>
                                     <tr>
@@ -1522,7 +1522,7 @@
                                     <tr>
                                         <td style="vertical-align: top">
                                             <fieldset class="elemfield">
-                                                <legend>Grading</legend>
+                                                <legend>VocabProfile</legend>
                                                 <table>
                                                     <tr>
                                                         <td style="vertical-align: top">
@@ -1628,8 +1628,9 @@
     </div>
     <asp:HiddenField ID="hdfvwIndex" runat="server" Value="0" />
     <asp:Label ID="lbErr" runat="server" Text="" ForeColor="red"></asp:Label>
-    <div id="divLoadingBG" runat="server" class="divLoadingBG" style="display: none;"></div>
-    <div id="divLoading" runat="server" class="divLoading" style="display: none;">
+
+    <div id="divLoadingBG" style="display: none;"></div>
+    <div id="divLoading" style="display: none;">
         <img src="../images/loading.gif" />
     </div>
 </asp:Content>

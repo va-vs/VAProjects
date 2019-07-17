@@ -29,7 +29,6 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-
             //导航按钮点击事件
             muNeulc.MenuItemClick += muNeulc_MenuItemClick;
             muNeulc.Attributes.Add("onclick", "javascript:shield();");
@@ -95,6 +94,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             gvCluster.RowDataBound += GvCluster_RowDataBound;
             btnResetCluster.Click += BtnResetCluster_Click;
+            btnResetCluster.Attributes.Add("onclick", "javascript:shield();");//为按钮点击事件的处理过程增加提示
 
             //Compare提交按钮点击事件
             btnCompared.Click += BtnCompared_Click;
@@ -1016,12 +1016,12 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     divConcTips.Visible = true;
                     if (dispCount > 100)
                     {
-                        spConcTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context", keyConc);
+                        spConcTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the text", keyConc);
                         btnViewConc.Enabled = false;
                     }
                     else
                     {
-                        spConcTips.InnerHtml = "Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context";
+                        spConcTips.InnerHtml = "Click on the <strong>\"Title\"</strong> in each row of the list to view the text";
                         btnViewConc.Enabled = true;
                     }
                 }
@@ -1139,7 +1139,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             StringBuilder sb = new StringBuilder();
             string txtStr = strContext;
-            sb.AppendLine("<fieldset id='fdsCInfo' class='elemfield'><legend><span style='font-size:14px;font-weight:bold;'>Context Infomation</span></legend>");
+            sb.AppendLine("<fieldset id='fdsCInfo' class='elemfield'><legend>Text Infomation</legend>");
             sb.AppendLine("<table class='infoTable'>");
             if (dr != null)
             {
@@ -1422,15 +1422,15 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
 
             if (dtFilter.Rows.Count > 100)
             {
-                spCollTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context", e.CommandArgument);
+                spCollTips.InnerHtml = string.Format("Click on the <strong>\"Title\"</strong> in each row of the list to view the text", e.CommandArgument);
                 btnViewColl.Enabled = false;
                 btnViewColl.ToolTip = "The <strong>\"View All\"</strong> Button is disabled because the frequence of  <strong>\"{0}\"</strong> is more than 100.";
             }
             else
             {
-                spCollTips.InnerHtml = "Click on the <strong>\"Title\"</strong> in each row of the list to view the corpus context";
+                spCollTips.InnerHtml = "Click on the <strong>\"Title\"</strong> in each row of the list to view the text";
                 btnViewColl.Enabled = true;
-                btnViewColl.ToolTip = "View all context with the math";
+                btnViewColl.ToolTip = "View all the texts with the math";
             }
             divCollComputed.Visible = false;
             GVBind(gvCollocate, dtFilter);
@@ -1566,13 +1566,13 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
                     }
                     ViewState["clusterWords"] = "";
                     BindGridViewCluster(gvClusterAll, dts);
-                    spanMsg.InnerHtml = string.Format("All Word Chunk count is： <strong>{0}</strong>", dts.Count.ToString());
+                    spanMsg.InnerHtml = string.Format("The number of all word chunk is： <strong>{0}</strong>", dts.Count.ToString());
 
                 }
                 else
                 {
                     divAllCluster.Visible = false;
-                    lbErr.Text = "The number of words that you input or set for Word Chunk is invalid,it must be a integer number between 2 to 5!";
+                    lbErr.Text = "The number that you input or set for Word Chunk is invalid,it must be a integer between 2 to 5!";
                     txtClusterChars.Focus();
                     return;
                 }
@@ -1685,7 +1685,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
             DataView dv = dt.DefaultView;
             dv.Sort = "CorpusID ASC";
             dt = dv.ToTable(true, "CorpusID", "Title", "OriginalText");
-            spCClusterTips.InnerHtml = string.Format("<label>( Here are the context contains '<strong>{0}</strong>', The number of eligible texts is <strong>{1}</strong> )</label>", clusterWords, dt.Rows.Count);
+            spCClusterTips.InnerHtml = string.Format("<label>( Here are the list of texts contains '<strong style='color:red'>{0}</strong>', The number of eligible texts is <strong>{1}</strong> )</label>", clusterWords, dt.Rows.Count);
             ViewState["clusterWords"] = clusterWords;
             GVBind(gvCorpusforCluster, dt);
         }
@@ -1718,7 +1718,7 @@ namespace FSCAppPages.Layouts.FSCAppPages.Corpus
         {
             divShowCluster.Visible = true;
             int rCount = dtCluster.Count;
-            spClusterTips.InnerHtml = string.Format("All Cluster count is： <strong>{0}</strong>", rCount);
+            spClusterTips.InnerHtml = string.Format("The number of word chunk in this text is： <strong>{0}</strong>", rCount);
             BindGridViewCluster(gvCluster, dtCluster);
             divSetCluster.Visible = false;
         }
